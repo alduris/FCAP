@@ -1,0 +1,28 @@
+{
+	"id": "Nightguard",
+	"name": "The Nightguard",
+	"description": "HELP WANTED: local group pizzeria looking for security guard to work the night shift. 12 am to 6 am.<LINE>Monitor cameras, ensure safety of equipment and animatronic slugcats. Not responsible for injury/dismemberment.<LINE>$120 a week. To apply call: 1-555-5-PEBBLES",
+	"features": {
+		"color": "17234f",
+		"custom_colors": [
+			{
+				"name": "Body",
+				"story": "17234f"
+			},
+			{
+				"name": "Eyes",
+				"story": "FFFFFF"
+			}
+		],
+		"start_room": "SS_FCAP",
+		"use_default_dreams": false,
+		"cycle_length_min": 12,
+		"cycle_length_max": 12,
+		"karma": 0,
+		"karma_cap": 6,
+		"food_min": 1,
+		"food_max": 1,
+		"world_state": [ "Inv", "Red" ],
+		"expedition_enabled": false
+	}
+}
