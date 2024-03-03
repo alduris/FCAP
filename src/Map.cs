@@ -151,9 +151,59 @@ namespace FCAP
                 Location.MainEntrance,
                 new Connection
                 {
-                    Up = Location.PartyRoomC,
+                    Up = Location.NOWHERE,
+                    Down = Location.PlayArea,
+                    Left = Location.PartyRoomA,
+                    Right = Location.PirateCove
+                }
+            },
+            {
+                Location.Backstage,
+                new Connection
+                {
+                    Up = Location.NOWHERE,
+                    Down = Location.ShowStage,
+                    Left = Location.MainEntrance,
+                    Right = Location.NOWHERE
+                }
+            },
+            {
+                Location.Kitchen,
+                new Connection
+                {
+                    Up = Location.DiningArea,
+                    Down = Location.Storage,
+                    Left = Location.PlayArea,
+                    Right = Location.NOWHERE
+                }
+            },
+            {
+                Location.RestroomHallCam,
+                new Connection
+                {
+                    Up = Location.PartyRoomB,
                     Down = Location.NOWHERE,
-                    Left = Location.DiningArea,
+                    Left = Location.NOWHERE,
+                    Right = Location.BackHallCam
+                }
+            },
+            {
+                Location.Storage,
+                new Connection
+                {
+                    Up = Location.PlayArea,
+                    Down = Location.BackHallCam,
+                    Left = Location.RestroomHallCam,
+                    Right = Location.Kitchen
+                }
+            },
+            {
+                Location.BackHallCam,
+                new Connection
+                {
+                    Up = Location.Storage,
+                    Down = Location.NOWHERE,
+                    Left = Location.RestroomHallCam,
                     Right = Location.NOWHERE
                 }
             },
