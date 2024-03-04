@@ -8,5 +8,10 @@ namespace FCAP
 {
     internal class GameController : UpdatableAndDeletable
     {
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+            Global.Update();
+        }
     }
 }
