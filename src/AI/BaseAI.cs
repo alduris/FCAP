@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using Random = UnityEngine.Random;
 
 namespace FCAP.AI
 {
@@ -12,7 +10,7 @@ namespace FCAP.AI
         public Global.Animatronic animatronic = me;
         public Map.Location location = startLoc;
 
-        public void Update()
+        public virtual void Update()
         {
             counter--;
             if (counter <= 0)
@@ -22,7 +20,7 @@ namespace FCAP.AI
                 {
                     if (location == Map.Location.You && CanJumpscare())
                     {
-                        Global.CurrentJumpscare = animatronic;
+                        GameController.Instance.CurrentJumpscare = animatronic;
                     }
                     location = TryMove();
                 }

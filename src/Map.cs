@@ -49,9 +49,7 @@ namespace FCAP
             RestroomHallFar,   // ^ (for ai data only)
             RestroomHallClose, // ^ (for ai data only)
             Storage,           // cam 7
-            BackHallCam,       // cam 8
-            BackHallFar,       // ^ (for ai data only)
-            BackHallClose,     // ^ (for ai data only)
+            BackHall,          // cam 8
             LeftDoor,          // left door
             RightDoor,         // right door
             You                // you
@@ -63,6 +61,13 @@ namespace FCAP
             public Location Down;
             public Location Left;
             public Location Right;
+        }
+        public enum Direction
+        {
+            Up,
+            Down,
+            Left,
+            Right
         }
 
         public static readonly Dictionary<Location, Connection> CameraConnections = new()
@@ -184,7 +189,7 @@ namespace FCAP
                     Up = Location.PartyRoomB,
                     Down = Location.NOWHERE,
                     Left = Location.NOWHERE,
-                    Right = Location.BackHallCam
+                    Right = Location.BackHall
                 }
             },
             {
@@ -192,13 +197,13 @@ namespace FCAP
                 new Connection
                 {
                     Up = Location.PlayArea,
-                    Down = Location.BackHallCam,
+                    Down = Location.BackHall,
                     Left = Location.RestroomHallCam,
                     Right = Location.Kitchen
                 }
             },
             {
-                Location.BackHallCam,
+                Location.BackHall,
                 new Connection
                 {
                     Up = Location.Storage,
