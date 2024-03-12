@@ -1,32 +1,50 @@
 ﻿using System;
+using System.Security.Permissions;
 using BepInEx;
 using UnityEngine;
 using SlugBase.Features;
 using static SlugBase.Features.FeatureTypes;
-using System.Security.Permissions;
-using System.Runtime.CompilerServices;
 using RWCustom;
+using FCAP.Hooks;
+using System.Security;
+
+#pragma warning disable CS0618
+[module: UnverifiableCode]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
+#pragma warning restore CS0618
 
 namespace FCAP
 {
     [BepInPlugin("alduris.fcap", "Five Cycles at Pebbles", "0.1.0")]
     class Plugin : BaseUnityPlugin
     {
-        public static SlugcatStats.Name Nightguard;
 
         // Add hooks
         public void OnEnable()
         {
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
-            // Put your custom hooks here!
-            On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScript_AddRoomSpecificScript;
-            On.Player.checkInput += Player_checkInput;
+            // Game stuff
+            On.RoomSpecificScript.AddRoomSpecificScript += AddGameScript;
+            On.Player.checkInput += NightguardInputRevamp;
+
+            // Other stuff
+            OverseerHooks.Apply();
         }
 
-        private void Player_checkInput(On.Player.orig_checkInput orig, Player self)
+        private void AddGameScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)
         {
-            if (self.playerState.playerNumber == 0 && self.SlugCatClass == Nightguard && GameController.Instance != null)
+            orig(room);
+
+            if (room.abstractRoom.name == "SS_FCAP")
+            {
+                room.AddObject(new GameController(room));
+            }
+        }
+
+        private void NightguardInputRevamp(On.Player.orig_checkInput orig, Player self)
+        {
+            if (self.playerState.playerNumber == 0 && self.SlugCatClass == Constants.Nightguard && GameController.Instance != null)
             {
                 var game = GameController.Instance;
                 for (int i = self.input.Length - 1; i > 0; i--)
@@ -98,20 +116,11 @@ namespace FCAP
             }
         }
 
-        private void RoomSpecificScript_AddRoomSpecificScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)
-        {
-            orig(room);
-
-            if (room.abstractRoom.name == "SS_FCAP")
-            {
-                room.AddObject(new GameController(room));
-            }
-        }
 
         // Load any resources, such as sprites or sounds
         private void LoadResources(RainWorld rainWorld)
         {
-            Nightguard = new SlugcatStats.Name("Nightguard", false);
+            //
         }
     }
 }

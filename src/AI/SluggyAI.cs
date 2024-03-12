@@ -40,7 +40,7 @@ namespace FCAP.AI
         {
             if (GameController.Instance.OutOfPower)
             {
-                //
+                return false;
             }
             else
             {

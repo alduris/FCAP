@@ -29,14 +29,11 @@ namespace FCAP
         public bool OutOfPower => Power <= 0;
 
         public BaseAI[] AIs;
-        public CameraHologram hologram = null;
         public GameController(Room room)
         {
+            this.room = room;
             Instance = this;
-            AIs = new BaseAI[]
-            {
-                //
-            };
+            AIs = [];
         }
 
         public override void Update(bool eu)
