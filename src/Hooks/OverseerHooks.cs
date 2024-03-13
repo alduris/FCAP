@@ -47,7 +47,7 @@ namespace FCAP.Hooks
         private static void Overseer_Update(On.Overseer.orig_Update orig, Overseer self, bool eu)
         {
             orig(self, eu);
-            if (GameController.Instance != null && GameController.Instance.InCams && self.PlayerGuide && self.hologram == null)
+            if (GameController.Instance != null && self.PlayerGuide)
             {
                 if (GameController.Instance.InCams)
                 {
