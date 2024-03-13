@@ -31,6 +31,7 @@ namespace FCAP
         public BaseAI[] AIs;
         public GameController(Room room)
         {
+            Plugin.Logger.LogDebug("Activated :)");
             this.room = room;
             Instance = this;
             AIs = [];

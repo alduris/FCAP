@@ -7,6 +7,7 @@ using static SlugBase.Features.FeatureTypes;
 using RWCustom;
 using FCAP.Hooks;
 using System.Security;
+using BepInEx.Logging;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -18,18 +19,32 @@ namespace FCAP
     [BepInPlugin("alduris.fcap", "Five Cycles at Pebbles", "0.1.0")]
     class Plugin : BaseUnityPlugin
     {
+        public static new ManualLogSource Logger;
 
         // Add hooks
         public void OnEnable()
         {
-            On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
+            Logger = base.Logger;
+            Logger.LogDebug("hi");
 
-            // Game stuff
-            On.RoomSpecificScript.AddRoomSpecificScript += AddGameScript;
-            On.Player.checkInput += NightguardInputRevamp;
+            try
+            {
+                On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
-            // Other stuff
-            OverseerHooks.Apply();
+                // Game stuff
+                On.RoomSpecificScript.AddRoomSpecificScript += AddGameScript;
+                On.Player.checkInput += NightguardInputRevamp;
+
+                // Other stuff
+                OverseerHooks.Apply();
+
+                Logger.LogDebug("yay");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("boowomp");
+                Logger.LogError(ex);
+            }
         }
 
         private void AddGameScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)
@@ -85,7 +100,7 @@ namespace FCAP
                     self.input[0] = new Player.InputPackage(controls.gamePad, controls.GetActivePreset(), currInput.x, currInput.y, currInput.jmp, false, false, false, currInput.crouchToggle);
 
                     // Toggle door or cams
-                    if (currInput.thrw && !lastInput.thrw && !game.OutOfPower)
+                    if (currInput.pckp && !lastInput.pckp && !game.OutOfPower)
                     {
                         float x = self.bodyChunks[0].pos.x / self.room.PixelWidth;
                         switch (x)
@@ -120,7 +135,7 @@ namespace FCAP
         // Load any resources, such as sprites or sounds
         private void LoadResources(RainWorld rainWorld)
         {
-            //
+            Constants.Register();
         }
     }
 }

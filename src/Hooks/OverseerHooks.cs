@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using MonoMod.Cil;
+using MoreSlugcats;
 using static FCAP.Constants;
 
 namespace FCAP.Hooks
@@ -10,6 +13,7 @@ namespace FCAP.Hooks
             On.OverseerAbstractAI.RoomAllowed += OverseerAbstractAI_RoomAllowed;
             On.OverseerAbstractAI.PlayerGuideUpdate += OverseerAbstractAI_PlayerGuideUpdate;
             On.Overseer.Update += Overseer_Update;
+            IL.Overseer.TryAddHologram += Overseer_TryAddHologram;
         }
 
         private static bool OverseerAbstractAI_RoomAllowed(On.OverseerAbstractAI.orig_RoomAllowed orig, OverseerAbstractAI self, int room)
@@ -23,7 +27,7 @@ namespace FCAP.Hooks
             // Overseer want to stay with player unless power is out in which case they promptly die
             orig(self, time);
 
-            if (self.world.game.IsStorySession && self.world.game.StoryCharacter == Nightguard && GameController.Instance != null)
+            if (GameController.Instance != null)
             {
                 if (GameController.Instance.OutOfPower)
                 {
@@ -40,8 +44,26 @@ namespace FCAP.Hooks
 
         private static void Overseer_Update(On.Overseer.orig_Update orig, Overseer self, bool eu)
         {
-            // Overseer wants to display cams
-            throw new NotImplementedException();
+            orig(self, eu);
+            if (GameController.Instance != null && GameController.Instance.InCams && self.hologram == null)
+            {
+                self.TryAddHologram(MoreSlugcatsEnums.OverseerHologramMessage.Advertisement, null, float.MaxValue); // temporary
+                //self.TryAddHologram(Constants.CamsHologram, null, float.MaxValue);
+            }
+        }
+
+        private static void Overseer_TryAddHologram(MonoMod.Cil.ILContext il)
+        {
+            var c = new ILCursor(il);
+
+            if (c.TryGotoNext(x => x.MatchLdarg(0), x => x.MatchLdfld<Overseer>(nameof(Overseer.hologram)), x => x.MatchCallvirt<Room>(nameof(Room.AddObject))))
+            {
+                c.MoveAfterLabels();
+            }
+            else
+            {
+                Plugin.Logger.LogWarning("Overseer.TryAddHologram hook did not match!");
+            }
         }
     }
 }

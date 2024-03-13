@@ -1,10 +1,11 @@
 ﻿{
-	"id": "author.slugtemplate",
-	"name": "Slugcat Template",
+	"id": "alduris.fcap",
+	"name": "Five Cycles at Pebbles",
 	"version": "0.1.0",
-	"authors": "Author",
-	"description": "A template for making SlugBase mods.",
+	"authors": "Alduris",
+	"description": "Can you survive?",
 	"requirements": [ "slime-cubed.slugbase" ],
 	"requirements_names": [ "SlugBase" ],
-	"tags": [ "Custom Slugcat" ]
+	"tags": [ "Custom Slugcat" ],
+	"checksum_override_version": true
 }

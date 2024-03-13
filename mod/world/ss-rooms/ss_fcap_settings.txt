@@ -1,0 +1,11 @@
+Template: NONE
+DangerType: None
+WaveSpeed: 0.5553607
+WaveLength: 0.9723197
+WaveAmplitude: 2.58159E-05
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Grime: 0.07608695
+Palette: 18
+FadePalette: 10, 0
+RoomSpecificScriptActive: ON

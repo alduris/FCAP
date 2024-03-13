@@ -6,7 +6,7 @@ namespace FCAP
 {
     internal static class Global
     {
-        public const int MaxPower = 40000;
+        public const int MaxPower = 24000;
 
         public enum Animatronic // todo: come up with more original characters than these?
         {
