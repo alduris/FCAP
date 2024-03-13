@@ -2,12 +2,12 @@
 
 namespace FCAP.AI
 {
-    internal abstract class BaseAI(Global.Animatronic me, Map.Location startLoc, int difficulty, int counter)
+    internal abstract class BaseAI(Enums.Animatronic me, Map.Location startLoc, int difficulty, int counter)
     {
         protected int difficulty = difficulty;
         protected int maxCounter = counter;
         protected int counter = counter;
-        public Global.Animatronic animatronic = me;
+        public Enums.Animatronic animatronic = me;
         public Map.Location location = startLoc;
 
         public virtual void Update()

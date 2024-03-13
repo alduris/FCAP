@@ -11,7 +11,7 @@ namespace FCAP.AI
         private bool WaitingForCamDown = false;
         private bool ForceMove = false;
 
-        public SluggyAI(int night) : base(Global.Animatronic.Sluggy, Map.Location.ShowStage, NightDifficulties[night], 2235) { }
+        public SluggyAI(int night) : base(Enums.Animatronic.Sluggy, Map.Location.ShowStage, NightDifficulties[night], 2235) { }
 
         public override void Update()
         {

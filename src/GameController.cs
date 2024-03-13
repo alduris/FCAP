@@ -1,6 +1,6 @@
 ﻿using FCAP.AI;
 using UnityEngine;
-using static FCAP.Global;
+using static FCAP.Enums;
 
 namespace FCAP
 {
@@ -8,7 +8,7 @@ namespace FCAP
     {
         public static GameController Instance;
 
-        public int Power = Global.MaxPower;
+        public int Power = Constants.MaxPower;
 
         public PowerStage OOPstage;
         public int OOPTimer = 0;
@@ -25,6 +25,10 @@ namespace FCAP
 
         public Animatronic CurrentJumpscare = Animatronic.None;
         public int JumpscareTimer = 0;
+
+        public Overseer camsOverseer = null;
+        public Overseer lDoorOverseer = null;
+        public Overseer rDoorOverseer = null;
 
         public bool OutOfPower => Power <= 0;
 
@@ -86,7 +90,16 @@ namespace FCAP
             CamViewTimer = 0;
             if (InCams)
             {
-                //
+                var absCre = new AbstractCreature(room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, room.game.FirstAnyPlayer.pos, room.world.game.GetNewID());
+                room.abstractRoom.AddEntity(absCre);
+                absCre.RealizeInRoom();
+                camsOverseer = absCre.realizedCreature as Overseer;
+
+                CWTs.SetOverseerTask(camsOverseer, OverseerTask.Cameras);
+            }
+            else
+            {
+                camsOverseer = null;
             }
         }
         public void SwitchCamViewing()

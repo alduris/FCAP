@@ -13,9 +13,7 @@ namespace FCAP.Hooks
             On.OverseerAbstractAI.RoomAllowed += OverseerAbstractAI_RoomAllowed;
             On.OverseerAbstractAI.PlayerGuideUpdate += OverseerAbstractAI_PlayerGuideUpdate;
             On.Overseer.Update += Overseer_Update;
-            On.Overseer.TryAddHologram += Overseer_TryAddHologram1;
             IL.Overseer.TryAddHologram += Overseer_TryAddHologram;
-            On.WorldLoader.OverseerSpawnConditions += WorldLoader_OverseerSpawnConditions;
         }
 
         private static bool OverseerAbstractAI_RoomAllowed(On.OverseerAbstractAI.orig_RoomAllowed orig, OverseerAbstractAI self, int room)
@@ -47,20 +45,41 @@ namespace FCAP.Hooks
         private static void Overseer_Update(On.Overseer.orig_Update orig, Overseer self, bool eu)
         {
             orig(self, eu);
-            if (GameController.Instance != null && self.PlayerGuide)
+            if (GameController.Instance != null && CWTs.HasTask(self))
             {
-                if (GameController.Instance.InCams)
+                var value = CWTs.GetTask(self);
+                bool destroy = false;
+
+                switch (value)
                 {
-                    if (self.hologram == null)
-                    {
-                        self.TryAddHologram(MoreSlugcatsEnums.OverseerHologramMessage.Advertisement, null, float.MaxValue); // temporary
-                        //self.TryAddHologram(Constants.CamsHologram, null, float.MaxValue);
-                    }
+                    case Enums.OverseerTask.Cameras:
+                        {
+                            destroy = !GameController.Instance.InCams;
+
+                            if (self.hologram == null)
+                            {
+                                self.TryAddHologram(MoreSlugcatsEnums.OverseerHologramMessage.Advertisement, null, float.MaxValue); // temporary
+                                //self.TryAddHologram(Constants.CamsHologram, null, float.MaxValue);
+                            }
+                            break;
+                        }
+                    case Enums.OverseerTask.LeftDoor:
+                        {
+                            destroy = !GameController.Instance.LeftDoorShut;
+
+                            if (self.hologram == null)
+                            {
+                                //
+                            }
+                            break;
+                        }
                 }
-                else if (self.hologram != null)
+
+                if (destroy)
                 {
                     self.hologram.Destroy();
                     self.hologram = null;
+                    self.Die();
                 }
             }
         }
@@ -77,19 +96,6 @@ namespace FCAP.Hooks
             {
                 Plugin.Logger.LogWarning("Overseer.TryAddHologram hook did not match!");
             }
-        }
-
-        private static void Overseer_TryAddHologram1(On.Overseer.orig_TryAddHologram orig, Overseer self, OverseerHolograms.OverseerHologram.Message message, Creature communicateWith, float importance)
-        {
-            if (GameController.Instance == null || message == CamsHologram || (ModManager.MSC && message == MoreSlugcatsEnums.OverseerHologramMessage.Advertisement))
-            {
-                orig(self, message, communicateWith, importance);
-            }
-        }
-
-        private static bool WorldLoader_OverseerSpawnConditions(On.WorldLoader.orig_OverseerSpawnConditions orig, WorldLoader self, SlugcatStats.Name character)
-        {
-            return orig(self, character) || character == Nightguard;
         }
     }
 }
