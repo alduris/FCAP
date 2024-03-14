@@ -1,4 +1,5 @@
 ﻿using FCAP.AI;
+using FCAP.Graphics;
 using UnityEngine;
 using static FCAP.Enums;
 
@@ -8,7 +9,8 @@ namespace FCAP
     {
         public static GameController Instance;
 
-        public int Power = Constants.MaxPower;
+        public int Power = Constants.MaxPower + 200; // 200 is a safety net so power doesn't go down for 5 seconds
+        public int PowerUsage = 0;
 
         public PowerStage OOPstage;
         public int OOPTimer = 0;
@@ -30,6 +32,9 @@ namespace FCAP
         public Overseer lDoorOverseer = null;
         public Overseer rDoorOverseer = null;
 
+        public MapDisplay mapDisplay = null;
+        public PowerDisplay powerDisplay = null;
+
         public bool OutOfPower => Power <= 0;
 
         public BaseAI[] AIs;
@@ -39,13 +44,21 @@ namespace FCAP
             this.room = room;
             Instance = this;
             AIs = [];
+
+            mapDisplay = new MapDisplay(this, room);
+            powerDisplay = new PowerDisplay(this, room);
         }
 
         public override void Update(bool eu)
         {
             base.Update(eu);
+
             // Power
-            Power -= 1 + (LeftDoorLight ? 1 : 0) + (LeftDoorShut ? 1 : 0) + (RightDoorLight ? 1 : 0) + (RightDoorShut ? 1 : 0) + (InCams ? 1 : 0);
+            if (!OutOfPower)
+            {
+                PowerUsage = 1 + (LeftDoorLight ? 1 : 0) + (LeftDoorShut ? 1 : 0) + (RightDoorLight ? 1 : 0) + (RightDoorShut ? 1 : 0) + (InCams ? 1 : 0);
+                Power -= PowerUsage;
+            }
 
             if (OutOfPower)
             {
@@ -83,9 +96,25 @@ namespace FCAP
             base.Destroy();
             Instance = null;
         }
+
+        public void RunOutOfPower()
+        {
+            /*mapDisplay.Destroy();
+            mapDisplay = null;
+            powerDisplay.Destroy();
+            powerDisplay = null;*/
+            camsOverseer.Die();
+            camsOverseer = null;
+            lDoorOverseer.Die();
+            lDoorOverseer = null;
+            rDoorOverseer.Die();
+            rDoorOverseer = null;
+        }
         
         public void ToggleCams()
         {
+            if (OutOfPower) return;
+
             InCams = !InCams;
             CamViewTimer = 0;
             if (InCams)
@@ -104,11 +133,13 @@ namespace FCAP
         }
         public void SwitchCamViewing()
         {
+            if (OutOfPower) return;
             CamViewing = CamSelected;
             CamViewTimer = 0;
         }
         public void SwitchCamSelecting(Map.Direction dir)
         {
+            if (OutOfPower) return;
             var cons = Map.CameraConnections[CamSelected];
             Map.Location loc = dir switch
             {
@@ -127,6 +158,7 @@ namespace FCAP
 
         public void ToggleDoor(Map.Direction side)
         {
+            if (OutOfPower) return;
             if (side == Map.Direction.Left)
             {
                 LeftDoorShut = !LeftDoorShut;

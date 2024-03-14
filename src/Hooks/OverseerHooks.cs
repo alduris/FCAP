@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MoreSlugcats;
+using OverseerHolograms;
+using UnityEngine;
 using static FCAP.Constants;
 
 namespace FCAP.Hooks
@@ -73,6 +76,16 @@ namespace FCAP.Hooks
                             }
                             break;
                         }
+                    case Enums.OverseerTask.RightDoor:
+                        {
+                            destroy = !GameController.Instance.RightDoorShut;
+
+                            if (self.hologram == null)
+                            {
+                                //
+                            }
+                            break;
+                        }
                 }
 
                 if (destroy)
@@ -91,6 +104,15 @@ namespace FCAP.Hooks
             if (c.TryGotoNext(x => x.MatchLdarg(0), x => x.MatchLdfld<Overseer>(nameof(Overseer.hologram)), x => x.MatchCallvirt<Room>(nameof(Room.AddObject))))
             {
                 c.MoveAfterLabels();
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Action<Overseer, OverseerHologram.Message>>((self, message) =>
+                {
+                    if (message == CamsHologram)
+                    {
+                        //
+                    }
+                });
             }
             else
             {

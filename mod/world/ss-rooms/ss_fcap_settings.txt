@@ -8,7 +8,8 @@ SecondWaveAmplitude: 0
 Grime: 0.07608695
 RandomItemDensity: 0
 RandomItemSpearChance: 0
-Palette: 18
-
-FadePalette: 10, 0
+Palette: 27
+EffectColorA: 9
+EffectColorB: 21
+FadePalette: 33, 0
 RoomSpecificScriptActive: ON
