@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Security;
 using System.Security.Permissions;
 using BepInEx;
 using UnityEngine;
@@ -6,7 +8,6 @@ using SlugBase.Features;
 using static SlugBase.Features.FeatureTypes;
 using RWCustom;
 using FCAP.Hooks;
-using System.Security;
 using BepInEx.Logging;
 using MonoMod.RuntimeDetour;
 
@@ -39,7 +40,8 @@ namespace FCAP
 
                 // Other stuff
                 OverseerHooks.Apply();
-                var hook = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), System.Reflection.BindingFlags.NonPublic).GetGetMethod(true), PowerOutDarkFader);
+                RainMeterHooks.Apply();
+                _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true), PowerOutDarkFader);
 
                 Logger.LogDebug("yay");
             }

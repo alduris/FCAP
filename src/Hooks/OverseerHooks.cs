@@ -119,6 +119,7 @@ namespace FCAP.Hooks
 
         private static void Room_AddObject(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
         {
+            // Fix for null holograms so I don't have to IL hook it in :leditoroverload:
             if (obj != null)
             {
                 orig(self, obj);
