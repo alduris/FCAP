@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using FCAP.Graphics;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MoreSlugcats;
@@ -16,7 +17,8 @@ namespace FCAP.Hooks
             On.OverseerAbstractAI.RoomAllowed += OverseerAbstractAI_RoomAllowed;
             On.OverseerAbstractAI.PlayerGuideUpdate += OverseerAbstractAI_PlayerGuideUpdate;
             On.Overseer.Update += Overseer_Update;
-            IL.Overseer.TryAddHologram += Overseer_TryAddHologram;
+            On.Overseer.TryAddHologram += Overseer_TryAddHologram;
+            On.Room.AddObject += Room_AddObject;
         }
 
         private static bool OverseerAbstractAI_RoomAllowed(On.OverseerAbstractAI.orig_RoomAllowed orig, OverseerAbstractAI self, int room)
@@ -72,7 +74,7 @@ namespace FCAP.Hooks
 
                             if (self.hologram == null)
                             {
-                                //
+                                self.TryAddHologram(DoorHolo, null, float.MaxValue);
                             }
                             break;
                         }
@@ -82,7 +84,7 @@ namespace FCAP.Hooks
 
                             if (self.hologram == null)
                             {
-                                //
+                                self.TryAddHologram(DoorHolo, null, float.MaxValue);
                             }
                             break;
                         }
@@ -90,33 +92,36 @@ namespace FCAP.Hooks
 
                 if (destroy)
                 {
-                    self.hologram.Destroy();
+                    self.hologram?.Destroy();
                     self.hologram = null;
                     self.Die();
                 }
             }
         }
 
-        private static void Overseer_TryAddHologram(ILContext il)
+        private static void Overseer_TryAddHologram(On.Overseer.orig_TryAddHologram orig, Overseer self, OverseerHologram.Message message, Creature communicateWith, float importance)
         {
-            var c = new ILCursor(il);
+            orig(self, message, communicateWith, importance);
 
-            if (c.TryGotoNext(x => x.MatchLdarg(0), x => x.MatchLdfld<Overseer>(nameof(Overseer.hologram)), x => x.MatchCallvirt<Room>(nameof(Room.AddObject))))
+            if (self.hologram == null)
             {
-                c.MoveAfterLabels();
-                c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Action<Overseer, OverseerHologram.Message>>((self, message) =>
+                if (message == CamsHolo)
                 {
-                    if (message == CamsHologram)
-                    {
-                        //
-                    }
-                });
+                    //
+                }
+                else if (message == DoorHolo)
+                {
+                    self.hologram = new DoorHologram(GameController.Instance, self, message, null, float.MaxValue);
+                }
+                self.room.AddObject(self.hologram);
             }
-            else
+        }
+
+        private static void Room_AddObject(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
+        {
+            if (obj != null)
             {
-                Plugin.Logger.LogWarning("Overseer.TryAddHologram hook did not match!");
+                orig(self, obj);
             }
         }
     }

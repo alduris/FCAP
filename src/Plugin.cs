@@ -8,6 +8,7 @@ using RWCustom;
 using FCAP.Hooks;
 using System.Security;
 using BepInEx.Logging;
+using MonoMod.RuntimeDetour;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -32,11 +33,13 @@ namespace FCAP
                 On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
                 // Game stuff
+                On.RainWorldGame.Update += RainWorldGame_Update;
                 On.RoomSpecificScript.AddRoomSpecificScript += AddGameScript;
                 On.Player.checkInput += NightguardInputRevamp;
 
                 // Other stuff
                 OverseerHooks.Apply();
+                var hook = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), System.Reflection.BindingFlags.NonPublic).GetGetMethod(true), PowerOutDarkFader);
 
                 Logger.LogDebug("yay");
             }
@@ -44,6 +47,15 @@ namespace FCAP
             {
                 Logger.LogError("boowomp");
                 Logger.LogError(ex);
+            }
+        }
+
+        private void RainWorldGame_Update(On.RainWorldGame.orig_Update orig, RainWorldGame self)
+        {
+            orig(self);
+            if (self.devToolsActive && Input.GetKeyDown(KeyCode.Backslash))
+            {
+                Debug.Log((Vector2)Futile.mousePosition + self.cameras[0].pos);
             }
         }
 
@@ -105,12 +117,12 @@ namespace FCAP
                         float x = self.bodyChunks[0].pos.x / self.room.PixelWidth;
                         switch (x)
                         {
-                            case < 0.4f:
+                            case < 0.45f:
                                 {
                                     game.ToggleDoor(Map.Direction.Left);
                                     break;
                                 }
-                            case < 0.6f:
+                            case < 0.55f:
                                 {
                                     game.ToggleCams();
                                     break;
@@ -128,6 +140,18 @@ namespace FCAP
             else
             {
                 orig(self);
+            }
+        }
+        
+        private float PowerOutDarkFader(Func<RoomCamera, float> orig, RoomCamera self)
+        {
+            if (GameController.Instance != null)
+            {
+                return 2f * Mathf.Atan(GameController.Instance.OOPTimer / 4f) / Mathf.PI;
+            }
+            else
+            {
+                return orig(self);
             }
         }
 

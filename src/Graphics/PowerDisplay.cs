@@ -51,6 +51,8 @@ namespace FCAP.Graphics
 
         public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
+            ApplyPalette(sLeaser, rCam, rCam.currentPalette);
+
             for (int i = 0; i < 5; i++)
             {
                 sLeaser.sprites[i].SetPosition(new Vector2(22f * i + 273f, 209f) - camPos);
@@ -86,7 +88,7 @@ namespace FCAP.Graphics
             {
                 for (int i = 0; i < sLeaser.sprites.Length; i++)
                 {
-                    sLeaser.sprites[i].isVisible &= Random.value > 0.01f;
+                    sLeaser.sprites[i].isVisible &= Random.value > 0.03f;
                 }
             }
         }
@@ -106,6 +108,10 @@ namespace FCAP.Graphics
             var brightness = Custom.LerpMap(game.Power, Constants.MaxPower, 0, 1f, 0.75f);
             var color = (float)game.Power / Constants.MaxPower > 0.2 ? new Color(brightness, brightness, brightness) : new Color(brightness, 0, 0);
             sLeaser.sprites[5].color = Color.Lerp(color, palette.fogColor, LERP_AMT);
+            if (Random.value < 0.001f * game.PowerUsage)
+            {
+                sLeaser.sprites[5].color = Color.Lerp(sLeaser.sprites[5].color, palette.blackColor, Random.Range(0.25f, 0.5f));
+            }
 
             // Outer containers
             sLeaser.sprites[6].color = sLeaser.sprites[7].color = Color.Lerp(Color.white, palette.fogColor, LERP_AMT);

@@ -67,6 +67,7 @@ namespace FCAP
                 LeftDoorShut = false;
                 RightDoorLight = false;
                 RightDoorShut = false;
+                OOPTimer++;
             }
 
             // Update timer thing
@@ -110,6 +111,16 @@ namespace FCAP
             rDoorOverseer.Die();
             rDoorOverseer = null;
         }
+
+        private void CreateOverseer(OverseerTask task, out Overseer overseer)
+        {
+            var absCre = new AbstractCreature(room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, room.game.FirstAnyPlayer.pos, room.world.game.GetNewID());
+            room.abstractRoom.AddEntity(absCre);
+            absCre.RealizeInRoom();
+            overseer = absCre.realizedCreature as Overseer;
+
+            CWTs.SetOverseerTask(overseer, task);
+        }
         
         public void ToggleCams()
         {
@@ -119,12 +130,7 @@ namespace FCAP
             CamViewTimer = 0;
             if (InCams)
             {
-                var absCre = new AbstractCreature(room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, room.game.FirstAnyPlayer.pos, room.world.game.GetNewID());
-                room.abstractRoom.AddEntity(absCre);
-                absCre.RealizeInRoom();
-                camsOverseer = absCre.realizedCreature as Overseer;
-
-                CWTs.SetOverseerTask(camsOverseer, OverseerTask.Cameras);
+                CreateOverseer(OverseerTask.Cameras, out camsOverseer);
             }
             else
             {
@@ -162,10 +168,18 @@ namespace FCAP
             if (side == Map.Direction.Left)
             {
                 LeftDoorShut = !LeftDoorShut;
+                if (LeftDoorShut)
+                {
+                    CreateOverseer(OverseerTask.LeftDoor, out lDoorOverseer);
+                }
             }
             else if (side == Map.Direction.Right)
             {
                 RightDoorShut = !RightDoorShut;
+                if (RightDoorShut)
+                {
+                    CreateOverseer(OverseerTask.RightDoor, out rDoorOverseer);
+                }
             }
         }
     }

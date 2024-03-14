@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OverseerHolograms;
+﻿using OverseerHolograms;
 
 namespace FCAP
 {
@@ -14,17 +9,20 @@ namespace FCAP
         public static void Register()
         {
             Nightguard = new SlugcatStats.Name("Nightguard", false);
-            CamsHologram = new OverseerHologram.Message("FCAPCams", true);
+            CamsHolo = new OverseerHologram.Message("FCAPCams", true);
+            DoorHolo = new OverseerHologram.Message("FCAPDoor", true);
         }
 
         public static void Unregister()
         {
             Nightguard = null;
-            CamsHologram = null;
+            CamsHolo = null;
+            DoorHolo = null;
         }
 
         public static SlugcatStats.Name Nightguard;
 
-        public static OverseerHologram.Message CamsHologram;
+        public static OverseerHologram.Message CamsHolo;
+        public static OverseerHologram.Message DoorHolo;
     }
 }
