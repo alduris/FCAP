@@ -32,10 +32,10 @@ namespace FCAP.Graphics
 
             if (door != Door.None)
             {
-                Vector2 posTL = door == Door.Left ? new(213, 573) : new(731, 573);
-                Vector2 posTR = door == Door.Left ? new(227, 577) : new(744, 577);
-                Vector2 posBL = door == Door.Left ? new(213, 395) : new(731, 395);
-                Vector2 posBR = door == Door.Left ? new(227, 406) : new(744, 406);
+                Vector2 posTL = door == Door.Left ? new(223, 573) : new(744, 573);
+                Vector2 posTR = door == Door.Left ? new(237, 577) : new(731, 577);
+                Vector2 posBL = door == Door.Left ? new(223, 395) : new(744, 395);
+                Vector2 posBR = door == Door.Left ? new(237, 406) : new(731, 406);
 
                 midpoint = (posTL + posTR + posBL + posBR) / 4f;
 

@@ -40,8 +40,8 @@ namespace FCAP.Graphics
 
         public class DoorBarrierParts : HologramPart
         {
-            public const float GAP = 0.05f;
-            public const float DESIRED_HEIGHT = 20f;
+            public const float GAP = 0.4f;
+            public const float DESIRED_HEIGHT = 2f;
 
             public int[] flicker;
             public float[,] flickerAmt;
@@ -51,19 +51,20 @@ namespace FCAP.Graphics
             {
                 // Height is calculated from midpoint
                 float midpointLength = (Vector2.Distance(tl, tr) + Vector2.Distance(bl, br)) / 2f;
-                numBarriers = Mathf.RoundToInt(midpointLength * (1f - GAP) / (DESIRED_HEIGHT + midpointLength * GAP));
-                var barrierLength = (midpointLength - midpointLength * GAP * (numBarriers + 1)) / numBarriers;
-                var barrierLerpLen = barrierLength / (midpointLength * (1f - GAP));
+                numBarriers = Mathf.RoundToInt((midpointLength - GAP) / (DESIRED_HEIGHT + GAP));
+                var barrierLength = (midpointLength - GAP * (numBarriers + 1)) / numBarriers;
+                var barrierLerpLen = barrierLength / (midpointLength - GAP);
+                var gapLerpLen = GAP / midpointLength;
 
                 // Calculate lerp segment positions
-                var rangeTL = Vector2.Lerp(tl, tr, GAP);
-                var rangeTR = Vector2.Lerp(tr, tl, GAP);
-                var rangeBL = Vector2.Lerp(bl, br, GAP);
-                var rangeBR = Vector2.Lerp(br, bl, GAP);
+                var rangeTL = Vector2.Lerp(tl, tr, gapLerpLen);
+                var rangeTR = Vector2.Lerp(tr, tl, gapLerpLen);
+                var rangeBL = Vector2.Lerp(bl, br, gapLerpLen);
+                var rangeBR = Vector2.Lerp(br, bl, gapLerpLen);
 
                 // Account for top padding
-                rangeTL = Vector2.Lerp(rangeTL, rangeBL, GAP);
-                rangeTR = Vector2.Lerp(rangeTR, rangeBR, GAP);
+                rangeTL = Vector2.Lerp(rangeTL, rangeBL, gapLerpLen);
+                rangeTR = Vector2.Lerp(rangeTR, rangeBR, gapLerpLen);
 
                 for (int i = 0; i < numBarriers; i++)
                 {
@@ -119,6 +120,9 @@ namespace FCAP.Graphics
                 for (int i = 0; i < numBarriers; i++)
                 {
                     sLeaser.sprites[i * 4 + 0].alpha = 1 - Mathf.Lerp(flickerAmt[i, 1], flickerAmt[i, 0], timeStacker);
+                    sLeaser.sprites[i * 4 + 1].alpha = 1 - Mathf.Lerp(flickerAmt[i, 1], flickerAmt[i, 0], timeStacker);
+                    sLeaser.sprites[i * 4 + 2].alpha = 1 - Mathf.Lerp(flickerAmt[i, 1], flickerAmt[i, 0], timeStacker);
+                    sLeaser.sprites[i * 4 + 3].alpha = 1 - Mathf.Lerp(flickerAmt[i, 1], flickerAmt[i, 0], timeStacker);
                 }
             }
         }
