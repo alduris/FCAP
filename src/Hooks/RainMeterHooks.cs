@@ -43,7 +43,7 @@ namespace FCAP.Hooks
 
             // ANDs the variable that checks for RW Remix disable rain timer in safe regions with the inverse of whether or not we're playing as the nightguard.
             // By doing this, the variable will only be true for other scugs, not ours. That way, we ensure that despite the game taking place within Five Pebbles,
-            // the rain timer will still show so the player still can figure out if it's close to the end of their shift.
+            // the rain timer will still show so the player still can figure out if it's close to the end of their shift. It also means it's always visible.
 
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<RainMeter, bool>>(self => (self.hud.owner as Player).SlugCatClass != Constants.Nightguard);

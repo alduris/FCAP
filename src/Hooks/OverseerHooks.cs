@@ -14,20 +14,20 @@ namespace FCAP.Hooks
     {
         public static void Apply()
         {
-            On.OverseerAbstractAI.RoomAllowed += OverseerAbstractAI_RoomAllowed;
-            On.OverseerAbstractAI.PlayerGuideUpdate += OverseerAbstractAI_PlayerGuideUpdate;
+            On.OverseerAbstractAI.RoomAllowed += OverseerAllowedInRoom;
+            On.OverseerAbstractAI.PlayerGuideUpdate += OverseerStayWithPlayer;
             On.Overseer.Update += Overseer_Update;
-            On.Overseer.TryAddHologram += Overseer_TryAddHologram;
-            On.Room.AddObject += Room_AddObject;
+            On.Overseer.TryAddHologram += OverseerAddOurHolograms;
+            On.Room.AddObject += AddObjectNullPatch;
         }
 
-        private static bool OverseerAbstractAI_RoomAllowed(On.OverseerAbstractAI.orig_RoomAllowed orig, OverseerAbstractAI self, int room)
+        private static bool OverseerAllowedInRoom(On.OverseerAbstractAI.orig_RoomAllowed orig, OverseerAbstractAI self, int room)
         {
             // Overseer only allowed in SS_FCAP in nightguard
             return orig(self, room) && (!self.world.game.IsStorySession || self.world.game.StoryCharacter != Nightguard || self.world.GetAbstractRoom(room).name == "SS_FCAP");
         }
 
-        private static void OverseerAbstractAI_PlayerGuideUpdate(On.OverseerAbstractAI.orig_PlayerGuideUpdate orig, OverseerAbstractAI self, int time)
+        private static void OverseerStayWithPlayer(On.OverseerAbstractAI.orig_PlayerGuideUpdate orig, OverseerAbstractAI self, int time)
         {
             // Overseer want to stay with player unless power is out in which case they promptly die
             orig(self, time);
@@ -99,7 +99,7 @@ namespace FCAP.Hooks
             }
         }
 
-        private static void Overseer_TryAddHologram(On.Overseer.orig_TryAddHologram orig, Overseer self, OverseerHologram.Message message, Creature communicateWith, float importance)
+        private static void OverseerAddOurHolograms(On.Overseer.orig_TryAddHologram orig, Overseer self, OverseerHologram.Message message, Creature communicateWith, float importance)
         {
             orig(self, message, communicateWith, importance);
 
@@ -117,9 +117,9 @@ namespace FCAP.Hooks
             }
         }
 
-        private static void Room_AddObject(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
+        private static void AddObjectNullPatch(On.Room.orig_AddObject orig, Room self, UpdatableAndDeletable obj)
         {
-            // Fix for null holograms so I don't have to IL hook it in :leditoroverload:
+            // Fix for null holograms so I don't have to IL hook Overseer.TryAddHologram :leditoroverload:
             if (obj != null)
             {
                 orig(self, obj);
