@@ -18,6 +18,10 @@ namespace FCAP.Graphics
         public Door door;
         public GameController game;
         public Vector2 midpoint = Vector2.zero;
+        public PositionedSoundEmitter sound;
+
+        public DoorFramePart frame;
+        public DoorBarrierParts barriers;
 
         public DoorHologram(GameController game, Overseer overseer, Message message, Creature communicateWith, float importance) : base(overseer, message, communicateWith, importance)
         {
@@ -39,8 +43,10 @@ namespace FCAP.Graphics
 
                 midpoint = (posTL + posTR + posBL + posBR) / 4f;
 
-                parts.Add(new DoorFramePart(posTL - midpoint, posTR - midpoint, posBL - midpoint, posBR - midpoint, this, totalSprites));
-                parts.Add(new DoorBarrierParts(posTL - midpoint, posTR - midpoint, posBL - midpoint, posBR - midpoint, this, totalSprites));
+                frame = new DoorFramePart(posTL - midpoint, posTR - midpoint, posBL - midpoint, posBR - midpoint, this, totalSprites);
+                parts.Add(frame);
+                barriers = new DoorBarrierParts(posTL - midpoint, posTR - midpoint, posBL - midpoint, posBR - midpoint, this, totalSprites);
+                parts.Add(barriers);
             }
         }
 
@@ -62,6 +68,23 @@ namespace FCAP.Graphics
             if (door == Door.None)
             {
                 Destroy();
+            }
+
+            if (sound == null)
+            {
+                sound = new PositionedSoundEmitter(pos, 0f, 1f);
+                room.PlaySound(SoundID.Overseer_Image_LOOP, sound, true, 0f, 1f, false);
+                sound.requireActiveUpkeep = true;
+            }
+            else
+            {
+                sound.alive = true;
+                sound.pos = pos;
+                sound.volume = Mathf.Pow(fade, 0.25f);
+                if (sound.slatedForDeletetion && !sound.soundStillPlaying)
+                {
+                    sound = null;
+                }
             }
 
             stillRelevant = !game.OutOfPower;
