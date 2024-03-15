@@ -34,25 +34,23 @@ namespace FCAP
         public enum Location
         {
             NOWHERE,
-            ShowStage,         // cam 1a
-            DiningArea,        // cam 1b
-            PirateCove,        // cam 1c
-            PlayArea,          // cam 1d
-            PartyRoomA,        // cam 2a
-            PartyRoomB,        // cam 2b
-            PartyRoomC,        // cam 2c
-            PartyRoomD,        // cam 2d
-            MainEntrance,      // cam 3
-            Backstage,         // cam 4
-            Kitchen,           // cam 5
-            RestroomHallCam,   // cam 6
-            RestroomHallFar,   // ^ (for ai data only)
-            RestroomHallClose, // ^ (for ai data only)
-            Storage,           // cam 7
-            BackHall,          // cam 8
-            LeftDoor,          // left door
-            RightDoor,         // right door
-            You                // you
+            ShowStage,     // cam 1a
+            DiningArea,    // cam 1b
+            PirateCove,    // cam 1c
+            PlayArea,      // cam 1d
+            PartyRoomA,    // cam 2a
+            PartyRoomB,    // cam 2b
+            PartyRoomC,    // cam 2c
+            PartyRoomD,    // cam 2d
+            MainEntrance,  // cam 3
+            Backstage,     // cam 4
+            Kitchen,       // cam 5
+            RestroomHall,  // cam 6
+            Storage,       // cam 7
+            BackHall,      // cam 8
+            LeftDoor,      // left door
+            RightDoor,     // right door
+            You            // you
         }
 
         public struct Connection
@@ -127,7 +125,7 @@ namespace FCAP
                 new Connection
                 {
                     Up = Location.PartyRoomA,
-                    Down = Location.RestroomHallCam,
+                    Down = Location.RestroomHall,
                     Left = Location.NOWHERE,
                     Right = Location.PlayArea
                 }
@@ -183,7 +181,7 @@ namespace FCAP
                 }
             },
             {
-                Location.RestroomHallCam,
+                Location.RestroomHall,
                 new Connection
                 {
                     Up = Location.PartyRoomB,
@@ -198,7 +196,7 @@ namespace FCAP
                 {
                     Up = Location.PlayArea,
                     Down = Location.BackHall,
-                    Left = Location.RestroomHallCam,
+                    Left = Location.RestroomHall,
                     Right = Location.Kitchen
                 }
             },
@@ -208,7 +206,7 @@ namespace FCAP
                 {
                     Up = Location.Storage,
                     Down = Location.NOWHERE,
-                    Left = Location.RestroomHallCam,
+                    Left = Location.RestroomHall,
                     Right = Location.NOWHERE
                 }
             },
