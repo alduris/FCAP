@@ -94,15 +94,18 @@ namespace FCAP.Graphics
                 }
             }
 
-            int viewedIndex = GetIndex(game.CamViewing);
-            int selectedIndex = GetIndex(game.CamSelected);
-            var greenColor = Color.Lerp(new Color(0f, 1f, 0f), palette.fogColor, LERP_AMT);
+            if (game.InCams)
+            {
+                int viewedIndex = GetIndex(game.CamViewing);
+                int selectedIndex = GetIndex(game.CamSelected);
+                var greenColor = Color.Lerp(new Color(0f, 1f, 0f), palette.fogColor, LERP_AMT);
 
-            if (viewedIndex != selectedIndex)
-                sLeaser.sprites[viewedIndex].color = greenColor;
+                if (viewedIndex != selectedIndex)
+                    sLeaser.sprites[viewedIndex].color = greenColor;
 
-            var lerpSin = Mathf.Lerp(Mathf.Sin(sin * Mathf.Deg2Rad * 9f), Mathf.Sin((sin + 1) * Mathf.Deg2Rad * 9f), timeStacker);
-            sLeaser.sprites[selectedIndex].color = Color.Lerp(sLeaser.sprites[selectedIndex].color, greenColor, lerpSin);
+                var lerpSin = Mathf.Lerp(Mathf.Sin(sin * Mathf.Deg2Rad * 9f), Mathf.Sin((sin + 1) * Mathf.Deg2Rad * 9f), timeStacker);
+                sLeaser.sprites[selectedIndex].color = Color.Lerp(sLeaser.sprites[selectedIndex].color, greenColor, lerpSin);
+            }
         }
 
         public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
