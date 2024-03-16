@@ -29,17 +29,12 @@ namespace FCAP.Hooks
 
         private static void OverseerStayWithPlayer(On.OverseerAbstractAI.orig_PlayerGuideUpdate orig, OverseerAbstractAI self, int time)
         {
-            // Overseer want to stay with player unless power is out in which case they promptly die
+            // Overseer want to stay with player if game is running
             orig(self, time);
 
             if (GameController.Instance != null)
             {
-                if (GameController.Instance.OutOfPower)
-                {
-                    self.goToPlayer = false;
-                    self.parent.Die();
-                }
-                else
+                if (!GameController.Instance.OutOfPower)
                 {
                     self.goToPlayer = true;
                     self.playerGuideCounter = 1000;
@@ -52,26 +47,21 @@ namespace FCAP.Hooks
             orig(self, eu);
             if (GameController.Instance != null && CWTs.HasTask(self))
             {
+                // (self.abstractCreature.abstractAI as OverseerAbstractAI).goToPlayer = true;
                 var value = CWTs.GetTask(self);
-                bool destroy = false;
 
                 switch (value)
                 {
                     case Enums.OverseerTask.Cameras:
                         {
-                            destroy = !GameController.Instance.InCams;
-
                             if (self.hologram == null)
                             {
-                                self.TryAddHologram(MoreSlugcatsEnums.OverseerHologramMessage.Advertisement, null, float.MaxValue); // temporary
-                                //self.TryAddHologram(Constants.CamsHologram, null, float.MaxValue);
+                                self.TryAddHologram(CamsHolo, null, float.MaxValue);
                             }
                             break;
                         }
                     case Enums.OverseerTask.LeftDoor:
                         {
-                            destroy = !GameController.Instance.LeftDoorShut;
-
                             if (self.hologram == null)
                             {
                                 self.TryAddHologram(DoorHolo, null, float.MaxValue);
@@ -80,21 +70,12 @@ namespace FCAP.Hooks
                         }
                     case Enums.OverseerTask.RightDoor:
                         {
-                            destroy = !GameController.Instance.RightDoorShut;
-
                             if (self.hologram == null)
                             {
                                 self.TryAddHologram(DoorHolo, null, float.MaxValue);
                             }
                             break;
                         }
-                }
-
-                if (destroy)
-                {
-                    self.hologram?.Destroy();
-                    self.hologram = null;
-                    self.Die();
                 }
             }
         }

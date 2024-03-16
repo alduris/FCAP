@@ -104,12 +104,9 @@ namespace FCAP
             mapDisplay = null;
             powerDisplay.Destroy();
             powerDisplay = null;*/
-            camsOverseer.Die();
-            camsOverseer = null;
-            lDoorOverseer.Die();
-            lDoorOverseer = null;
-            rDoorOverseer.Die();
-            rDoorOverseer = null;
+            RemoveOverseer(ref lDoorOverseer, false);
+            RemoveOverseer(ref rDoorOverseer, false);
+            RemoveOverseer(ref camsOverseer, false);
         }
 
         private void CreateOverseer(OverseerTask task, out Overseer overseer)
@@ -120,6 +117,18 @@ namespace FCAP
             overseer = absCre.realizedCreature as Overseer;
 
             CWTs.SetOverseerTask(overseer, task);
+        }
+
+        private void RemoveOverseer(ref Overseer os, bool attribute)
+        {
+            if (os == null) return;
+
+            if (attribute)
+            {
+                os.SetKillTag(room.game.FirstAnyPlayer);
+            }
+            os.Die();
+            os = null;
         }
         
         public void ToggleCams()
@@ -134,7 +143,7 @@ namespace FCAP
             }
             else
             {
-                camsOverseer = null;
+                RemoveOverseer(ref camsOverseer, true);
             }
         }
         public void SwitchCamViewing()
@@ -172,6 +181,10 @@ namespace FCAP
                 {
                     CreateOverseer(OverseerTask.LeftDoor, out lDoorOverseer);
                 }
+                else
+                {
+                    RemoveOverseer(ref lDoorOverseer, true);
+                }
             }
             else if (side == Map.Direction.Right)
             {
@@ -179,6 +192,10 @@ namespace FCAP
                 if (RightDoorShut)
                 {
                     CreateOverseer(OverseerTask.RightDoor, out rDoorOverseer);
+                }
+                else
+                {
+                    RemoveOverseer(ref rDoorOverseer, true);
                 }
             }
         }
