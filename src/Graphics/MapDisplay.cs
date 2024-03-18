@@ -9,6 +9,7 @@ namespace FCAP.Graphics
         public GameController game;
 
         private int sin;
+        private bool UpdateVis = false;
 
         public MapDisplay(GameController game, Room room)
         {
@@ -20,6 +21,7 @@ namespace FCAP.Graphics
         public override void Update(bool eu)
         {
             base.Update(eu);
+            UpdateVis = true;
             sin++;
         }
 
@@ -86,11 +88,18 @@ namespace FCAP.Graphics
             const float LERP_AMT = 0.4f;
             foreach (var sprite in sLeaser.sprites)
             {
-                sprite.color = Color.Lerp(Color.white, palette.fogColor, LERP_AMT);
+                sprite.color = Color.Lerp(game.InCams ? Color.white : new Color(.8F, .8F, .8F), palette.fogColor, LERP_AMT);
 
-                if (game.OutOfPower)
+                if (UpdateVis)
                 {
-                    sprite.isVisible &= Random.value > 0.04f && (sprite != sLeaser.sprites[0]);
+                    if (game.OutOfPower)
+                    {
+                        sprite.isVisible &= Random.value > 0.04f && (sprite != sLeaser.sprites[0]);
+                    }
+                    else if (Random.value < 0.01f)
+                    {
+                        sprite.color = Color.Lerp(sprite.color, palette.blackColor, Random.Range(0.25f, 0.5f));
+                    }
                 }
             }
 
@@ -106,6 +115,8 @@ namespace FCAP.Graphics
                 var lerpSin = Mathf.Lerp(Mathf.Sin(sin * Mathf.Deg2Rad * 9f), Mathf.Sin((sin + 1) * Mathf.Deg2Rad * 9f), timeStacker);
                 sLeaser.sprites[selectedIndex].color = Color.Lerp(sLeaser.sprites[selectedIndex].color, greenColor, lerpSin);
             }
+
+            UpdateVis = false;
         }
 
         public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)

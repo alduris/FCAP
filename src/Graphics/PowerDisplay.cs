@@ -8,6 +8,8 @@ namespace FCAP.Graphics
     {
         public GameController game;
 
+        private bool UpdateVis;
+
         public PowerDisplay(GameController game, Room room)
         {
             this.game = game;
@@ -56,7 +58,7 @@ namespace FCAP.Graphics
             for (int i = 0; i < 5; i++)
             {
                 sLeaser.sprites[i].SetPosition(new Vector2(22f * i + 273f, 209f) - camPos);
-                if (!game.OutOfPower)
+                if (!game.OutOfPower && UpdateVis)
                     sLeaser.sprites[i].isVisible = i < game.PowerUsage && Random.value > 0.001f * 2 * game.PowerUsage;
             }
 
@@ -84,13 +86,15 @@ namespace FCAP.Graphics
             barWrapVerts[6] = new Vector2(212, 132) - camPos;
             barWrapVerts[7] = new Vector2(203, 124) - camPos;
 
-            if (game.OutOfPower)
+            if (game.OutOfPower && UpdateVis)
             {
                 for (int i = 0; i < sLeaser.sprites.Length; i++)
                 {
                     sLeaser.sprites[i].isVisible &= Random.value > 0.03f;
                 }
             }
+
+            UpdateVis = false;
         }
 
         public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
@@ -108,7 +112,7 @@ namespace FCAP.Graphics
             var brightness = Custom.LerpMap(game.Power, Constants.MaxPower, 0, 1f, 0.75f);
             var color = (float)game.Power / Constants.MaxPower > 0.2 ? new Color(brightness, brightness, brightness) : new Color(brightness, 0, 0);
             sLeaser.sprites[5].color = Color.Lerp(color, palette.fogColor, LERP_AMT);
-            if (Random.value < 0.001f * game.PowerUsage)
+            if (UpdateVis && Random.value < 0.001f * game.PowerUsage)
             {
                 sLeaser.sprites[5].color = Color.Lerp(sLeaser.sprites[5].color, palette.blackColor, Random.Range(0.25f, 0.5f));
             }

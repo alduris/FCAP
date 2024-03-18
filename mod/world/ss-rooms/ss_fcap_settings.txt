@@ -9,7 +9,7 @@ Grime: 0.07608695
 RandomItemDensity: 0
 RandomItemSpearChance: 0
 Palette: 27
-EffectColorA: 9
-EffectColorB: 21
+EffectColorA: 8
+EffectColorB: 0
 FadePalette: 33, 0
 RoomSpecificScriptActive: ON
