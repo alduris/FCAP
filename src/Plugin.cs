@@ -81,7 +81,7 @@ namespace FCAP
                     self.input[i] = self.input[i - 1];
                 }
 
-                var currInput = RWInput.PlayerInput(0, Custom.rainWorld);
+                var currInput = RWInput.PlayerInput(0);
                 var lastInput = CWTs.LastInput(self);
                 var controls = self.room.game.rainWorld.options.controls[0];
                 if (game.InCams)

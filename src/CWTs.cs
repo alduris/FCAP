@@ -13,10 +13,10 @@ namespace FCAP
         private static readonly ConditionalWeakTable<Player, MutableBox<Player.InputPackage>> lastInputCWT = new();
         private static readonly ConditionalWeakTable<Overseer, StrongBox<OverseerTask>> overseerCWT = new();
 
-        public static Player.InputPackage LastInput(Player player) => lastInputCWT.GetValue(player, _ => new(RWInput.PlayerInput(0, Custom.rainWorld))).Value;
+        public static Player.InputPackage LastInput(Player player) => lastInputCWT.GetValue(player, _ => new(RWInput.PlayerInput(0))).Value;
         public static void UpdateLastInput(Player player, Player.InputPackage input)
         {
-            lastInputCWT.GetValue(player, _ => new(RWInput.PlayerInput(0, Custom.rainWorld))).Value = input;
+            lastInputCWT.GetValue(player, _ => new(RWInput.PlayerInput(0))).Value = input;
         }
 
         public static void SetOverseerTask(Overseer overseer, OverseerTask behavior) => overseerCWT.Add(overseer, new(behavior));
