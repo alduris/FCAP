@@ -100,10 +100,6 @@ namespace FCAP
 
         public void RunOutOfPower()
         {
-            /*mapDisplay.Destroy();
-            mapDisplay = null;
-            powerDisplay.Destroy();
-            powerDisplay = null;*/
             RemoveOverseer(ref lDoorOverseer, false);
             RemoveOverseer(ref rDoorOverseer, false);
             RemoveOverseer(ref camsOverseer, false);

@@ -65,7 +65,7 @@ namespace FCAP
         {
             orig(room);
 
-            if (room.abstractRoom.name == "SS_FCAP")
+            if (room.abstractRoom.name == "SS_FCAP" && room.game.IsStorySession && room.game.StoryCharacter == Constants.Nightguard)
             {
                 room.AddObject(new GameController(room));
             }
@@ -111,12 +111,13 @@ namespace FCAP
                 else
                 {
                     // In not cams mode, player can move but cannot throw, pick up, or use map
-                    self.input[0] = new Player.InputPackage(controls.gamePad, controls.GetActivePreset(), currInput.x, currInput.y, currInput.jmp, false, false, false, currInput.crouchToggle);
+                    float x = self.bodyChunks[0].pos.x / self.room.PixelWidth;
+                    int inpX = (currInput.x < 0 && x < 0.3f) || (currInput.x > 0 && x > 0.7f) ? 0 : currInput.x;
+                    self.input[0] = new Player.InputPackage(controls.gamePad, controls.GetActivePreset(), inpX, currInput.y, currInput.jmp, false, false, false, currInput.crouchToggle);
 
                     // Toggle door or cams
                     if (currInput.pckp && !lastInput.pckp && !game.OutOfPower)
                     {
-                        float x = self.bodyChunks[0].pos.x / self.room.PixelWidth;
                         switch (x)
                         {
                             case < 0.45f:

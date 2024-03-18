@@ -96,7 +96,7 @@ namespace FCAP.Graphics
                     {
                         sprite.isVisible &= Random.value > 0.04f && (sprite != sLeaser.sprites[0]);
                     }
-                    else if (Random.value < 0.01f)
+                    else if (Random.value < 0.001f)
                     {
                         sprite.color = Color.Lerp(sprite.color, palette.blackColor, Random.Range(0.25f, 0.5f));
                     }

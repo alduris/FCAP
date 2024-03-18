@@ -8,13 +8,19 @@ namespace FCAP.Graphics
     {
         public GameController game;
 
-        private bool UpdateVis;
+        private bool UpdateVis = false;
 
         public PowerDisplay(GameController game, Room room)
         {
             this.game = game;
             this.room = room;
             room.AddObject(this);
+        }
+
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+            UpdateVis = true;
         }
 
         public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -58,8 +64,8 @@ namespace FCAP.Graphics
             for (int i = 0; i < 5; i++)
             {
                 sLeaser.sprites[i].SetPosition(new Vector2(22f * i + 273f, 209f) - camPos);
-                if (!game.OutOfPower && UpdateVis)
-                    sLeaser.sprites[i].isVisible = i < game.PowerUsage && Random.value > 0.001f * 2 * game.PowerUsage;
+                if (!game.OutOfPower)
+                    sLeaser.sprites[i].isVisible = i < game.PowerUsage && (Random.value > 0.001f * 2 * game.PowerUsage || !UpdateVis);
             }
 
             var barSize = 200f * game.Power / Constants.MaxPower;
