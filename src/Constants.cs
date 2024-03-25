@@ -11,6 +11,7 @@ namespace FCAP
             Nightguard = new SlugcatStats.Name("Nightguard", false);
             CamsHolo = new OverseerHologram.Message("FCAPCams", true);
             DoorHolo = new OverseerHologram.Message("FCAPDoor", true);
+            CamsImageID = new OverseerImage.ImageID("FCAPCamImage", true);
         }
 
         public static void Unregister()
@@ -24,5 +25,6 @@ namespace FCAP
 
         public static OverseerHologram.Message CamsHolo;
         public static OverseerHologram.Message DoorHolo;
+        public static OverseerImage.ImageID CamsImageID;
     }
 }

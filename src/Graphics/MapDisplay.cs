@@ -88,7 +88,7 @@ namespace FCAP.Graphics
             const float LERP_AMT = 0.4f;
             foreach (var sprite in sLeaser.sprites)
             {
-                sprite.color = Color.Lerp(game.InCams ? Color.white : new Color(.8F, .8F, .8F), palette.fogColor, LERP_AMT);
+                sprite.color = Color.Lerp(game.InCams ? Color.white : new Color(.8f, .8f, .8f), palette.fogColor, LERP_AMT);
 
                 if (UpdateVis)
                 {
@@ -112,7 +112,7 @@ namespace FCAP.Graphics
                 if (viewedIndex != selectedIndex)
                     sLeaser.sprites[viewedIndex].color = greenColor;
 
-                var lerpSin = Mathf.Lerp(Mathf.Sin(sin * Mathf.Deg2Rad * 9f), Mathf.Sin((sin + 1) * Mathf.Deg2Rad * 9f), timeStacker);
+                var lerpSin = Mathf.Sin(Mathf.Lerp(sin, sin + 1, timeStacker) * Mathf.Deg2Rad * 9f);
                 sLeaser.sprites[selectedIndex].color = Color.Lerp(sLeaser.sprites[selectedIndex].color, greenColor, lerpSin);
             }
 

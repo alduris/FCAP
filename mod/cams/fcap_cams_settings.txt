@@ -1,0 +1,10 @@
+Template: NONE
+CeilingDrips: 0
+Clouds: 0
+Grime: 0.06521739
+Palette: 21
+EffectColorA: 0
+EffectColorB: 8
+Effects: Desaturation-1-541-659, 
+FadePalette: 22, 0, 1, 0.75, 0, 0, 0.5, 0.5, 0.5, 0.5, 1, 0, 0, 0, 0, 0
+WetTerrain: OFF
