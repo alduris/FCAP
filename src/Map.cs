@@ -36,7 +36,7 @@ namespace FCAP
             NOWHERE,
             ShowStage,     // cam 1a
             DiningArea,    // cam 1b
-            PirateCove,    // cam 1c
+            SecondaryStage,    // cam 1c
             PlayArea,      // cam 1d
             PartyRoomA,    // cam 2a
             PartyRoomB,    // cam 2b
@@ -76,7 +76,7 @@ namespace FCAP
                 {
                     Up = Location.Backstage,
                     Down = Location.DiningArea,
-                    Left = Location.PirateCove,
+                    Left = Location.SecondaryStage,
                     Right = Location.PartyRoomC
                 }
             },
@@ -91,7 +91,7 @@ namespace FCAP
                 }
             },
             {
-                Location.PirateCove,
+                Location.SecondaryStage,
                 new Connection
                 {
                     Up = Location.NOWHERE,
@@ -104,7 +104,7 @@ namespace FCAP
                 Location.PlayArea,
                 new Connection
                 {
-                    Up = Location.PirateCove,
+                    Up = Location.SecondaryStage,
                     Down = Location.Storage,
                     Left = Location.PartyRoomB,
                     Right = Location.DiningArea
@@ -157,7 +157,7 @@ namespace FCAP
                     Up = Location.NOWHERE,
                     Down = Location.PlayArea,
                     Left = Location.PartyRoomA,
-                    Right = Location.PirateCove
+                    Right = Location.SecondaryStage
                 }
             },
             {

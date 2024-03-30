@@ -3,15 +3,15 @@ using static FCAP.Map;
 
 namespace FCAP.AI
 {
-    internal class SluggyAI : BaseAI
+    internal class NightcatAI : BaseAI
     {
-        private static int CamAdditionalWait = 700;
-        private static int[] NightDifficulties = [0, 0, 1, 2, 4, 6];
+        private static readonly int CamAdditionalWait = 700;
+        private static readonly int[] NightDifficulties = [0, 0, 1, 2, 4, 6];
 
         private bool WaitingForCamDown = false;
         private bool ForceMove = false;
 
-        public SluggyAI(int night) : base(Enums.Animatronic.Sluggy, Map.Location.ShowStage, NightDifficulties[night], 2235) { }
+        public NightcatAI(int night) : base(Enums.Animatronic.Nightcat, Location.SecondaryStage, NightDifficulties[night], 368) { }
 
         public override void Update()
         {
@@ -38,19 +38,13 @@ namespace FCAP.AI
 
         public override bool CanJumpscare()
         {
-            if (GameController.Instance.OutOfPower)
-            {
-                return false;
-            }
-            else
-            {
-                return location == Location.LeftDoor || location == Location.RightDoor;
-            }
+            // temp, add out of power stuff
+            return base.CanJumpscare();
         }
 
         public override Location TryMove()
         {
-            throw new NotImplementedException();
+            return location;
         }
     }
 }

@@ -40,6 +40,9 @@ namespace FCAP.Graphics
                     file = parent.CurrFileIndex;
                 }
                 sLeaser.sprites[firstSprite].element = Futile.atlasManager.GetElementWithName("FCAP_PROJ" + file);
+                var oldColor = sLeaser.sprites[firstSprite].color;
+                sLeaser.sprites[firstSprite].color = new Color(oldColor.r, oldColor.g, (parent.CurrImageIndex + 1) / 25f);
+
             }
         }
     }

@@ -37,7 +37,7 @@ namespace FCAP.Graphics
                 {
                     Map.Location.ShowStage => 0,
                     Map.Location.DiningArea => 1,
-                    Map.Location.PirateCove => 2,
+                    Map.Location.SecondaryStage => 2,
                     Map.Location.PlayArea => 3,
                     Map.Location.PartyRoomA => 4,
                     Map.Location.PartyRoomB => 5,

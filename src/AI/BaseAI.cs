@@ -1,14 +1,15 @@
-﻿using Random = UnityEngine.Random;
+﻿using static FCAP.Map;
+using Random = UnityEngine.Random;
 
 namespace FCAP.AI
 {
-    internal abstract class BaseAI(Enums.Animatronic me, Map.Location startLoc, int difficulty, int counter)
+    internal abstract class BaseAI(Enums.Animatronic me, Location startLoc, int difficulty, int counter)
     {
         protected int difficulty = difficulty;
         protected int maxCounter = counter;
         protected int counter = counter;
         public Enums.Animatronic animatronic = me;
-        public Map.Location location = startLoc;
+        public Location location = startLoc;
 
         public virtual void Update()
         {
@@ -32,8 +33,18 @@ namespace FCAP.AI
             return Random.Range(0, 20) < difficulty;
         }
 
-        public abstract Map.Location TryMove();
+        public abstract Location TryMove();
 
-        public abstract bool CanJumpscare();
+        public virtual bool CanJumpscare()
+        {
+            if (GameController.Instance.OutOfPower)
+            {
+                return false;
+            }
+            else
+            {
+                return location == Location.LeftDoor || location == Location.RightDoor;
+            }
+        }
     }
 }

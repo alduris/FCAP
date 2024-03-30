@@ -29,7 +29,7 @@ namespace FCAP.Graphics
         {
             Map.Location.ShowStage => 1,
             Map.Location.DiningArea => 2,
-            Map.Location.PirateCove => 3,
+            Map.Location.SecondaryStage => 3,
             Map.Location.PlayArea => 4,
             Map.Location.PartyRoomA => 5,
             Map.Location.PartyRoomB => 6,

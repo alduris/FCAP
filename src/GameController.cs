@@ -43,7 +43,12 @@ namespace FCAP
             Plugin.Logger.LogDebug("Activated :)");
             this.room = room;
             Instance = this;
-            AIs = [];
+            AIs = [
+                new SurvivorAI(0),
+                new MonkAI(0),
+                new HunterAI(0),
+                new NightcatAI(0)
+            ];
 
             mapDisplay = new MapDisplay(this, room);
             powerDisplay = new PowerDisplay(this, room);

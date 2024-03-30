@@ -9,10 +9,10 @@ namespace FCAP
 
         public enum Animatronic // todo: come up with more original characters than these?
         {
-            Sluggy,
-            Greenie,
-            Pinky,
-            Bluey,
+            Survivor,
+            Monk,
+            Hunter,
+            Nightcat,
             None
         }
 
