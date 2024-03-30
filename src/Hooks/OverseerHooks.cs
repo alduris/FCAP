@@ -79,11 +79,11 @@ namespace FCAP.Hooks
         {
             orig(self, message, communicateWith, importance);
 
-            if (self.hologram == null)
+            if (self.hologram == null && GameController.Instance != null)
             {
                 if (message == CamsHolo)
                 {
-                    //
+                    self.hologram = new CamHologram(GameController.Instance, self, message, null, float.MaxValue);
                 }
                 else if (message == DoorHolo)
                 {

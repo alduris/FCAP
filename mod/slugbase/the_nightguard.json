@@ -7,11 +7,11 @@
 		"custom_colors": [
 			{
 				"name": "Body",
-				"story": "17234f"
+				"story": "ffd1c2"
 			},
 			{
 				"name": "Eyes",
-				"story": "FFFFFF"
+				"story": "000000"
 			}
 		],
 		"start_room": "SS_FCAP",
