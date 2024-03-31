@@ -1,4 +1,5 @@
 ﻿using OverseerHolograms;
+using RWCustom;
 using UnityEngine;
 
 namespace FCAP.Graphics
@@ -10,6 +11,7 @@ namespace FCAP.Graphics
         {
             public CamHologram parent;
             private int file = -1;
+            private const float MaxPanOffset = 1f - Constants.CamsShaderThresh;
 
             public CamHoloImage(CamHologram hologram, int firstSprite, IOwnAHoloImage imageOwner) : base(hologram, firstSprite, imageOwner)
             {
@@ -39,10 +41,14 @@ namespace FCAP.Graphics
                 {
                     file = parent.CurrFileIndex;
                 }
-                sLeaser.sprites[firstSprite].element = Futile.atlasManager.GetElementWithName("FCAP_PROJ" + file);
-                var oldColor = sLeaser.sprites[firstSprite].color;
-                sLeaser.sprites[firstSprite].color = new Color(oldColor.r, oldColor.g, (parent.CurrImageIndex + 1) / 25f);
 
+                var image = sLeaser.sprites[firstSprite];
+                var oldColor = image.color;
+                image.shader = rCam.game.rainWorld.Shaders[Constants.CamShaderName];
+                image.element = Futile.atlasManager.GetElementWithName("FCAP_PROJ" + file);
+                image.color = new Color(oldColor.r, oldColor.g, (parent.CurrImageIndex + 1) / 25f);
+                image.scaleX = 0.2f * Mathf.Lerp(0.5f, 1f, useFade);
+                image.scaleY = 0.2f * Mathf.Lerp(0.5f, 1f, useFade);
             }
         }
     }

@@ -44,10 +44,10 @@ namespace FCAP
             this.room = room;
             Instance = this;
             AIs = [
-                new SurvivorAI(0),
-                new MonkAI(0),
+                new NightcatAI(0),
                 new HunterAI(0),
-                new NightcatAI(0)
+                new MonkAI(0),
+                new SurvivorAI(0)
             ];
 
             mapDisplay = new MapDisplay(this, room);

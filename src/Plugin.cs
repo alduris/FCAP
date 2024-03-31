@@ -163,6 +163,11 @@ namespace FCAP
         private void LoadResources(RainWorld rainWorld)
         {
             Constants.Register();
+
+            var bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assets/fcap", false));
+            rainWorld.Shaders.Add(Constants.CamShaderName, FShader.CreateShader(Constants.CamShaderName, bundle.LoadAsset<Shader>("assets/shaders/camholoimage.shader")));
+
+            Shader.SetGlobalFloat("_fcapThresh", Constants.CamsShaderThresh);
         }
     }
 }

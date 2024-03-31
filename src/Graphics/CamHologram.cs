@@ -12,7 +12,7 @@ namespace FCAP.Graphics
         public GameController game;
 
         public HoloImage image;
-        public Frame frame;
+        public CamHoloFrame frame;
 
         public CamHologram(GameController game, Overseer overseer, Message message, Creature communicateWith, float importance) : base(overseer, message, communicateWith, importance)
         {
@@ -20,7 +20,7 @@ namespace FCAP.Graphics
 
             image = new CamHoloImage(this, totalSprites, this);
             AddPart(image);
-            frame = new Frame(this, totalSprites);
+            frame = new CamHoloFrame(this, totalSprites);
             AddPart(frame);
         }
 
@@ -53,8 +53,15 @@ namespace FCAP.Graphics
                 };
 
                 // Binary operators my behated
-                int[] inRoom = game.AIs.Select((x, i) => x.location == game.CamViewing ? 1 << i : 0).ToArray();
-                return camnum << inRoom.Length + inRoom.Sum();
+                int bits = 0;
+                for (int i = 0; i < game.AIs.Length; i++)
+                {
+                    if (game.AIs[i].location == game.CamViewing)
+                    {
+                        bits |= 1 << i;
+                    }
+                }
+                return (camnum << game.AIs.Length) + bits;
             }
         }
 
