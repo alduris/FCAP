@@ -59,9 +59,9 @@ namespace FCAP.Graphics
                     Map.Location.MainEntrance => 8,
                     Map.Location.Backstage => 9,
                     Map.Location.Kitchen => 10,
-                    Map.Location.RestroomHall => 11,
+                    Map.Location.LeftHall => 11,
                     Map.Location.Storage => 12,
-                    Map.Location.BackHall => 13,
+                    Map.Location.RightHall => 13,
                     _ => throw new NotImplementedException(),
                 };
 

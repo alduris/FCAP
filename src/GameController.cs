@@ -12,7 +12,8 @@ namespace FCAP
         public int Power = Constants.MaxPower + 200; // 200 is a safety net so power doesn't go down for 5 seconds
         public int PowerUsage = 0;
 
-        public PowerStage OOPstage;
+        public int Hour = 0;
+        // public PowerStage OOPstage;
         public int OOPTimer = 0;
 
         public Map.Location CamViewing = Map.Location.ShowStage;
@@ -44,10 +45,10 @@ namespace FCAP
             this.room = room;
             Instance = this;
             AIs = [
-                new SurvivorAI(0),
-                new MonkAI(0),
-                new HunterAI(0),
-                new NightcatAI(0)
+                new SurvivorAI(this, 4),
+                new MonkAI(this, 4),
+                new HunterAI(this, 4),
+                new NightcatAI(this, 4)
             ];
 
             mapDisplay = new MapDisplay(this, room);
@@ -83,6 +84,14 @@ namespace FCAP
             else
             {
                 CamViewTimer = 0;
+            }
+
+            Hour = room.game.world.rainCycle.timer / (40 * 60); // 40 ticks per second, 60 seconds per hour (2 pips)
+
+            // Update AIs
+            for (int i = 0; i < AIs.Length; i++)
+            {
+                AIs[i].Update();
             }
 
             // Update jumpscare timer
@@ -153,8 +162,6 @@ namespace FCAP
             if (OutOfPower) return;
             CamViewing = CamSelected;
             CamViewTimer = 0;
-            var temp = camsOverseer.hologram as CamHologram;
-            Plugin.Logger.LogDebug(temp.CamPhotoNum + " (" + temp.CurrFileIndex + "," + temp.CurrImageIndex + ")");
         }
 
         public void SwitchCamSelecting(Map.Direction dir)

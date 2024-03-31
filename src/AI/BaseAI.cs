@@ -3,13 +3,14 @@ using Random = UnityEngine.Random;
 
 namespace FCAP.AI
 {
-    internal abstract class BaseAI(Enums.Animatronic me, Location startLoc, int difficulty, int counter)
+    internal abstract class BaseAI(GameController game, Enums.Animatronic me, Location startLoc, int difficulty, int counter)
     {
         protected int difficulty = difficulty;
         protected int maxCounter = counter;
         protected int counter = counter;
         public Enums.Animatronic animatronic = me;
         public Location location = startLoc;
+        public GameController game = game;
 
         public virtual void Update()
         {
@@ -19,21 +20,25 @@ namespace FCAP.AI
                 counter = maxCounter;
                 if (MoveCheck())
                 {
-                    if (location == Map.Location.You && CanJumpscare())
+                    if (CanJumpscare())
                     {
-                        GameController.Instance.CurrentJumpscare = animatronic;
+                        game.CurrentJumpscare = animatronic;
                     }
-                    location = TryMove();
+                    else
+                    {
+                        location = NextMove();
+                        game.FlickerCams();
+                    }
                 }
             }
         }
 
-        public bool MoveCheck()
+        public virtual bool MoveCheck()
         {
             return Random.Range(0, 20) < difficulty;
         }
 
-        public abstract Location TryMove();
+        public abstract Location NextMove();
 
         public virtual bool CanJumpscare()
         {
@@ -43,7 +48,8 @@ namespace FCAP.AI
             }
             else
             {
-                return location == Location.LeftDoor || location == Location.RightDoor;
+                return location == Location.You;
+                // return (location == Location.LeftDoor && !game.LeftDoorShut) || (location == Location.RightDoor && !game.RightDoorShut) || location == Location.You;
             }
         }
     }
