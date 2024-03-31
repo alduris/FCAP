@@ -1,4 +1,5 @@
-﻿using FCAP.AI;
+﻿using System;
+using FCAP.AI;
 using FCAP.Graphics;
 using UnityEngine;
 using static FCAP.Enums;
@@ -44,11 +45,12 @@ namespace FCAP
             Plugin.Logger.LogDebug("Activated :)");
             this.room = room;
             Instance = this;
+            int cycle = Math.Min(6, room.game.GetStorySession.saveState.cycleNumber);
             AIs = [
-                new SurvivorAI(this, 4),
-                new MonkAI(this, 4),
-                new HunterAI(this, 4),
-                new NightcatAI(this, 4)
+                new SurvivorAI(this, cycle),
+                new MonkAI(this, cycle),
+                new HunterAI(this, cycle),
+                new NightcatAI(this, cycle)
             ];
 
             mapDisplay = new MapDisplay(this, room);
