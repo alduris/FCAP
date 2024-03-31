@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using MoreSlugcats;
 using OverseerHolograms;
 using static OverseerHolograms.OverseerImage;
@@ -29,7 +27,7 @@ namespace FCAP.Graphics
             throw new NotImplementedException();
         }
 
-        private int CamPhotoNum
+        public int CamPhotoNum
         {
             get
             {

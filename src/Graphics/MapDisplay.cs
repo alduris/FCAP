@@ -112,7 +112,7 @@ namespace FCAP.Graphics
                 if (viewedIndex != selectedIndex)
                     sLeaser.sprites[viewedIndex].color = greenColor;
 
-                var lerpSin = Mathf.Sin(Mathf.Lerp(sin, sin + 1, timeStacker) * Mathf.Deg2Rad * 9f);
+                var lerpSin = Mathf.Sin(Mathf.Lerp(sin, sin + 1, timeStacker) * Mathf.Deg2Rad * 16f);
                 sLeaser.sprites[selectedIndex].color = Color.Lerp(sLeaser.sprites[selectedIndex].color, greenColor, lerpSin);
             }
 

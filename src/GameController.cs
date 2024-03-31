@@ -44,10 +44,10 @@ namespace FCAP
             this.room = room;
             Instance = this;
             AIs = [
-                new NightcatAI(0),
-                new HunterAI(0),
+                new SurvivorAI(0),
                 new MonkAI(0),
-                new SurvivorAI(0)
+                new HunterAI(0),
+                new NightcatAI(0)
             ];
 
             mapDisplay = new MapDisplay(this, room);
@@ -147,12 +147,16 @@ namespace FCAP
                 RemoveOverseer(ref camsOverseer, true);
             }
         }
+
         public void SwitchCamViewing()
         {
             if (OutOfPower) return;
             CamViewing = CamSelected;
             CamViewTimer = 0;
+            var temp = camsOverseer.hologram as CamHologram;
+            Plugin.Logger.LogDebug(temp.CamPhotoNum + " (" + temp.CurrFileIndex + "," + temp.CurrImageIndex + ")");
         }
+
         public void SwitchCamSelecting(Map.Direction dir)
         {
             if (OutOfPower) return;
