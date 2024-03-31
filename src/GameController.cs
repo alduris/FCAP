@@ -204,5 +204,10 @@ namespace FCAP
                 }
             }
         }
+
+        public void FlickerCams()
+        {
+            CamViewTimer = 0;
+        }
     }
 }

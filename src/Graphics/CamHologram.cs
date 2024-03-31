@@ -27,6 +27,21 @@ namespace FCAP.Graphics
             throw new NotImplementedException();
         }
 
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+            if (game.CamViewTimer <= 1)
+            {
+                lastFade = fade = 0f;
+            }
+        }
+
+        public override void Destroy()
+        {
+            if (lastFade == 0f && fade == 0f && game.CamViewTimer <= 1 && game.InCams) return;
+            base.Destroy();
+        }
+
         public int CamPhotoNum
         {
             get
