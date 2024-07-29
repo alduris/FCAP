@@ -1,4 +1,5 @@
-﻿using static FCAP.Map;
+﻿using UnityEngine;
+using static FCAP.Map;
 using Random = UnityEngine.Random;
 
 namespace FCAP.AI
@@ -27,6 +28,7 @@ namespace FCAP.AI
                     else
                     {
                         location = NextMove();
+                        Debug.Log(animatronic.ToString() + " moved to " + location.ToString());
                         game.FlickerCams();
                     }
                 }

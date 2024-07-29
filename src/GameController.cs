@@ -26,6 +26,8 @@ namespace FCAP
         public bool LeftDoorShut = false;
         public bool RightDoorLight = false;
         public bool RightDoorShut = false;
+        public int LeftDoorLightCounter = 0;
+        public int RightDoorLightCounter = 0;
 
         public Animatronic CurrentJumpscare = Animatronic.None;
         public int JumpscareTimer = 0;
@@ -77,6 +79,15 @@ namespace FCAP
                 RightDoorShut = false;
                 OOPTimer++;
             }
+            else
+            {
+                // Update lights
+                if (LeftDoorLightCounter > 0) LeftDoorLightCounter--;
+                if (RightDoorLightCounter > 0) RightDoorLightCounter--;
+
+                LeftDoorLight = LeftDoorLightCounter > 0;
+                RightDoorLight = RightDoorLightCounter > 0;
+            }
 
             // Update timer thing
             if (InCams)
@@ -123,7 +134,10 @@ namespace FCAP
 
         private void CreateOverseer(OverseerTask task, out Overseer overseer)
         {
-            var absCre = new AbstractCreature(room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, room.game.FirstAnyPlayer.pos, room.world.game.GetNewID());
+            var absCre = new AbstractCreature(room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Overseer), null, room.game.FirstAnyPlayer.pos, room.world.game.GetNewID())
+            {
+                saveCreature = false
+            };
             room.abstractRoom.AddEntity(absCre);
             absCre.RealizeInRoom();
             overseer = absCre.realizedCreature as Overseer;
@@ -140,6 +154,7 @@ namespace FCAP
                 os.SetKillTag(room.game.FirstAnyPlayer);
             }
             os.Die();
+            os.abstractCreature.Destroy();
             os = null;
         }
         
@@ -212,6 +227,11 @@ namespace FCAP
                     RemoveOverseer(ref rDoorOverseer, true);
                 }
             }
+        }
+
+        public void ToggleLight(Map.Direction side)
+        {
+            //
         }
 
         public void FlickerCams()

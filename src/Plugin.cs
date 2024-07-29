@@ -3,13 +3,11 @@ using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using BepInEx;
-using UnityEngine;
-using SlugBase.Features;
-using static SlugBase.Features.FeatureTypes;
-using RWCustom;
-using FCAP.Hooks;
 using BepInEx.Logging;
+using FCAP.Hooks;
 using MonoMod.RuntimeDetour;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -39,6 +37,7 @@ namespace FCAP
                 On.Player.checkInput += NightguardInputRevamp;
 
                 // Other stuff
+                GraphicsHooks.Apply();
                 OverseerHooks.Apply();
                 RainMeterHooks.Apply();
                 _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true), PowerOutDarkFader);
@@ -136,6 +135,12 @@ namespace FCAP
                                     break;
                                 }
                         }
+                    }
+
+                    // Lights if close
+                    if (x < 0.35f)
+                    {
+                        game.LeftDoorLightCounter = Random.Range(5, 20);
                     }
                 }
                 CWTs.UpdateLastInput(self, currInput);
