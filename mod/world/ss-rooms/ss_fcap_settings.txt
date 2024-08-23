@@ -5,11 +5,13 @@ WaveLength: 0.9723197
 WaveAmplitude: 2.58159E-05
 SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
-Grime: 0.07608695
+Clouds: 0.4347826
+Grime: 0.09782609
 RandomItemDensity: 0
 RandomItemSpearChance: 0
-Palette: 27
+Palette: 396
 EffectColorA: 8
 EffectColorB: 0
-FadePalette: 33, 0
-RoomSpecificScriptActive: ON
+AmbientSounds: OMNI><so_ind-fridge.ogg><50.85065><505.133><0.4673913><0.7652174, OMNI><so_ind-boiler.ogg><49.07898><422.6463><0.4456522><0.55, OMNI><so_ind-humm.ogg><50.90424><343.6756><0.3913043><1, OMNI><am_win-subwnd.ogg><53.15515><264.6238><0.75><1, OMNI><om.wav><55.8504><189.673><0.7608696><0.6478261, OMNI><weird deep hole.wav><60.61926><116.3487><0.4782609><1, DIR><so_ind-flourlight.ogg><494.3148><534.0754><0.4891304><0.9413043><0.8487642><0, 
+FadePalette: 49, 0.4456522
+MorePalette0: 8, 0.173913

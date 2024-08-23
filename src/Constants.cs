@@ -10,17 +10,25 @@ namespace FCAP
 
         public static void Register()
         {
-            Nightguard = new SlugcatStats.Name("Nightguard", false);
-            CamsHolo = new OverseerHologram.Message("FCAPCams", true);
-            DoorHolo = new OverseerHologram.Message("FCAPDoor", true);
-            CamsImageID = new OverseerImage.ImageID("FCAPCamImage", true);
+            Nightguard ??= new SlugcatStats.Name("Nightguard", false);
+            CamsHolo ??= new OverseerHologram.Message("FCAPCams", true);
+            DoorHolo ??= new OverseerHologram.Message("FCAPDoor", true);
+            CamsImageID ??= new OverseerImage.ImageID("FCAPCamImage", true);
+            SunblockType ??= new PlacedObject.Type("FCAPSunblock", true);
         }
 
         public static void Unregister()
         {
-            Nightguard = null;
+            Nightguard = null; // we didn't register this so we don't get to unregister it
+
+            CamsHolo?.Unregister();
             CamsHolo = null;
+            DoorHolo?.Unregister();
             DoorHolo = null;
+            CamsImageID?.Unregister();
+            CamsImageID = null;
+            SunblockType?.Unregister();
+            SunblockType = null;
         }
 
         public static SlugcatStats.Name Nightguard;
@@ -28,5 +36,7 @@ namespace FCAP
         public static OverseerHologram.Message CamsHolo;
         public static OverseerHologram.Message DoorHolo;
         public static OverseerImage.ImageID CamsImageID;
+
+        public static PlacedObject.Type SunblockType;
     }
 }
