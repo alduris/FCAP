@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FCAP.AI;
 using FCAP.Graphics;
 using UnityEngine;
@@ -88,6 +89,13 @@ namespace FCAP
                 LeftDoorLight = LeftDoorLightCounter > 0;
                 RightDoorLight = RightDoorLightCounter > 0;
             }
+
+            // Update the actual lights
+            var sunblockers = room.updateList.Where(x => x is Sunblock).Cast<Sunblock>().ToList();
+            Sunblock leftBlocker = sunblockers.FirstOrDefault(x => x.ID == 0);
+            Sunblock rightBlocker = sunblockers.FirstOrDefault(x => x.ID == 1);
+            if (leftBlocker != null) leftBlocker.visible = !LeftDoorLight;
+            if (rightBlocker != null) rightBlocker.visible = !RightDoorLight;
 
             // Update timer thing
             if (InCams)

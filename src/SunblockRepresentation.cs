@@ -6,13 +6,13 @@ namespace FCAP
 {
     public class SunblockRepresentation : QuadObjectRepresentation
     {
-        SunblockControlPanel controlPanel;
-        int lineSprite;
-        Sunblock obj;
+        private readonly SunblockControlPanel controlPanel;
+        private readonly int lineSprite;
+        private Sunblock obj;
 
-        public SunblockRepresentation(DevUI owner, string IDstring, DevUINode parentNode, PlacedObject pObj) : base(owner, IDstring, parentNode, pObj, "FCAPSunblocker")
+        public SunblockRepresentation(DevUI owner, string IDstring, DevUINode parentNode, PlacedObject pObj) : base(owner, IDstring, parentNode, pObj, Constants.SunblockType.ToString())
         {
-            controlPanel = new SunblockControlPanel(owner, IDstring, this, new Vector2(100f, 0f));
+            controlPanel = new SunblockControlPanel(owner, IDstring, this, new Vector2(0f, 100f));
             subNodes.Add(controlPanel);
             controlPanel.pos = (pObj.data as Sunblock.SunblockData).panelPos;
             
@@ -39,27 +39,22 @@ namespace FCAP
 
         public class SunblockControlPanel : Panel
         {
-            //
             public SunblockControlPanel(DevUI owner, string IDstring, DevUINode parentNode, Vector2 pos) : base(owner, IDstring, parentNode, pos, new Vector2(250f, 25f), "FCAP Sunblock")
             {
                 subNodes.Add(new IDControl(owner, "ID", this, new Vector2(5f, 5f)));
             }
 
-            public class IDControl : IntegerControl
+            public class IDControl(DevUI owner, string IDstring, DevUINode parentNode, Vector2 pos) : IntegerControl(owner, IDstring, parentNode, pos, "ID")
             {
-                public IDControl(DevUI owner, string IDstring, DevUINode parentNode, Vector2 pos) : base(owner, IDstring, parentNode, pos, "ID")
-                {
-                }
-
                 public override void Refresh()
                 {
-                    NumberLabelText = ((parentNode as SunblockRepresentation).pObj.data as Sunblock.SunblockData).ID.ToString();
+                    NumberLabelText = ((parentNode.parentNode as SunblockRepresentation).pObj.data as Sunblock.SunblockData).ID.ToString();
                     base.Refresh();
                 }
 
                 public override void Increment(int change)
                 {
-                    var data = ((parentNode as SunblockRepresentation).pObj.data as Sunblock.SunblockData);
+                    var data = ((parentNode.parentNode as SunblockRepresentation).pObj.data as Sunblock.SunblockData);
                     data.ID += change;
                     base.Increment(change);
                     Refresh();

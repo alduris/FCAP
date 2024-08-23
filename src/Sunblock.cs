@@ -6,11 +6,11 @@ namespace FCAP
 {
     public class Sunblock : UpdatableAndDeletable, IDrawable
     {
-        public Vector2[] quad;
+        private readonly Vector2[] quad;
         public PlacedObject placedObject;
-        public bool meshDirty = true;
 
-        public int ID => (placedObject.data as SunblockRepresentation.SunblockData).ID;
+        public int ID => (placedObject.data as SunblockData).ID;
+        public bool visible = true;
 
         public Sunblock(PlacedObject placedObject)
         {
@@ -57,9 +57,10 @@ namespace FCAP
             {
                 mesh.MoveVertice(i, quad[i] - camPos);
             }
+            mesh.isVisible = visible;
         }
 
-        public class SunblockData(PlacedObject owner) : PlacedObject.Data(owner)
+        public class SunblockData(PlacedObject owner) : PlacedObject.QuadObjectData(owner)
         {
             public Vector2 panelPos;
             public int ID;
