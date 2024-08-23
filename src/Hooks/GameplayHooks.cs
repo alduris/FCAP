@@ -69,33 +69,45 @@ namespace FCAP.Hooks
                     int inpX = (currInput.x < 0 && x < 0.3f) || (currInput.x > 0 && x > 0.7f) ? 0 : currInput.x;
                     self.input[0] = new Player.InputPackage(controls.gamePad, controls.GetActivePreset(), inpX, currInput.y, currInput.jmp, false, false, false, currInput.crouchToggle);
 
-                    // Toggle door or cams
-                    if (currInput.pckp && !lastInput.pckp && !game.OutOfPower)
+                    // Controls
+                    if (!game.OutOfPower)
                     {
-                        switch (x)
+                        if (currInput.pckp)
                         {
-                            case < 0.45f:
-                                {
-                                    game.ToggleDoor(Map.Direction.Left);
-                                    break;
-                                }
-                            case < 0.55f:
-                                {
-                                    game.ToggleCams();
-                                    break;
-                                }
-                            default:
-                                {
-                                    game.ToggleDoor(Map.Direction.Right);
-                                    break;
-                                }
+                            switch (x)
+                            {
+                                case < 0.45f:
+                                    {
+                                        if (game.LeftDoorLightCounter <= 0)
+                                            game.LeftDoorLightCounter = Random.Range(5, 20);
+                                        break;
+                                    }
+                                case < 0.55f:
+                                    {
+                                        if (!lastInput.pckp)
+                                            game.ToggleCams();
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        if (game.RightDoorLightCounter <= 0)
+                                            game.RightDoorLightCounter = Random.Range(5, 20);
+                                        break;
+                                    }
+                            }
                         }
-                    }
 
-                    // Lights if close
-                    if (x < 0.35f)
-                    {
-                        game.LeftDoorLightCounter = Random.Range(5, 20);
+                        if (currInput.thrw && !lastInput.thrw)
+                        {
+                            if (x < 0.45f)
+                            {
+                                game.ToggleDoor(Map.Direction.Left);
+                            }
+                            else if (x > 0.55f)
+                            {
+                                game.ToggleDoor(Map.Direction.Right);
+                            }
+                        }
                     }
                 }
                 CWTs.UpdateLastInput(self, currInput);
