@@ -61,6 +61,14 @@ namespace FCAP.Graphics
             return Mathf.Pow(10f, Custom.Dist(midpoint, pos));
         }
 
+        public override float InfluenceHoverScoreOfTile(IntVector2 testTile, float f)
+        {
+            float num = 0;
+            if (door == Door.Left && testTile.x * 20f < midpoint.x) num -= 200 * Mathf.Abs(testTile.x * 20f - midpoint.x);
+            if (door == Door.Right && testTile.x * 20f > midpoint.x) num -= 200 * Mathf.Abs(testTile.x * 20f - midpoint.x);
+            return 10f * Mathf.Abs(testTile.y * 20f - midpoint.y) + 2f * Mathf.Abs(testTile.x * 20f - midpoint.x) + num;
+        }
+
         public override void Update(bool eu)
         {
             base.Update(eu);

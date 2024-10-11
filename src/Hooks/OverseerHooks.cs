@@ -1,4 +1,5 @@
 ﻿using FCAP.Graphics;
+using MonoMod.Cil;
 using OverseerHolograms;
 using UnityEngine;
 using static FCAP.Constants;
@@ -9,11 +10,19 @@ namespace FCAP.Hooks
     {
         public static void Apply()
         {
+            IL.OverseerAI.Update += OverseerAI_Update;
             On.OverseerAbstractAI.RoomAllowed += OverseerAllowedInRoom;
             On.OverseerAbstractAI.PlayerGuideUpdate += OverseerStayWithPlayer;
             On.Overseer.Update += Overseer_Update;
             On.Overseer.TryAddHologram += OverseerAddOurHolograms;
+            On.OverseerAI.HoverScoreOfTile += OverseerAI_HoverScoreOfTile;
             On.Room.AddObject += AddObjectNullPatch;
+        }
+
+        private static void OverseerAI_Update(ILContext il)
+        {
+            // TODO: kill the evil checks for creatures
+            var c = new ILCursor(il);
         }
 
         private static bool OverseerAllowedInRoom(On.OverseerAbstractAI.orig_RoomAllowed orig, OverseerAbstractAI self, int room)
@@ -90,6 +99,31 @@ namespace FCAP.Hooks
                     self.hologram = new DoorHologram(GameController.Instance, self, message, null, float.MaxValue);
                 }
                 self.room.AddObject(self.hologram);
+            }
+        }
+
+        private static float OverseerAI_HoverScoreOfTile(On.OverseerAI.orig_HoverScoreOfTile orig, OverseerAI self, RWCustom.IntVector2 testTile)
+        {
+            // return orig(self, testTile);
+            if (GameController.Instance != null && CWTs.HasTask(self.overseer) && CWTs.GetTask(self.overseer) != Enums.OverseerTask.Cameras && self.overseer.hologram != null)
+            {
+                if (testTile.x < 0 || testTile.y < 0 || testTile.x >= self.overseer.room.TileWidth || testTile.y >= self.overseer.room.TileHeight)
+                {
+                    return float.MaxValue;
+                }
+                if (self.overseer.room.GetTile(testTile).Solid)
+                {
+                    return float.MaxValue;
+                }
+                if (self.overseer.room.aimap.getTerrainProximity(testTile) > (int)(6f * self.overseer.size))
+                {
+                    return float.MaxValue;
+                }
+                return self.overseer.hologram.InfluenceHoverScoreOfTile(testTile, 0f);
+            }
+            else
+            {
+                return orig(self, testTile);
             }
         }
 
