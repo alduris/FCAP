@@ -9,7 +9,7 @@ Clouds: 0
 Grime: 0.09782609
 RandomItemDensity: 0
 RandomItemSpearChance: 0
-Palette: 396
+Palette: 87
 EffectColorA: 8
 EffectColorB: 0
 PlacedObjects: FCAPSunblock><58.73419><393.4494><1~220~155~215~156~-13~-85~-165~0, FCAPSunblock><729.5536><386.288><0~254~183~242~177~-12~29~-142~1, 

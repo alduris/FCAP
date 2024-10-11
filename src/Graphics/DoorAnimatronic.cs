@@ -11,6 +11,7 @@ namespace FCAP.Graphics
         public Enums.Animatronic anim;
         public Player player = null;
         public bool left;
+        public Vector2 stayPos;
 
         public DoorAnimatronic(Room room, GameController controller, Enums.Animatronic animatronic, bool left)
         {
@@ -26,7 +27,8 @@ namespace FCAP.Graphics
             absCre.RealizeInRoom();
 
             player = absCre.realizedCreature as Player;
-            player.SuperHardSetPosition(new Vector2(left ? 190 : 780, 400));
+            stayPos = new Vector2(left ? 190 : 780, 400);
+            player.SuperHardSetPosition(stayPos);
             player.controller = new Player.NullController();
 
             animatronicShowCWT.Add(player, this);
@@ -35,19 +37,29 @@ namespace FCAP.Graphics
         public override void Update(bool eu)
         {
             base.Update(eu);
-            player.SuperHardSetPosition(new Vector2(left ? 190 : 780, 400));
+            if (player == null) return;
+
+            player.standing = true;
         }
 
         public override void Destroy()
         {
             base.Destroy();
-            if (player != null)
+            if (player == null) return;
+
+            // player.Die();
+            player.Destroy();
+            player.abstractCreature.Destroy();
+            animatronicShowCWT.Remove(player);
+            player = null;
+
+            if (left)
             {
-                player.Die();
-                player.Destroy();
-                player.abstractCreature.Destroy();
-                animatronicShowCWT.Remove(player);
-                player = null;
+                game.LeftDoorLightCounter = 0;
+            }
+            else
+            {
+                game.RightDoorLightCounter = 0;
             }
         }
     }

@@ -36,7 +36,7 @@ namespace FCAP
             sLeaser.sprites = new FSprite[1];
             sLeaser.sprites[0] = new TriangleMesh("Futile_White", [new(0, 1, 2), new(0, 2, 3)], false)
             {
-                color = new Color(0.003921569f, 0f, 0f)
+                color = new Color(1f / 255f, 0f, 0f)
             };
             AddToContainer(sLeaser, rCam, null);
         }

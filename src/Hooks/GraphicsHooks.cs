@@ -42,6 +42,7 @@ namespace FCAP.Hooks
                     if (i == 9 && controller.anim == Enums.Animatronic.Nightcat)
                     {
                         sprite.isVisible = true;
+                        sprite.color = Color.white;
                     }
                 }
             }

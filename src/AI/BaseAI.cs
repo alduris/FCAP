@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using FCAP.Graphics;
+using UnityEngine;
 using static FCAP.Map;
 using Random = UnityEngine.Random;
 
@@ -12,6 +13,7 @@ namespace FCAP.AI
         public Enums.Animatronic animatronic = me;
         public Location location = startLoc;
         public GameController game = game;
+        public DoorAnimatronic doorRepresentation = null;
 
         public virtual void Update()
         {
@@ -28,8 +30,19 @@ namespace FCAP.AI
                     else
                     {
                         location = NextMove();
-                        Debug.Log(animatronic.ToString() + " moved to " + location.ToString());
+                        Plugin.Logger.LogInfo(animatronic.ToString() + " moved to " + location.ToString());
                         game.FlickerCams();
+                    }
+
+                    if (location == Location.LeftDoor || location == Location.RightDoor)
+                    {
+                        doorRepresentation ??= new DoorAnimatronic(game.room, game, animatronic, location == Location.LeftDoor);
+                        game.room.AddObject(doorRepresentation);
+                    }
+                    else
+                    {
+                        doorRepresentation?.Destroy();
+                        doorRepresentation = null;
                     }
                 }
             }

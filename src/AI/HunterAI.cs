@@ -8,7 +8,7 @@ namespace FCAP.AI
     /// Once at a door, it has a much smaller chance to go back to stage, instead opting to stay at the door.
     /// In cameras, stays to the sides/partially hidden. Harder to see, though not as hard as nightcat.
     /// </summary>
-    internal class HunterAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Survivor, Map.Location.ShowStage, NightDifficulties[night], 183)
+    internal class HunterAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Hunter, Map.Location.ShowStage, NightDifficulties[night], 183)
     {
         private static readonly int[] NightDifficulties = [0, 0, 2, 2, 3, 6];
         private const float ReturnHomeChance = 1f / 3f;

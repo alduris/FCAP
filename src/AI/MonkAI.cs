@@ -7,7 +7,7 @@ namespace FCAP.AI
     /// <summary>
     /// Equivalent of Chica. Sticks to right side of map. Shows up close and personal in cameras.
     /// </summary>
-    internal class MonkAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Survivor, Map.Location.ShowStage, NightDifficulties[night], 213)
+    internal class MonkAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Monk, Map.Location.ShowStage, NightDifficulties[night], 213)
     {
         private static readonly int[] NightDifficulties = [0, 1, 4, 2, 5, 8, 12];
         private static readonly Dictionary<Location, Location[]> MoveMap = new()
