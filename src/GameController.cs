@@ -32,6 +32,7 @@ namespace FCAP
 
         public Animatronic CurrentJumpscare = Animatronic.None;
         public int JumpscareTimer = 0;
+        public Jumpscare jumpscareObj = null;
 
         public Overseer camsOverseer = null;
         public Overseer lDoorOverseer = null;
@@ -118,13 +119,24 @@ namespace FCAP
             // Update jumpscare timer
             if (CurrentJumpscare != Animatronic.None)
             {
-                JumpscareTimer++;
-                if (JumpscareTimer > 30)
+                if (jumpscareObj == null)
                 {
-                    foreach (var crit in room.game.Players)
-                    {
-                        crit.realizedCreature?.Die();
-                    }
+                    jumpscareObj = new Jumpscare(CurrentJumpscare);
+                    room.AddObject(jumpscareObj);
+                }
+                room.game.manager.musicPlayer?.FadeOutAllSongs(1f);
+
+                foreach (var crit in room.game.Players)
+                {
+                    crit.realizedCreature?.Die();
+                }
+
+                JumpscareTimer++;
+                if (JumpscareTimer > 30 && room.game.manager.upcomingProcess == null)
+                {
+#error Haven't implemented game over yet
+                    room.game.GetStorySession.saveState.SessionEnded(room.game, false, false);
+                    room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen); // TODO:
                 }
             }
         }

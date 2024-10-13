@@ -20,8 +20,8 @@
 		"cycle_length_max": 6,
 		"karma": 0,
 		"karma_cap": 6,
-		"food_min": 1,
-		"food_max": 1,
+		"food_min": 0,
+		"food_max": 0,
 		"world_state": [ "Inv", "Red" ],
 		"expedition_enabled": false
 	}

@@ -1,10 +1,8 @@
 ﻿using System;
-using RWCustom;
-using UnityEngine;
 
 namespace FCAP
 {
-    internal static class Enums
+    public static class Enums
     {
 
         public enum Animatronic // todo: come up with more original characters than these?

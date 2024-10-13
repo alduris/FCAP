@@ -12,7 +12,16 @@ namespace FCAP.Hooks
         {
             On.RoomSpecificScript.AddRoomSpecificScript += AddGameScript;
             On.Player.checkInput += NightguardInputRevamp;
+            On.RainWorldGame.ShowPauseMenu += NoPauseWhenGameOver;
             _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true), PowerOutDarkFader);
+        }
+
+        private static void NoPauseWhenGameOver(On.RainWorldGame.orig_ShowPauseMenu orig, RainWorldGame self)
+        {
+            if (GameController.Instance == null || !GameController.Instance.OutOfPower)
+            {
+                orig(self);
+            }
         }
 
         private static void AddGameScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)

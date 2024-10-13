@@ -23,6 +23,11 @@ namespace FCAP.Hooks
                     return p == self.owner.owner.room?.game?.FirstAnyPlayer?.realizedCreature ? float.MaxValue : 9999f;
                 }
             }
+            else if (self.owner.player is Player p && p.SlugCatClass == Constants.Nightguard && obj is OverseerCarcass)
+            {
+                // Ignore the accumulated overseer eyes
+                return 0f;
+            }
             return val;
         }
 
