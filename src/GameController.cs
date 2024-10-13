@@ -134,9 +134,8 @@ namespace FCAP
                 JumpscareTimer++;
                 if (JumpscareTimer > 30 && room.game.manager.upcomingProcess == null)
                 {
-#error Haven't implemented game over yet
                     room.game.GetStorySession.saveState.SessionEnded(room.game, false, false);
-                    room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen); // TODO:
+                    room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen, 0f); // TODO:
                 }
             }
         }

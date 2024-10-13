@@ -16,8 +16,8 @@ namespace FCAP
             CamsImageID ??= new OverseerImage.ImageID("FCAPCamImage", true);
             SunblockType ??= new PlacedObject.Type("FCAPSunblock", true);
             GameOverScreen ??= new ProcessManager.ProcessID("FCAPGameOver", true);
-            NightOver ??= new ProcessManager.ProcessID("FCAPNightOver", true);
-            WeekOver ??= new ProcessManager.ProcessID("FCAPWeekOver", true);
+            NightOverScreen ??= new ProcessManager.ProcessID("FCAPNightOver", true);
+            WeekOverScreen ??= new ProcessManager.ProcessID("FCAPWeekOver", true);
         }
 
         public static void Unregister()
@@ -34,10 +34,10 @@ namespace FCAP
             SunblockType = null;
             GameOverScreen?.Unregister();
             GameOverScreen = null;
-            NightOver?.Unregister();
-            NightOver = null;
-            WeekOver?.Unregister();
-            WeekOver = null;
+            NightOverScreen?.Unregister();
+            NightOverScreen = null;
+            WeekOverScreen?.Unregister();
+            WeekOverScreen = null;
         }
 
         public static SlugcatStats.Name Nightguard;
@@ -49,7 +49,7 @@ namespace FCAP
         public static PlacedObject.Type SunblockType;
 
         public static ProcessManager.ProcessID GameOverScreen;
-        public static ProcessManager.ProcessID NightOver;
-        public static ProcessManager.ProcessID WeekOver;
+        public static ProcessManager.ProcessID NightOverScreen;
+        public static ProcessManager.ProcessID WeekOverScreen;
     }
 }
