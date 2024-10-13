@@ -48,8 +48,8 @@ namespace FCAP
 
         public static PlacedObject.Type SunblockType;
 
-        public static ProcessManager.ProcessID GameOverScreen;
-        public static ProcessManager.ProcessID NightOverScreen;
-        public static ProcessManager.ProcessID WeekOverScreen;
+        public static ProcessManager.ProcessID GameOverScreen;   // you died screen
+        public static ProcessManager.ProcessID NightOverScreen;  // equivalent of the 6am clock in fnaf games
+        public static ProcessManager.ProcessID WeekOverScreen;   // equivalent of the paycheck in fnaf games
     }
 }
