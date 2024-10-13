@@ -121,8 +121,10 @@ namespace FCAP
                 JumpscareTimer++;
                 if (JumpscareTimer > 30)
                 {
-                    // die
-                    room.game.ShowPauseMenu(); // temporary thing lol
+                    foreach (var crit in room.game.Players)
+                    {
+                        crit.realizedCreature?.Die();
+                    }
                 }
             }
         }
@@ -199,7 +201,7 @@ namespace FCAP
                 Map.Direction.Down => cons.Down,
                 Map.Direction.Left => cons.Left,
                 Map.Direction.Right => cons.Right,
-                _ => throw new System.NotImplementedException()
+                _ => throw new NotImplementedException()
             };
 
             if (loc != Map.Location.NOWHERE)

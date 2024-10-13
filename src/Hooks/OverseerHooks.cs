@@ -1,4 +1,5 @@
 ﻿using FCAP.Graphics;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using OverseerHolograms;
 using UnityEngine;
@@ -21,8 +22,33 @@ namespace FCAP.Hooks
 
         private static void OverseerAI_Update(ILContext il)
         {
-            // TODO: kill the evil checks for creatures
             var c = new ILCursor(il);
+
+            // Part 1: when watching or projecting as a FCAP overseer, do not care about other creatures in the room.
+
+            // Go to the relevant position.
+            c.GotoNext(x => x.MatchCallOrCallvirt(typeof(OverseerAI).GetMethod(nameof(OverseerAI.UpdateTempHoverPosition))));
+            c.GotoNext(MoveType.After, x => x.MatchCallOrCallvirt(typeof(AbstractCreature).GetProperty(nameof(AbstractCreature.realizedCreature)).GetGetMethod()));
+            Plugin.Logger.LogDebug(c);
+
+            // Then modify the if-statement to (abstractCreature != null && !CWTs.HasTask(this.overseer)) using weird logic
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate((AbstractCreature old, OverseerAI self) => CWTs.HasTask(self.overseer) ? null : old);
+
+
+            // Part 2: when sitting in a wall as an FCAP overseer, you are allowed to come out of the wall if there is a creature nearby.
+
+            // Find the relevant position.
+            c.GotoNext(x => x.MatchLdfld<Overseer>(nameof(Overseer.mode)), x => x.MatchLdsfld<Overseer.Mode>(nameof(Overseer.Mode.SittingInWall)));
+            int varNum = -1;
+            c.GotoNext(x => x.MatchStloc(out varNum)); // Take the relevant variable index while we're at it
+            c.GotoNext(x => x.MatchLdsfld<Overseer.Mode>(nameof(Overseer.Mode.Emerging)));
+            c.GotoPrev(MoveType.After, x => x.MatchLdloc(varNum));
+            Plugin.Logger.LogDebug(c);
+
+            // Now make the if condition always true if we're an FCAP overseer; that is, changing it to (!flag || CWTs.HasTask(self.overseer)), once again with weird logic
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate((int old, OverseerAI self) => CWTs.HasTask(self.overseer) ? 0 : old);
         }
 
         private static bool OverseerAllowedInRoom(On.OverseerAbstractAI.orig_RoomAllowed orig, OverseerAbstractAI self, int room)

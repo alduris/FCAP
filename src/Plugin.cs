@@ -25,11 +25,24 @@ namespace FCAP
         public void OnEnable()
         {
             Logger = base.Logger;
-            Logger.LogDebug("hi");
+            Logger.LogDebug("boo");
+            On.RainWorld.OnModsInit += Extras.WrapInit(RainWorld_OnModsInit);
+        }
 
+
+        // Load any resources, such as sprites or sounds
+        private void RainWorld_OnModsInit(RainWorld rainWorld)
+        {
+            Constants.Register();
+
+            var bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assets/fcap", false));
+            rainWorld.Shaders.Add(Constants.CamShaderName, FShader.CreateShader(Constants.CamShaderName, bundle.LoadAsset<Shader>("assets/shaders/camholoimage.shader")));
+
+            Shader.SetGlobalFloat("_fcapThresh", Constants.CamsShaderThresh);
+
+            Logger.LogDebug("hi");
             try
             {
-                On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
 
                 GameplayHooks.Apply();
                 GraphicsHooks.Apply();
@@ -44,18 +57,6 @@ namespace FCAP
                 Logger.LogError("boowomp");
                 Logger.LogError(ex);
             }
-        }
-
-
-        // Load any resources, such as sprites or sounds
-        private void LoadResources(RainWorld rainWorld)
-        {
-            Constants.Register();
-
-            var bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("assets/fcap", false));
-            rainWorld.Shaders.Add(Constants.CamShaderName, FShader.CreateShader(Constants.CamShaderName, bundle.LoadAsset<Shader>("assets/shaders/camholoimage.shader")));
-
-            Shader.SetGlobalFloat("_fcapThresh", Constants.CamsShaderThresh);
         }
     }
 }

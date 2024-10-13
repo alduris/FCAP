@@ -10,6 +10,7 @@ namespace FCAP.Graphics
         internal class CamHoloImage : OverseerImage.HoloImage
         {
             public CamHologram parent;
+            private int currFileIndex;
 
             public CamHoloImage(CamHologram hologram, int firstSprite, IOwnAHoloImage imageOwner) : base(hologram, firstSprite, imageOwner)
             {
@@ -30,6 +31,7 @@ namespace FCAP.Graphics
                 // Hacky way to always show correct image
                 showRandomFlickerImage = true;
                 randomImage = parent.CurrImageIndex;
+                currFileIndex = parent.CurrFileIndex;
             }
 
             public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos, Vector2 partPos, Vector2 headPos, float useFade, float popOut, Color useColor)
@@ -39,8 +41,8 @@ namespace FCAP.Graphics
                 var image = sLeaser.sprites[firstSprite];
                 var oldColor = image.color;
                 image.shader = rCam.game.rainWorld.Shaders[Constants.CamShaderName];
-                image.element = Futile.atlasManager.GetElementWithName("FCAP_PROJ" + parent.CurrFileIndex.ToString());
-                image.color = new Color(oldColor.r, oldColor.g, parent.CurrImageIndex / 25f);
+                image.element = Futile.atlasManager.GetElementWithName("FCAP_PROJ" + currFileIndex.ToString());
+                image.color = new Color(oldColor.r, oldColor.g, randomImage / 25f);
                 image.scaleX = 0.2f * Mathf.Lerp(0.5f, 1f, useFade);
                 image.scaleY = 0.2f * Mathf.Lerp(0.5f, 1f, useFade);
             }

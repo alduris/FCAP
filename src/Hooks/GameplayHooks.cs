@@ -76,13 +76,13 @@ namespace FCAP.Hooks
                         {
                             switch (x)
                             {
-                                case < 0.45f:
+                                case < 0.425f:
                                     {
                                         if (game.LeftDoorLightCounter <= 0)
                                             game.LeftDoorLightCounter = Random.Range(5, 20);
                                         break;
                                     }
-                                case < 0.55f:
+                                case < 0.575f:
                                     {
                                         if (!lastInput.pckp)
                                             game.ToggleCams();
