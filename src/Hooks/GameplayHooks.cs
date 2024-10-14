@@ -39,7 +39,7 @@ namespace FCAP.Hooks
         {
             if (DoorAnimatronic.IsAnimatronic(self)) return;
 
-            if (GameController.Instance != null && self.room.abstractRoom.name == "SS_FCAP" && self.controller is not Player.NullController)
+            if (GameController.Instance != null && self.room.abstractRoom.name == "SS_FCAP" && self.controller is not Player.NullController && !self.isNPC && !self.playerState.isGhost)
             {
                 bool isFirstPlayer = self.playerState.playerNumber == 0;
                 var game = GameController.Instance;
@@ -131,6 +131,7 @@ namespace FCAP.Hooks
                 }
                 else
                 {
+                    // Other players that aren't player 1:
                     // Don't escape the room. But you can run around inside of it :)
                     var controls = self.room.game.rainWorld.options.controls[self.playerState.playerNumber];
                     float x = self.bodyChunks[0].pos.x / self.room.PixelWidth;
