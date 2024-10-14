@@ -1,5 +1,4 @@
-﻿using HUD;
-using Menu;
+﻿using Menu;
 using UnityEngine;
 
 namespace FCAP.Screens
@@ -41,7 +40,6 @@ namespace FCAP.Screens
 
             // Sound loop
             mySoundLoopID = SoundID.MENU_Death_Screen_LOOP;
-            PlaySound(SoundID.MENU_Enter_Death_Screen);
         }
 
         public override void Update()

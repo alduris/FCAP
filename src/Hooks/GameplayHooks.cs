@@ -4,6 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using FCAP.Graphics;
+using MonoMod.Cil;
 
 namespace FCAP.Hooks
 {
@@ -14,6 +15,9 @@ namespace FCAP.Hooks
             On.RoomSpecificScript.AddRoomSpecificScript += AddGameScript;
             On.Player.checkInput += NightguardInputRevamp;
             On.RainWorldGame.ShowPauseMenu += NoPauseWhenGameOver;
+            IL.Player.Die += PlayerNoPlayDeathSound;
+            On.HUD.TextPrompt.EnterGameOverMode += HUDNoPlayGameOverSound;
+            On.HUD.TextPrompt.Update += HUDNoGameOverPrompt;
             _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true), PowerOutDarkFader);
         }
 
@@ -147,11 +151,35 @@ namespace FCAP.Hooks
             }
         }
 
+        private static void PlayerNoPlayDeathSound(ILContext il)
+        {
+            // Make it so we don't play death sound if dying to a jumpscare
+            var c = new ILCursor(il);
+
+            c.GotoNext(MoveType.After, x => x.MatchLdsfld<SoundID>(nameof(SoundID.UI_Slugcat_Die)));
+            c.EmitDelegate((SoundID old) => GameController.Instance != null && GameController.Instance.CurrentJumpscare != Enums.Animatronic.None ? SoundID.None : old);
+        }
+
+        private static void HUDNoPlayGameOverSound(On.HUD.TextPrompt.orig_EnterGameOverMode orig, HUD.TextPrompt self, Creature.Grasp dependentOnGrasp, int foodInStomach, int deathRoom, Vector2 deathPos)
+        {
+            orig(self, dependentOnGrasp, foodInStomach, deathRoom, deathPos);
+            if (GameController.Instance != null && GameController.Instance.CurrentJumpscare != Enums.Animatronic.None)
+                self.playGameOverSound = false;
+        }
+
+        private static void HUDNoGameOverPrompt(On.HUD.TextPrompt.orig_Update orig, HUD.TextPrompt self)
+        {
+            bool oldGOM = self.gameOverMode;
+            self.gameOverMode &= (GameController.Instance == null || GameController.Instance.CurrentJumpscare == Enums.Animatronic.None);
+            orig(self);
+            self.gameOverMode = oldGOM;
+        }
+
         private static float PowerOutDarkFader(Func<RoomCamera, float> orig, RoomCamera self)
         {
             if (GameController.Instance != null)
             {
-                return 2f * Mathf.Atan(GameController.Instance.OOPTimer / 4f) / Mathf.PI;
+                return 1f - Mathf.Pow((float)Math.E, GameController.Instance.OOPTimer / 4f);
             }
             else
             {
