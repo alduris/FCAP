@@ -3,9 +3,16 @@ using UnityEngine;
 
 namespace FCAP.Graphics
 {
-    public class Jumpscare(Enums.Animatronic source) : CosmeticSprite
+    public class Jumpscare : CosmeticSprite
     {
-        public Enums.Animatronic animatronic = source;
+        public Enums.Animatronic animatronic;
+
+        public Jumpscare(Room room, Enums.Animatronic source)
+        {
+            this.room = room;
+            animatronic = source;
+            room.PlaySound(Constants.JumpscareSound, 0f, 1f, 1f);
+        }
 
         public string JumpscareElement
         {
@@ -47,7 +54,7 @@ namespace FCAP.Graphics
         {
             var sprite = sLeaser.sprites[0];
             sprite.MoveToFront();
-            sprite.SetPosition(Vector2.Lerp(lastPos, pos, timeStacker));
+            sprite.SetPosition(Vector2.Lerp(lastPos, pos, timeStacker) + room.game.manager.rainWorld.options.ScreenSize / 2f);
         }
     }
 }

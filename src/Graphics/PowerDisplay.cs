@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 namespace FCAP.Graphics
 {
-    internal class PowerDisplay : UpdatableAndDeletable, IDrawable
+    public class PowerDisplay : UpdatableAndDeletable, IDrawable
     {
         public GameController game;
 

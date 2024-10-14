@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace FCAP.Graphics
 {
-    internal class DoorAnimatronic : UpdatableAndDeletable
+    public class DoorAnimatronic : UpdatableAndDeletable
     {
         internal static ConditionalWeakTable<Player, DoorAnimatronic> animatronicShowCWT = new();
+        public static bool IsAnimatronic(Player player) => animatronicShowCWT.TryGetValue(player, out _);
 
         public GameController game;
         public Enums.Animatronic anim;

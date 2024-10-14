@@ -1,11 +1,10 @@
 ﻿using FCAP.Graphics;
-using UnityEngine;
 using static FCAP.Map;
 using Random = UnityEngine.Random;
 
 namespace FCAP.AI
 {
-    internal abstract class BaseAI(GameController game, Enums.Animatronic me, Location startLoc, int difficulty, int counter)
+    public abstract class BaseAI(GameController game, Enums.Animatronic me, Location startLoc, int difficulty, int counter)
     {
         protected int difficulty = difficulty;
         protected int maxCounter = counter;

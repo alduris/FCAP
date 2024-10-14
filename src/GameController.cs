@@ -7,7 +7,7 @@ using static FCAP.Enums;
 
 namespace FCAP
 {
-    internal class GameController : UpdatableAndDeletable
+    public class GameController : UpdatableAndDeletable
     {
         public static GameController Instance; // TODO: this doesn't get reset?? or something static doesn't
 
@@ -121,7 +121,7 @@ namespace FCAP
             {
                 if (jumpscareObj == null)
                 {
-                    jumpscareObj = new Jumpscare(CurrentJumpscare);
+                    jumpscareObj = new Jumpscare(room, CurrentJumpscare);
                     room.AddObject(jumpscareObj);
                 }
                 room.game.manager.musicPlayer?.FadeOutAllSongs(1f);

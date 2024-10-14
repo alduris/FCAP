@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FCAP
 {
-    internal static class Map
+    public static class Map
     {
         /*
          * MAP LAYOUT THINGY (sort of, it's a bit inaccurate in scale):

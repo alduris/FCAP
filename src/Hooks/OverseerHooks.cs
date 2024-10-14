@@ -29,7 +29,6 @@ namespace FCAP.Hooks
             // Go to the relevant position.
             c.GotoNext(x => x.MatchCallOrCallvirt(typeof(OverseerAI).GetMethod(nameof(OverseerAI.UpdateTempHoverPosition))));
             c.GotoNext(MoveType.After, x => x.MatchCallOrCallvirt(typeof(AbstractCreature).GetProperty(nameof(AbstractCreature.realizedCreature)).GetGetMethod()));
-            Plugin.Logger.LogDebug(c);
 
             // Then modify the if-statement to (abstractCreature != null && !CWTs.HasTask(this.overseer)) using weird logic
             c.Emit(OpCodes.Ldarg_0);
@@ -44,7 +43,6 @@ namespace FCAP.Hooks
             c.GotoNext(x => x.MatchStloc(out varNum)); // Take the relevant variable index while we're at it
             c.GotoNext(x => x.MatchLdsfld<Overseer.Mode>(nameof(Overseer.Mode.Emerging)));
             c.GotoPrev(MoveType.After, x => x.MatchLdloc(varNum));
-            Plugin.Logger.LogDebug(c);
 
             // Now make the if condition always true if we're an FCAP overseer; that is, changing it to (!flag || CWTs.HasTask(self.overseer)), once again with weird logic
             c.Emit(OpCodes.Ldarg_0);
