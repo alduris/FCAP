@@ -1,0 +1,10 @@
+{
+	"id": "Slugcat_Nightguard",
+	"scene_folder": "scenes/slugcat_nightguard",
+	"images": [],
+	"idle_depths": [ 2.8, 2.1, 1.9 ],
+	"glow_pos": [688, 484],
+	"mark_pos": [-5000, -5000],
+	"select_menu_pos": [0, -80],
+	"slugcat_depth": 2.1
+}

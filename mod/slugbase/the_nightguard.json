@@ -23,6 +23,8 @@
 		"food_min": 0,
 		"food_max": 0,
 		"world_state": [ "Inv", "Red" ],
-		"expedition_enabled": false
+		"expedition_enabled": false,
+
+		"select_menu_scene": "Slugcat_Nightguard"
 	}
 }

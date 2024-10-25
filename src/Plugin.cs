@@ -47,6 +47,7 @@ namespace FCAP
                 GameplayHooks.Apply();
                 GraphicsHooks.Apply();
                 OverseerHooks.Apply();
+                MenuHooks.Apply();
                 ProcessHooks.Apply();
                 PlacedObjectHooks.Apply();
                 RainMeterHooks.Apply();

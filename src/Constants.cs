@@ -1,4 +1,5 @@
-﻿using OverseerHolograms;
+﻿using Menu;
+using OverseerHolograms;
 
 namespace FCAP
 {
@@ -11,6 +12,7 @@ namespace FCAP
         public static void Register()
         {
             Nightguard ??= new SlugcatStats.Name("Nightguard", false);
+            NightguardMenu ??= new MenuScene.SceneID("Slugcat_Nightguard", false);
 
             CamsHolo ??= new OverseerHologram.Message("FCAPCams", true);
             DoorHolo ??= new OverseerHologram.Message("FCAPDoor", true);
@@ -27,7 +29,8 @@ namespace FCAP
 
         public static void Unregister()
         {
-            Nightguard = null; // we didn't register this so we don't get to unregister it
+            Nightguard = null; // we didn't register these so we don't get to unregister them
+            NightguardMenu = null;
 
             CamsHolo?.Unregister();
             CamsHolo = null;
@@ -63,5 +66,7 @@ namespace FCAP
         public static ProcessManager.ProcessID WeekOverScreen;   // equivalent of the paycheck in fnaf games
 
         public static SoundID JumpscareSound;
+
+        public static MenuScene.SceneID NightguardMenu;
     }
 }
