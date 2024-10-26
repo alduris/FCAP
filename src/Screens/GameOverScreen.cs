@@ -22,7 +22,7 @@ namespace FCAP.Screens
         {
             // Init menu and background
             pages.Add(new Page(this, null, "main", 0));
-            scene = new InteractiveMenuScene(this, pages[0], MenuScene.SceneID.NewDeath);
+            scene = new InteractiveMenuScene(this, pages[0], Constants.NightguardDeath);
             pages[0].subObjects.Add(scene);
             selectedObject = null;
 

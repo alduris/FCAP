@@ -10,6 +10,7 @@ namespace FCAP
     public class GameController : UpdatableAndDeletable
     {
         public static GameController Instance;
+        public static Animatronic LastJumpscare = Animatronic.None;
 
         public int Power = Constants.MaxPower + 200; // 200 is a safety net so power doesn't go down for 5 seconds
         public int PowerUsage = 0;
@@ -158,6 +159,7 @@ namespace FCAP
                 JumpscareTimer++;
                 if (JumpscareTimer > 30 && room.game.manager.upcomingProcess == null)
                 {
+                    LastJumpscare = CurrentJumpscare;
                     room.game.ExitGame(true, true);
                     room.game.GetStorySession.saveState.SessionEnded(room.game, false, false);
                     room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen, 0f);

@@ -13,7 +13,6 @@ namespace FCAP
         public static void Register()
         {
             Nightguard ??= new SlugcatStats.Name("Nightguard", false);
-            NightguardMenu ??= new MenuScene.SceneID("Slugcat_Nightguard", false);
 
             CamsHolo ??= new OverseerHologram.Message("FCAPCams", true);
             DoorHolo ??= new OverseerHologram.Message("FCAPDoor", true);
@@ -26,6 +25,9 @@ namespace FCAP
             WeekOverScreen ??= new ProcessManager.ProcessID("FCAPWeekOver", true);
 
             JumpscareSound ??= new SoundID("FCAPJumpscare", true);
+
+            NightguardMenu ??= new MenuScene.SceneID("Slugcat_Nightguard", false);
+            NightguardDeath ??= new MenuScene.SceneID("Death_Nightguard", false);
         }
 
         public static void Unregister()
@@ -69,5 +71,6 @@ namespace FCAP
         public static SoundID JumpscareSound;
 
         public static MenuScene.SceneID NightguardMenu;
+        public static MenuScene.SceneID NightguardDeath;
     }
 }
