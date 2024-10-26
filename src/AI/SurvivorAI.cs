@@ -9,7 +9,7 @@ namespace FCAP.AI
     /// </summary>
     internal class SurvivorAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Survivor, Location.ShowStage, NightDifficulties[night], 206)
     {
-        private static readonly int[] NightDifficulties = [0, 3, 0, 2, 6, 12];
+        private static readonly int[] NightDifficulties = [0, 3, 0, 2, 6, 12, -1];
         private static readonly Dictionary<Location, Location[]> MoveMap = new()
         {
             {

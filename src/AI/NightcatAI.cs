@@ -10,7 +10,7 @@ namespace FCAP.AI
     internal class NightcatAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Nightcat, Location.SecondaryStage, NightDifficulties[night], 368)
     {
         private static readonly int CamAdditionalWait = 700;
-        private static readonly int[] NightDifficulties = [0, 0, 1, 2, 4, 6];
+        private static readonly int[] NightDifficulties = [0, 0, 1, 2, 4, 6, -1];
 
         private bool WaitingForCamDown = false;
         private bool ForceMove = false;

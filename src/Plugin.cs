@@ -20,6 +20,7 @@ namespace FCAP
     class Plugin : BaseUnityPlugin
     {
         public static new ManualLogSource Logger;
+        public Options options;
 
         // Add hooks
         public void OnEnable()
@@ -59,6 +60,9 @@ namespace FCAP
                 Logger.LogError("boowomp");
                 Logger.LogError(ex);
             }
+
+            options = new Options();
+            MachineConnector.SetRegisteredOI("alduris.fcap", options);
         }
     }
 }

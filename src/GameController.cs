@@ -9,7 +9,7 @@ namespace FCAP
 {
     public class GameController : UpdatableAndDeletable
     {
-        public static GameController Instance; // TODO: this doesn't get reset?? or something static doesn't
+        public static GameController Instance;
 
         public int Power = Constants.MaxPower + 200; // 200 is a safety net so power doesn't go down for 5 seconds
         public int PowerUsage = 0;
@@ -49,7 +49,7 @@ namespace FCAP
             Plugin.Logger.LogDebug("Activated :)");
             this.room = room;
             Instance = this;
-            int cycle = 5; // Math.Min(6, room.game.GetStorySession.saveState.cycleNumber);
+            int cycle = Math.Min(6, room.game.GetStorySession.saveState.cycleNumber);
             AIs = [
                 new SurvivorAI(this, cycle),
                 new MonkAI(this, cycle),

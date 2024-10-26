@@ -9,7 +9,7 @@ namespace FCAP.AI
     /// </summary>
     internal class MonkAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Monk, Map.Location.ShowStage, NightDifficulties[night], 213)
     {
-        private static readonly int[] NightDifficulties = [0, 1, 4, 2, 5, 8, 12];
+        private static readonly int[] NightDifficulties = [0, 1, 4, 2, 5, 8, -1];
         private static readonly Dictionary<Location, Location[]> MoveMap = new()
         {
             {
