@@ -52,6 +52,7 @@ namespace FCAP
                 ProcessHooks.Apply();
                 PlacedObjectHooks.Apply();
                 RainMeterHooks.Apply();
+                SaveHooks.Apply();
 
                 Logger.LogDebug("yay");
             }

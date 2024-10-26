@@ -22,7 +22,7 @@ namespace FCAP.Hooks
             else if (ID == Constants.NightOverScreen)
             {
                 self.currentMainLoop = null;
-                throw new NotImplementedException();
+                self.currentMainLoop = new EndOfNightScreen(self);
             }
             else if (ID == Constants.WeekOverScreen)
             {

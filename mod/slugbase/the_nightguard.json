@@ -21,7 +21,7 @@
 		"karma": 0,
 		"karma_cap": 6,
 		"food_min": 0,
-		"food_max": 0,
+		"food_max": 1,
 		"world_state": [ "Inv", "Red" ],
 		"expedition_enabled": false,
 

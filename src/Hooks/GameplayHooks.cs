@@ -14,26 +14,20 @@ namespace FCAP.Hooks
         {
             On.RoomSpecificScript.AddRoomSpecificScript += AddGameScript;
             On.Player.checkInput += NightguardInputRevamp;
-            On.RainWorldGame.ShowPauseMenu += NoPauseWhenGameOver;
             IL.Player.Die += PlayerNoPlayDeathSound;
             On.HUD.TextPrompt.EnterGameOverMode += HUDNoPlayGameOverSound;
             On.HUD.TextPrompt.Update += HUDNoGameOverPrompt;
             _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true), PowerOutDarkFader);
+            _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.roomSafeForPause)).GetGetMethod(false), NoPauseWhenGameOver);
         }
 
-        private static void NoPauseWhenGameOver(On.RainWorldGame.orig_ShowPauseMenu orig, RainWorldGame self)
-        {
-            if (GameController.Instance == null || !GameController.Instance.OutOfPower)
-            {
-                orig(self);
-            }
-        }
+        private static bool NoPauseWhenGameOver(Func<RoomCamera, bool> orig, RoomCamera self) => orig(self) || (GameController.Instance != null && GameController.Instance.OutOfPower);
 
         private static void AddGameScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)
         {
             orig(room);
 
-            if (room.abstractRoom.name == "SS_FCAP" && room.game.IsStorySession && room.game.StoryCharacter == Constants.Nightguard)
+            if (room.abstractRoom.name == Constants.RoomName && room.game.IsStorySession && room.game.StoryCharacter == Constants.Nightguard)
             {
                 room.AddObject(new GameController(room));
             }
@@ -43,7 +37,7 @@ namespace FCAP.Hooks
         {
             if (DoorAnimatronic.IsAnimatronic(self)) return;
 
-            if (GameController.Instance != null && self.room.abstractRoom.name == "SS_FCAP" && self.controller is not Player.NullController && !self.isNPC && !self.playerState.isGhost)
+            if (GameController.Instance != null && self.room.abstractRoom.name == Constants.RoomName && self.controller is not Player.NullController && !self.isNPC && !self.playerState.isGhost)
             {
                 bool isFirstPlayer = self.playerState.playerNumber == 0;
                 var game = GameController.Instance;
@@ -86,12 +80,8 @@ namespace FCAP.Hooks
                     }
                     else
                     {
-                        // In not cams mode, player can move but cannot throw, pick up, or use map
-                        float x = self.bodyChunks[0].pos.x / self.room.PixelWidth;
-                        int inpX = (currInput.x < 0 && x < 0.3f) || (currInput.x > 0 && x > 0.7f) ? 0 : currInput.x;
-                        self.input[0] = new Player.InputPackage(controls.gamePad, controls.GetActivePreset(), inpX, currInput.y, currInput.jmp, false, false, false, currInput.crouchToggle);
-
                         // Controls
+                        float x = self.bodyChunks[0].pos.x / self.room.PixelWidth;
                         if (!game.OutOfPower)
                         {
                             if (currInput.pckp)
@@ -100,6 +90,7 @@ namespace FCAP.Hooks
                                 {
                                     case < 0.425f:
                                         {
+                                            currInput.x = 0;
                                             if (game.LeftDoorLightCounter <= 0)
                                                 game.LeftDoorLightCounter = Random.Range(5, 20);
                                             break;
@@ -112,6 +103,7 @@ namespace FCAP.Hooks
                                         }
                                     default:
                                         {
+                                            currInput.x = 0;
                                             if (game.RightDoorLightCounter <= 0)
                                                 game.RightDoorLightCounter = Random.Range(5, 20);
                                             break;
@@ -131,6 +123,10 @@ namespace FCAP.Hooks
                                 }
                             }
                         }
+
+                        // In not cams mode, player can move but cannot throw, pick up, or use map
+                        int inpX = (currInput.x < 0 && x < 0.3f) || (currInput.x > 0 && x > 0.7f) ? 0 : currInput.x;
+                        self.input[0] = new Player.InputPackage(controls.gamePad, controls.GetActivePreset(), inpX, currInput.y, currInput.jmp, false, false, false, currInput.crouchToggle);
                     }
                 }
                 else
@@ -179,7 +175,7 @@ namespace FCAP.Hooks
         {
             if (GameController.Instance != null)
             {
-                return 1f - Mathf.Pow((float)Math.E, GameController.Instance.OOPTimer / 4f);
+                return 1f - Mathf.Pow((float)Math.E, GameController.Instance.OOPTimer / -4f);
             }
             else
             {

@@ -46,7 +46,7 @@ namespace FCAP.Hooks
                     // always show eye sprite for night when power out
                     if (i == 9 && controller.anim == Enums.Animatronic.Nightcat)
                     {
-                        sprite.isVisible = true;
+                        sprite.isVisible = !controller.flickerEyes || controller.flickerOn;
                         sprite.color = Color.white;
                     }
                 }

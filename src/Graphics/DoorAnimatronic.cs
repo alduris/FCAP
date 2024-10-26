@@ -14,6 +14,11 @@ namespace FCAP.Graphics
         public bool left;
         public Vector2 stayPos;
 
+        // Used by nightcat only
+        public bool flickerEyes = false;
+        private int flickerCounter = Random.Range(10, 30);
+        public bool flickerOn = true;
+
         public DoorAnimatronic(Room room, GameController controller, Enums.Animatronic animatronic, bool left)
         {
             this.room = room;
@@ -41,6 +46,16 @@ namespace FCAP.Graphics
             if (player == null) return;
 
             player.standing = true;
+
+            if (flickerEyes)
+            {
+                flickerCounter--;
+                if (flickerCounter <= 0)
+                {
+                    flickerCounter = Random.Range(4, 10);
+                    flickerOn = !flickerOn;
+                }
+            }
         }
 
         public override void Destroy()
@@ -48,7 +63,6 @@ namespace FCAP.Graphics
             base.Destroy();
             if (player == null) return;
 
-            // player.Die();
             player.Destroy();
             player.abstractCreature.Destroy();
             animatronicShowCWT.Remove(player);

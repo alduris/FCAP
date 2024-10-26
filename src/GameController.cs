@@ -65,6 +65,30 @@ namespace FCAP
         {
             base.Update(eu);
 
+            // Game complete?
+            if (room.world.rainCycle.timer > 40 * 60 * 6)
+            {
+                if (room.game.manager.upcomingProcess == null)
+                {
+                    if (room.game.GetStorySession.saveState.cycleNumber == 4)
+                    {
+                        // Night 5, beating the game, roll credits
+                        RainWorldGame.BeatGameMode(room.game, true); // for the sake of save file simplicity, we assume that we ascended
+                        room.game.ExitGame(false, false);
+                        room.game.manager.RequestMainProcessSwitch(Constants.WeekOverScreen, 0f);
+                    }
+                    else
+                    {
+                        // Beating like normal
+                        room.game.GetStorySession.AppendTimeOnCycleEnd(true);
+                        room.game.ExitGame(false, false);
+                        room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
+                        room.game.manager.RequestMainProcessSwitch(Constants.NightOverScreen, 0f);
+                    }
+                }
+                return;
+            }
+
             // Power
             if (!OutOfPower)
             {
@@ -134,8 +158,9 @@ namespace FCAP
                 JumpscareTimer++;
                 if (JumpscareTimer > 30 && room.game.manager.upcomingProcess == null)
                 {
+                    room.game.ExitGame(true, true);
                     room.game.GetStorySession.saveState.SessionEnded(room.game, false, false);
-                    room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen, 0f); // TODO:
+                    room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen, 0f);
                 }
             }
         }
