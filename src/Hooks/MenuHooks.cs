@@ -17,6 +17,28 @@ namespace FCAP.Hooks
             On.Menu.MenuScene.BuildScene += MenuScene_BuildScene;
             On.Menu.InteractiveMenuScene.Update += InteractiveMenuScene_Update;
             On.Menu.MenuScene.UnloadImages += MenuScene_UnloadImages;
+            On.Menu.SlugcatSelectMenu.SlugcatPageContinue.Update += SlugcatPageContinue_Update;
+            On.Menu.SlugcatSelectMenu.SlugcatPageContinue.ctor += SlugcatPageContinue_ctor;
+        }
+
+        private static void SlugcatPageContinue_ctor(On.Menu.SlugcatSelectMenu.SlugcatPageContinue.orig_ctor orig, SlugcatSelectMenu.SlugcatPageContinue self, Menu.Menu menu, MenuObject owner, int pageIndex, SlugcatStats.Name slugcatNumber)
+        {
+            orig(self, menu, owner, pageIndex, slugcatNumber);
+            if (slugcatNumber == Constants.Nightguard)
+            {
+                self.regionLabel.text = string.Concat(menu.Translate("Five Pebbles Pizzeria"), " - ", menu.Translate("Cycle"), " ", (self.saveGameData.cycle + 1).ToString());
+            }
+        }
+
+        private static void SlugcatPageContinue_Update(On.Menu.SlugcatSelectMenu.SlugcatPageContinue.orig_Update orig, SlugcatSelectMenu.SlugcatPageContinue self)
+        {
+            orig(self);
+            if (self.slugcatNumber == Constants.Nightguard)
+            {
+                self.hud.karmaMeter.fade = 0f;
+                self.hud.foodMeter.fade = 0f;
+                self.regionLabel.pos = new Vector2(self.regionLabel.pos.x, self.KarmaSymbolPos.y);
+            }
         }
 
         private static void MenuScene_UnloadImages(On.Menu.MenuScene.orig_UnloadImages orig, MenuScene self)
@@ -82,10 +104,16 @@ namespace FCAP.Hooks
                 }
                 else
                 {
-                    string eyeArt = GameController.LastJumpscare == Enums.Animatronic.Nightcat ? "nightguard death 3" : "nightguard death 3 alt";
                     self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard death 6", Vector2.zero, 3.5f, MenuDepthIllustration.MenuShader.Basic));
                     self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard death 5", Vector2.zero, 3.0f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, eyeArt, Vector2.zero, 3.1f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard death 3 alt", Vector2.zero, 3.1f, MenuDepthIllustration.MenuShader.Basic));
+                    if (GameController.LastJumpscare == Enums.Animatronic.Nightcat)
+                    {
+                        var controller = new GameOverSceneController(self as InteractiveMenuScene);
+                        self.AddIllustration(controller.AIEyes = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard death 3", Vector2.zero, 3.1f, MenuDepthIllustration.MenuShader.Basic));
+                        menuCWT.Remove(self as InteractiveMenuScene);
+                        menuCWT.Add(self as InteractiveMenuScene, controller);
+                    }
                     self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard death 4", Vector2.zero, 2.6f, MenuDepthIllustration.MenuShader.Basic));
                     self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard death 2", Vector2.zero, 2.1f, MenuDepthIllustration.MenuShader.Basic));
                     self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard death 1", Vector2.zero, 2.05f, MenuDepthIllustration.MenuShader.Basic));
