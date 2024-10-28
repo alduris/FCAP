@@ -1,0 +1,35 @@
+Kleiner Wachmann? Auf dem Boden meiner Pizzeria?
+Seid gegrüßt. Ich wollte dir eine Nachricht zukommen lassen, um dir bei der Eingewöhnung zu helfen; schließlich habe ich dich für diese Aufgabe vorgesehen.
+Du bist nicht der Erste und wirst wahrscheinlich auch nicht der Letzte sein. Doch dazu später mehr.
+Seien Sie nicht überfordert; Sie müssen nur fünf Zyklen durchlaufen und alles, was danach kommt, bleibt Ihnen überlassen.
+Es gibt eine einleitende Begrüßung, die ich aufgrund meiner Programmierung allen neuen Mitarbeitern in meiner Pizzeria geben muss.
+Eine Verschwendung von wertvollem Speicherplatz, wenn Sie mich fragen. Jetzt verstehen Sie vielleicht, warum ich froh bin, dass sie weg sind.
+Wie auch immer. „Mit großer Wertschätzung heißen meine (ewig begnadeten) Gönner und ich Sie in Ihrer neuen Position hier in der Five Pebbles Pizzeria willkommen.“
+„Wir sind nur ein bescheidenes Unternehmen, das unseren treuen Kunden großen Genuss und Vergnügen bietet.“
+„Als pflichtbewusster Angestellter unseres Unternehmens werden bestimmte Erwartungen gestellt.“
+„Du darfst (unter keinen Umständen!) öffentlich oder privat, mit Ausnahme von befugten Personen oder mit Erlaubnis, irgendeine (irgendeine!) Facette deiner Erfahrung als Mitarbeiter bei uns preisgeben, die nicht bereits öffentlich ist.“
+„Wir übernehmen außerdem keine Verantwortung für Schäden an Eigentum, Person oder Ruf.“
+„Sollte der unglückliche Fall eintreten, dass Sie zu Schaden kommen oder Ihr Leben verlieren, gelten Sie als vermisst, sobald die Prämissen gründlich gesäubert wurden, oder innerhalb von 90 Zyklen.“
+„Ohne weitere Umschweife möchten wir Ihnen noch einmal zu Ihrer neuen Position gratulieren (o so thankfully!)!“
+...
+Natürlich haben sich die „edlen“ Wohltäter längst gestrichen. In der Stadt oben gibt es keine mehr. Die Hälfte davon ist für Sie irrelevant.
+Aber es gibt eine Notwendigkeit für Ihre Existenz, eine dringende Angelegenheit.
+Die Wohltäter mögen verschwunden sein, aber die animatronischen Bewohner dieser Einrichtung sind es leider nicht.
+Ich weiß nicht, warum sie noch aktiv sind, aber hinter ihrem leeren Blick verbirgt sich ein großer Hunger.
+Ein Hunger auf meine Neuronenfliegen, im Besonderen.
+Das ist besonders bedauerlich, da die Pizzeria, in der du gerade arbeitest, zufällig einen Zugangsschacht direkt zu meinen Speicherfeldern hat. In Ihrem Büro.
+Sie, von mir gewollt, sind nicht in der Lage, den Drang des Hungers zu spüren und können den Zugangsschacht nicht ohne meine ausdrückliche Erlaubnis betreten.
+Das Gleiche kann ich nicht von den abtrünnigen Maschinen sagen, die ständig versuchen, in mein Inneres einzudringen.
+...
+Zu Ihrem Glück haben meine Wohltäter Ihr Büro mit mehreren Sicherheitsvorkehrungen ausgestattet, um potenzielle Eindringlinge abzuwehren.
+Jeder Eingang zum Büro verfügt über ein Licht, und meine Aufseher können eine Tür projizieren, um Eindringlinge aufzuhalten.
+Außerdem hast du Zugang zu verschiedenen Ansichten in dem Komplex, in dem du dich aufhältst; sie können genutzt werden, um die Standorte der Animatronik zu verfolgen.
+Ich habe Sie so programmiert, dass Sie diese Funktionen steuern können.
+Um die Lichter und Türen zu benutzen, nähern Sie sich der jeweiligen Seite des Raumes. Um die Kameras zu benutzen, stellen Sie sich in die Mitte.
+Ich habe Sie auch so programmiert, dass Sie den Raum nicht ohne meine ausdrückliche Erlaubnis auf einer der beiden Seiten verlassen können. Versuchen Sie es also nicht.
+Was Ihre Sicherheit betrifft, so ist die einzige wirkliche Bedrohung die Animatronik selbst: Sie wird Sie als feindlich wahrnehmen, so wie sie es bei fast allen früheren Wächtern getan hat.
+Sie können nur wenig tun, um das zu verhindern, außer sich mit den Türen zu schützen.
+Es wird nicht schön sein, wenn sie Ihr Büro betreten; sie sind ziemlich feindselig gegenüber Wächtern. Ihr werdet wahrscheinlich sterben, wenn ihr ihnen gegenübersteht.
+Leider habe ich Sie aus... persönlichen... Motiven nur mit begrenzten Kräften ausgestattet, damit Sie sich selbst verteidigen können. Lichter, Türen und Kameras verbrauchen sie. Nutzen Sie den Vorrat mit Bedacht.
+Ich erwarte, dass Ihr erster Zyklus relativ ereignislos verlaufen wird. Ich werde mich beim nächsten Zyklus wieder bei dir melden.
+Viel Glück, kleine Hüterin. Du wirst gut zurechtkommen.
