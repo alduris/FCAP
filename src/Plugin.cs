@@ -45,6 +45,7 @@ namespace FCAP
             try
             {
 
+                DialogHooks.Apply();
                 GameplayHooks.Apply();
                 GraphicsHooks.Apply();
                 OverseerHooks.Apply();

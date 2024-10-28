@@ -9,6 +9,8 @@ namespace FCAP
         public const float CamsShaderThresh = 0.95f;
         public const string CamShaderName = "FCAPHoloImage";
         public const string RoomName = "SS_FCAP";
+        public const float LeftThresh = 0.425f;
+        public const float RightThresh = 0.575f;
 
         public static void Register()
         {

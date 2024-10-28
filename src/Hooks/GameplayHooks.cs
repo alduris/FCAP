@@ -88,24 +88,24 @@ namespace FCAP.Hooks
                             {
                                 switch (x)
                                 {
-                                    case < 0.425f:
+                                    case < Constants.LeftThresh:
                                         {
                                             currInput.x = 0;
                                             if (game.LeftDoorLightCounter <= 0)
                                                 game.LeftDoorLightCounter = Random.Range(5, 20);
                                             break;
                                         }
-                                    case < 0.575f:
-                                        {
-                                            if (!lastInput.pckp)
-                                                game.ToggleCams();
-                                            break;
-                                        }
-                                    default:
+                                    case > Constants.RightThresh:
                                         {
                                             currInput.x = 0;
                                             if (game.RightDoorLightCounter <= 0)
                                                 game.RightDoorLightCounter = Random.Range(5, 20);
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            if (!lastInput.pckp)
+                                                game.ToggleCams();
                                             break;
                                         }
                                 }
@@ -113,13 +113,29 @@ namespace FCAP.Hooks
 
                             if (currInput.thrw && !lastInput.thrw)
                             {
-                                if (x < 0.45f)
+                                switch (x)
                                 {
-                                    game.ToggleDoor(Map.Direction.Left);
+                                    case < Constants.LeftThresh:
+                                        {
+                                            game.ToggleDoor(Map.Direction.Left);
+                                            break;
+                                        }
+                                    case > Constants.RightThresh:
+                                        {
+                                            game.ToggleDoor(Map.Direction.Right);
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            game.phoneGuy?.Destroy();
+                                            break;
+                                        }
                                 }
-                                else if (x > 0.55f)
+                                if (x < Constants.LeftThresh)
                                 {
-                                    game.ToggleDoor(Map.Direction.Right);
+                                }
+                                else if (x > Constants.RightThresh)
+                                {
                                 }
                             }
                         }

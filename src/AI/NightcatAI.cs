@@ -52,7 +52,7 @@ namespace FCAP.AI
                                 songName = "toreador-march-wawa",
                                 cyclesRest = 0,
                                 prio = 1f,
-                                volume = 0.5f
+                                volume = 0.3f
                             };
                             game.room.game.manager.musicPlayer.GameRequestsSong(musicEvent);
 

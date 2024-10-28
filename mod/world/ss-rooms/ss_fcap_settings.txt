@@ -13,5 +13,5 @@ Palette: 87
 EffectColorA: 8
 EffectColorB: 0
 PlacedObjects: FCAPSunblock><58.73419><393.4494><1~220~155~215~156~-13~-85~-165~0, FCAPSunblock><729.5536><386.288><0~254~183~242~177~-12~29~-142~1, 
-AmbientSounds: OMNI><so_ind-fridge.ogg><50.85065><505.133><0.4673913><0.7652174, OMNI><so_ind-boiler.ogg><49.07898><422.6463><0.4456522><0.55, OMNI><so_ind-humm.ogg><50.90424><343.6756><0.3913043><1, OMNI><am_win-subwnd.ogg><53.15515><264.6238><0.75><1, OMNI><om.wav><55.8504><189.673><0.7608696><0.6478261, OMNI><weird deep hole.wav><60.61926><116.3487><0.4782609><1, DIR><so_ind-flourlight.ogg><494.3148><534.0754><0.4891304><0.9413043><0.8487642><0, 
+AmbientSounds: OMNI><so_ind-fridge.ogg><50.85065><505.133><0.3152174><0.7652174, OMNI><so_ind-boiler.ogg><49.07898><422.6463><0.2826087><0.55, OMNI><so_ind-humm.ogg><50.90424><343.6756><0.2934783><1, OMNI><am_win-subwnd.ogg><53.15515><264.6238><0.5543478><1, OMNI><om.wav><55.8504><189.673><0.5652174><0.6478261, OMNI><weird deep hole.wav><60.61926><116.3487><0.3369565><1, DIR><so_ind-flourlight.ogg><494.3148><534.0754><0.4891304><0.9413043><0.8487642><0, 
 RoomSpecificScriptActive: ON

@@ -16,7 +16,6 @@ namespace FCAP
         public int PowerUsage = 0;
 
         public int Hour = 0;
-        // public PowerStage OOPstage;
         public int OOPTimer = 0;
 
         public Map.Location CamViewing = Map.Location.ShowStage;
@@ -41,6 +40,7 @@ namespace FCAP
 
         public MapDisplay mapDisplay = null;
         public PowerDisplay powerDisplay = null;
+        public PhonePebbles phoneGuy = null;
 
         public bool OutOfPower => Power <= 0;
 
@@ -60,6 +60,7 @@ namespace FCAP
 
             mapDisplay = new MapDisplay(this, room);
             powerDisplay = new PowerDisplay(this, room);
+            phoneGuy = new PhonePebbles(this, room, room.game.GetStorySession.saveState.cycleNumber);
         }
 
         public override void Update(bool eu)
@@ -105,6 +106,8 @@ namespace FCAP
                 RightDoorLight = false;
                 RightDoorShut = false;
                 OOPTimer++;
+
+                RunOutOfPower();
             }
             else
             {
