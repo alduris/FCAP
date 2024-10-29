@@ -62,6 +62,7 @@ namespace FCAP.Graphics
                 {
                     foreach (var line in lines)
                     {
+                        if (line.Length == 0) continue;
                         dialogBox.AddPebblesMessage(line, 10 + line.Length / 10);
                     }
                 }

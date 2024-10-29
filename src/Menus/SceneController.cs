@@ -1,6 +1,6 @@
 ﻿using Menu;
 
-namespace FCAP.Screens
+namespace FCAP.Menus
 {
     internal abstract class SceneController(InteractiveMenuScene owner)
     {

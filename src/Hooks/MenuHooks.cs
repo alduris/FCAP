@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using FCAP.Screens;
+using FCAP.Menus;
 using Menu;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using UnityEngine;
 
 namespace FCAP.Hooks
@@ -17,8 +18,25 @@ namespace FCAP.Hooks
             On.Menu.MenuScene.BuildScene += MenuScene_BuildScene;
             On.Menu.InteractiveMenuScene.Update += InteractiveMenuScene_Update;
             On.Menu.MenuScene.UnloadImages += MenuScene_UnloadImages;
-            On.Menu.SlugcatSelectMenu.SlugcatPageContinue.Update += SlugcatPageContinue_Update;
             On.Menu.SlugcatSelectMenu.SlugcatPageContinue.ctor += SlugcatPageContinue_ctor;
+            On.Menu.SlugcatSelectMenu.SlugcatPageContinue.Update += SlugcatPageContinue_Update;
+            On.Menu.Menu.SelectCandidate += Menu_SelectCandidate;
+            _ = new Hook(typeof(MenuObject).GetProperty(nameof(MenuObject.Selected)).GetGetMethod(), MenuObject_Selected_get);
+        }
+
+        private static bool MenuObject_Selected_get(Func<MenuObject, bool> orig, MenuObject self)
+        {
+            if (self.menu is SlugcatSelectMenu && self.menu.pages.Any(p => p.subObjects.Any(x => x is FCAPDragger dragger && dragger.held && self != dragger))) return false;
+            return orig(self);
+        }
+
+        private static MenuObject Menu_SelectCandidate(On.Menu.Menu.orig_SelectCandidate orig, Menu.Menu self, RWCustom.IntVector2 direction)
+        {
+            if (self.selectedObject is FCAPDragger dragger && dragger.held)
+            {
+                return self.selectedObject;
+            }
+            return orig(self, direction);
         }
 
         private static void SlugcatPageContinue_ctor(On.Menu.SlugcatSelectMenu.SlugcatPageContinue.orig_ctor orig, SlugcatSelectMenu.SlugcatPageContinue self, Menu.Menu menu, MenuObject owner, int pageIndex, SlugcatStats.Name slugcatNumber)
@@ -27,6 +45,24 @@ namespace FCAP.Hooks
             if (slugcatNumber == Constants.Nightguard)
             {
                 self.regionLabel.text = string.Concat(menu.Translate("Five Pebbles Pizzeria"), " - ", menu.Translate("Cycle"), " ", (self.saveGameData.cycle + 1).ToString());
+
+                // Difficulty selection
+                if (self.saveGameData.cycle > 5)
+                {
+                    Enums.Animatronic[] animatronics =
+                    [
+                        Enums.Animatronic.Survivor,
+                        Enums.Animatronic.Monk,
+                        Enums.Animatronic.Hunter,
+                        Enums.Animatronic.Nightcat
+                    ];
+                    var startPosition = new Vector2(self.regionLabel.pos.x, self.KarmaSymbolPos.y - 18f);
+                    for (int i = 0; i < animatronics.Length; i++)
+                    {
+                        var dragger = new FCAPDragger(self.menu, self.menu.pages[0], startPosition, Vector2.right * 48f * (i - (animatronics.Length / 2f) + 0.25f), animatronics[i]);
+                        self.subObjects.Add(dragger);
+                    }
+                }
             }
         }
 
@@ -37,7 +73,22 @@ namespace FCAP.Hooks
             {
                 self.hud.karmaMeter.fade = 0f;
                 self.hud.foodMeter.fade = 0f;
-                self.regionLabel.pos = new Vector2(self.regionLabel.pos.x, self.KarmaSymbolPos.y);
+                if (self.saveGameData.cycle <= 5)
+                {
+                    self.regionLabel.pos = new Vector2(self.regionLabel.pos.x, self.KarmaSymbolPos.y);
+                }
+                else
+                {
+                    foreach (var subObj in self.subObjects)
+                    {
+                        if (subObj is FCAPDragger dragger)
+                        {
+                            dragger.pos = new Vector2(self.MidXpos + self.NextScroll(1f) * self.ScrollMagnitude, self.KarmaSymbolPos.y - 18f) + dragger.offset;
+                            dragger.alpha = 1 - Mathf.Abs(self.NextScroll(1f));
+                            dragger.allowSelect = self.Scroll(1f) < 0.5f;
+                        }
+                    }
+                }
             }
         }
 

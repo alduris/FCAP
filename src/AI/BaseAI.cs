@@ -6,7 +6,7 @@ namespace FCAP.AI
 {
     public abstract class BaseAI(GameController game, Enums.Animatronic me, Location startLoc, int difficulty, int counter)
     {
-        protected int difficulty = difficulty == -1 ? Options.GetCustomDifficulty(me) : difficulty;
+        protected int difficulty = difficulty == -1 ? FCAPOptions.GetCustomDifficulty(me) : difficulty;
         protected int maxCounter = counter;
         protected int counter = counter;
         public Enums.Animatronic animatronic = me;

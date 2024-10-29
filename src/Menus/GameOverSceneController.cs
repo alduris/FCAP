@@ -1,7 +1,7 @@
 ﻿using Menu;
 using UnityEngine;
 
-namespace FCAP.Screens
+namespace FCAP.Menus
 {
     internal class GameOverSceneController(InteractiveMenuScene owner) : SceneController(owner)
     {

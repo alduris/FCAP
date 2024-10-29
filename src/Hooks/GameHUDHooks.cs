@@ -5,16 +5,27 @@ using MonoMod.Cil;
 
 namespace FCAP.Hooks
 {
-    internal static class RainMeterHooks
+    internal static class GameHUDHooks
     {
         public static void Apply()
         {
+            On.HUD.HUD.Update += HideBadParts;
             On.HUD.RainMeter.ctor += SkipHalftimeBlink;
             On.HUD.RainMeter.Update += ForceTimerVisible;
             IL.HUD.RainMeter.Update += BypassNoTimerMMF;
         }
 
-        private static void SkipHalftimeBlink(On.HUD.RainMeter.orig_ctor orig, HUD.RainMeter self, HUD.HUD hud, FContainer fContainer)
+        private static void HideBadParts(On.HUD.HUD.orig_Update orig, HUD.HUD self)
+        {
+            orig(self);
+            if (self.owner is Player p && p.room?.game?.StoryCharacter == Constants.Nightguard)
+            {
+                self.foodMeter.fade = 0f;
+                self.karmaMeter.fade = 0f;
+            }
+        }
+
+        private static void SkipHalftimeBlink(On.HUD.RainMeter.orig_ctor orig, RainMeter self, HUD.HUD hud, FContainer fContainer)
         {
             orig(self, hud, fContainer);
             if ((self.hud.owner as Player).SlugCatClass == Constants.Nightguard)
@@ -23,7 +34,7 @@ namespace FCAP.Hooks
             }
         }
 
-        private static void ForceTimerVisible(On.HUD.RainMeter.orig_Update orig, HUD.RainMeter self)
+        private static void ForceTimerVisible(On.HUD.RainMeter.orig_Update orig, RainMeter self)
         {
             if ((self.hud.owner as Player).SlugCatClass == Constants.Nightguard)
             {

@@ -5,7 +5,7 @@ namespace FCAP
     public static class Enums
     {
 
-        public enum Animatronic // todo: come up with more original characters than these?
+        public enum Animatronic
         {
             Survivor,
             Monk,
@@ -25,14 +25,6 @@ namespace FCAP
                 Animatronic.Nightcat => SlugcatStats.Name.Night,
                 _ => throw new NotImplementedException()
             };
-        }
-
-        public enum PowerStage
-        {
-            HasPower,
-            Drone,
-            MusicBox,
-            Waiting
         }
 
         public enum OverseerTask

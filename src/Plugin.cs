@@ -20,7 +20,7 @@ namespace FCAP
     class Plugin : BaseUnityPlugin
     {
         public static new ManualLogSource Logger;
-        public Options options;
+        public FCAPOptions options;
 
         // Add hooks
         public void OnEnable()
@@ -46,14 +46,15 @@ namespace FCAP
             {
 
                 DialogHooks.Apply();
+                GameHUDHooks.Apply();
                 GameplayHooks.Apply();
                 GraphicsHooks.Apply();
-                OverseerHooks.Apply();
                 MenuHooks.Apply();
-                ProcessHooks.Apply();
+                OverseerHooks.Apply();
                 PlacedObjectHooks.Apply();
-                RainMeterHooks.Apply();
+                ProcessHooks.Apply();
                 SaveHooks.Apply();
+#warning Update the cameras!!!!
 
                 Logger.LogDebug("yay");
             }
@@ -63,7 +64,7 @@ namespace FCAP
                 Logger.LogError(ex);
             }
 
-            options = new Options();
+            options = new FCAPOptions();
             MachineConnector.SetRegisteredOI("alduris.fcap", options);
         }
     }
