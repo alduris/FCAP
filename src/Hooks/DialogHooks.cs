@@ -17,6 +17,12 @@ namespace FCAP.Hooks
         public static void Apply()
         {
             On.HUD.DialogBox.InitNextMessage += DialogBox_InitNextMessage;
+            On.RainWorldGame.AllowRainCounterToTick += RainWorldGame_AllowRainCounterToTick;
+        }
+
+        private static bool RainWorldGame_AllowRainCounterToTick(On.RainWorldGame.orig_AllowRainCounterToTick orig, RainWorldGame self)
+        {
+            return orig(self) || self.StoryCharacter == Constants.Nightguard;
         }
 
         private static void DialogBox_InitNextMessage(On.HUD.DialogBox.orig_InitNextMessage orig, HUD.DialogBox self)
