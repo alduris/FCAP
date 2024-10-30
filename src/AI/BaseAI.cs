@@ -62,8 +62,8 @@ namespace FCAP.AI
 
         public virtual bool MoveCheck()
         {
-            // Make move chance less likely when at door as sort of a saving grace towards the player to not get jumpscared out of nowhere as often
-            return Random.Range(0, 20) + (location == Location.LeftDoor || location == Location.RightDoor ? difficulty / 3 : 0) < difficulty;
+            // Be finnicky with the move chances. At the door they're more likely to move in difficulty <= 3 but less likely to move > 3 which scales with the difficulty
+            return Random.Range(0, 20) + (location == Location.LeftDoor || location == Location.RightDoor ? (difficulty > 3 ? difficulty : -difficulty) / 3 : 0) < difficulty;
         }
 
         public abstract Location NextMove();

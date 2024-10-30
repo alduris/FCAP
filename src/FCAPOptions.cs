@@ -29,7 +29,7 @@ namespace FCAP
         private static Configurable<int> HunterDifficulty;
         private static Configurable<int> NightDifficulty;
 
-        public static FCAPOptions? Instance;
+        public static FCAPOptions Instance;
 
         public FCAPOptions()
         {

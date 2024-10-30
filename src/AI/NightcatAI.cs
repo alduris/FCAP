@@ -10,9 +10,9 @@ namespace FCAP.AI
     /// </summary>
     internal class NightcatAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Nightcat, Location.SecondaryStage, NightDifficulties[night], 368)
     {
-        private static readonly int CamAdditionalWait = 700;
+        private static readonly int CamAdditionalWait = 280;
         private static readonly int[] NightDifficulties = [0, 0, 1, 3, 5, 7, -1];
-        private const float ReturnHomeChance = 0.6f;
+        private const float ReturnHomeChance = 0.45f;
 
         private bool WaitingForCamDown = false;
         private bool ForceMove = false;
@@ -109,7 +109,7 @@ namespace FCAP.AI
                         counter = CamAdditionalWait;
                     }
                 }
-                else if (counter == 1 && GameController.Instance.InCams)
+                else if (counter == 1 && GameController.Instance.InCams && GameController.Instance.CamSelected == location)
                 {
                     counter = 2;
                     WaitingForCamDown = true;
@@ -121,7 +121,9 @@ namespace FCAP.AI
 
         public override bool MoveCheck()
         {
-            return base.MoveCheck() && (!WaitingForCamDown || ForceMove);
+            bool b = base.MoveCheck() && (!WaitingForCamDown || ForceMove || location == Location.LeftDoor || location == Location.RightDoor);
+            if (b) ForceMove = false;
+            return b;
         }
 
         public override bool CanJumpscare()

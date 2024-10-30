@@ -11,7 +11,7 @@ namespace FCAP.AI
     internal class HunterAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Hunter, Map.Location.ShowStage, NightDifficulties[night], 203)
     {
         private static readonly int[] NightDifficulties = [0, 1, 3, 4, 7, 7, -1];
-        private const float ReturnHomeChance = 0.65f;
+        private const float ReturnHomeChance = 0.4f;
 
         protected override int PowerDrainOnLeave => 30;
 

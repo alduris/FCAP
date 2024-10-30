@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Security.AccessControl;
 using UnityEngine;
 
 namespace FCAP.Graphics
 {
     public class DoorAnimatronic : UpdatableAndDeletable
     {
-        internal static ConditionalWeakTable<Player, DoorAnimatronic> animatronicShowCWT = new();
+        private static ConditionalWeakTable<Player, DoorAnimatronic> animatronicShowCWT = new();
         public static bool IsAnimatronic(Player player) => animatronicShowCWT.TryGetValue(player, out _);
+        public static bool IsAnimatronic(Player player, out DoorAnimatronic animatronic) => animatronicShowCWT.TryGetValue(player, out animatronic);
 
         public GameController game;
         public Enums.Animatronic anim;

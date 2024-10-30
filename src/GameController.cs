@@ -20,6 +20,7 @@ namespace FCAP
 
         public Map.Location CamViewing = Map.Location.ShowStage;
         public Map.Location CamSelected = Map.Location.ShowStage;
+        public bool LastInCams = false;
         public bool InCams = false;
         public int CamViewTimer = 0;
 
@@ -66,6 +67,7 @@ namespace FCAP
         public override void Update(bool eu)
         {
             base.Update(eu);
+            LastInCams = InCams;
 
             // Game complete?
             if (room.world.rainCycle.timer > 40 * 60 * 6)

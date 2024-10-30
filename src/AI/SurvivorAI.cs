@@ -9,7 +9,7 @@ namespace FCAP.AI
     /// </summary>
     internal class SurvivorAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Survivor, Location.ShowStage, NightDifficulties[night], 226)
     {
-        private const float LurkChance = 0.4f;
+        private const float LurkChance = 0.35f;
         private static readonly int[] NightDifficulties = [0, 5, 2, 4, 7, 10, -1];
         private static readonly Dictionary<Location, Location[]> MoveMap = new()
         {
