@@ -84,6 +84,19 @@ namespace FCAP
                 // Switch process
                 if (room.game.manager.upcomingProcess == null)
                 {
+                    switch (room.game.GetStorySession.saveState.cycleNumber)
+                    {
+                        case 4: FCAPOptions.Flag(0); break;
+                        case 5: FCAPOptions.Flag(1); break;
+                        case >= 6:
+                            if (
+                                FCAPOptions.GetCustomDifficulty(Animatronic.Survivor) == 20
+                                && FCAPOptions.GetCustomDifficulty(Animatronic.Monk) == 20
+                                && FCAPOptions.GetCustomDifficulty(Animatronic.Hunter) == 20
+                                && FCAPOptions.GetCustomDifficulty(Animatronic.Nightcat) == 20)
+                                FCAPOptions.Flag(2);
+                            break;
+                    }
                     if (room.game.GetStorySession.saveState.cycleNumber == 4)
                     {
                         // Night 5, beating the game, roll credits

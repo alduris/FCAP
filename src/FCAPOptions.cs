@@ -29,7 +29,22 @@ namespace FCAP
         private static Configurable<int> HunterDifficulty;
         private static Configurable<int> NightDifficulty;
 
+        private static Configurable<bool> N5;
+        private static Configurable<bool> N6;
+        private static Configurable<bool> M20;
+
         public static FCAPOptions Instance;
+
+        public static void Flag(int i)
+        {
+            switch (i)
+            {
+                case 0: N5.Value = true; break;
+                case 1: N6.Value = true; break;
+                case 2: M20.Value = true; break;
+            }
+            Instance?.config.Save();
+        }
 
         public FCAPOptions()
         {
@@ -38,6 +53,10 @@ namespace FCAP
             MonkDifficulty = config.Bind(nameof(MonkDifficulty), 10, new ConfigAcceptableRange<int>(0, 20));
             HunterDifficulty = config.Bind(nameof(HunterDifficulty), 10, new ConfigAcceptableRange<int>(0, 20));
             NightDifficulty = config.Bind(nameof(NightDifficulty), 10, new ConfigAcceptableRange<int>(0, 20));
+
+            N5 = config.Bind(nameof(N5), false);
+            N6 = config.Bind(nameof(N6), false);
+            M20 = config.Bind(nameof(M20), false);
         }
     }
 }
