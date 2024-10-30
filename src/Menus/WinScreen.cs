@@ -101,7 +101,7 @@ namespace FCAP.Menus
             y -= 30f;
             labelGroups.Add(new WinLabelPopper(this, "Helped Five Pebbles", y));
             y -= 30f;
-            labelGroups.Add(new WinLabelPopper(this, "120 Scav Dollars Earned", y));
+            labelGroups.Add(new WinLabelPopper(this, "120 Slugcoin Earned", y));
         }
 
         public override string UpdateInfoText()
