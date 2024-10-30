@@ -6,6 +6,6 @@
 	"description": "Can you survive?",
 	"requirements": [ "slime-cubed.slugbase" ],
 	"requirements_names": [ "SlugBase" ],
-	"tags": [ "Custom Slugcat" ],
+	"tags": [ "Custom Slugcat", "Game Modes", "Game Mechanics" ],
 	"checksum_override_version": false
 }
