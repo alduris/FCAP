@@ -75,9 +75,11 @@ namespace FCAP
                     if (room.game.GetStorySession.saveState.cycleNumber == 4)
                     {
                         // Night 5, beating the game, roll credits
-                        RainWorldGame.BeatGameMode(room.game, true); // for the sake of save file simplicity, we assume that we ascended
+                        room.game.GetStorySession.AppendTimeOnCycleEnd(true);
+                        RainWorldGame.BeatGameMode(room.game, true); // for the sake of save file simplicity, we tell the game we ascended
                         room.game.ExitGame(false, false);
-                        room.game.manager.RequestMainProcessSwitch(Constants.WeekOverScreen, 0f);
+                        room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
+                        room.game.manager.RequestMainProcessSwitch(Constants.WeekOverScreen, 1f);
                     }
                     else
                     {
@@ -85,7 +87,7 @@ namespace FCAP
                         room.game.GetStorySession.AppendTimeOnCycleEnd(true);
                         room.game.ExitGame(false, false);
                         room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
-                        room.game.manager.RequestMainProcessSwitch(Constants.NightOverScreen, 0f);
+                        room.game.manager.RequestMainProcessSwitch(Constants.NightOverScreen, 1f);
                     }
                 }
                 return;
@@ -96,6 +98,12 @@ namespace FCAP
             {
                 PowerUsage = 1 + (LeftDoorLight ? 1 : 0) + (LeftDoorShut ? 1 : 0) + (RightDoorLight ? 1 : 0) + (RightDoorShut ? 1 : 0) + (InCams ? 1 : 0);
                 Power -= PowerUsage;
+
+                // Also spoopy
+                if (UnityEngine.Random.value < 0.0001f)
+                {
+                    Spoopy();
+                }
             }
 
             if (OutOfPower)
@@ -176,11 +184,15 @@ namespace FCAP
             Instance = null;
         }
 
+        bool hasRunOutOfPower = false;
         public void RunOutOfPower()
         {
+            if (hasRunOutOfPower) return;
+            hasRunOutOfPower = true;
             RemoveOverseer(ref lDoorOverseer, false);
             RemoveOverseer(ref rDoorOverseer, false);
             RemoveOverseer(ref camsOverseer, false);
+            room.game.cameras[0]?.virtualMicrophone?.PlaySound(SoundID.SS_AI_Exit_Work_Mode, 0f, 1.5f, 0.75f);
         }
 
         private void CreateOverseer(OverseerTask task, out Overseer overseer)
@@ -283,6 +295,31 @@ namespace FCAP
         public void FlickerCams()
         {
             CamViewTimer = 0;
+        }
+
+        private static readonly SoundID[] SpoopList = [
+            SoundID.Lizard_Voice_Pink_A,
+            SoundID.Lizard_Voice_Pink_B,
+            SoundID.Lizard_Voice_Pink_C,
+            SoundID.Lizard_Voice_Pink_D,
+            SoundID.Lizard_Voice_Pink_E,
+            SoundID.Lizard_Voice_Green_A,
+            SoundID.In_Room_Deer_Summoned,
+            SoundID.In_Room_Deer_Summoned,
+            SoundID.In_Room_Deer_Summoned,
+            SoundID.Distant_Deer_Summoned,
+            SoundID.Distant_Deer_Summoned,
+            SoundID.Distant_Deer_Summoned,
+            SoundID.SL_AI_Talk_1,
+            SoundID.Gate_Electric_Screw_Turning_LOOP,
+        ];
+        public void Spoopy()
+        {
+            room.game?.cameras[0]?.virtualMicrophone?.PlaySound(
+                SpoopList[UnityEngine.Random.Range(0, SpoopList.Length)],
+                UnityEngine.Random.Range(-0.25f, 0.25f),
+                UnityEngine.Random.Range(0.35f, 0.55f),
+                UnityEngine.Random.Range(0.25f, 0.35f));
         }
     }
 }

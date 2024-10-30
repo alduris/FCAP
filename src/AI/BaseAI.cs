@@ -8,7 +8,7 @@ namespace FCAP.AI
     {
         protected int difficulty = difficulty == -1 ? FCAPOptions.GetCustomDifficulty(me) : difficulty;
         protected int maxCounter = counter;
-        protected int counter = counter;
+        protected int counter = counter * 2; // we give a little extra delay at the start so the game can load
         public Enums.Animatronic animatronic = me;
         public Location location = startLoc;
         public GameController game = game;

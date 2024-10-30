@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using FCAP.Menus;
 using Menu;
 using MonoMod.RuntimeDetour;
+using RWCustom;
 using UnityEngine;
 
 namespace FCAP.Hooks
@@ -21,7 +22,28 @@ namespace FCAP.Hooks
             On.Menu.SlugcatSelectMenu.SlugcatPageContinue.ctor += SlugcatPageContinue_ctor;
             On.Menu.SlugcatSelectMenu.SlugcatPageContinue.Update += SlugcatPageContinue_Update;
             On.Menu.Menu.SelectCandidate += Menu_SelectCandidate;
+            On.RainWorldGame.CommunicateWithUpcomingProcess += RainWorldGame_CommunicateWithUpcomingProcess;
             _ = new Hook(typeof(MenuObject).GetProperty(nameof(MenuObject.Selected)).GetGetMethod(), MenuObject_Selected_get);
+        }
+
+        private static void RainWorldGame_CommunicateWithUpcomingProcess(On.RainWorldGame.orig_CommunicateWithUpcomingProcess orig, RainWorldGame self, MainLoopProcess nextProcess)
+        {
+            orig(self, nextProcess);
+            if (nextProcess is WinScreen)
+            {
+                var data = new KarmaLadderScreen.SleepDeathScreenDataPackage(self.cameras[0].hud.textPrompt.foodInStomach, new IntVector2(4, 4), self.GetStorySession.saveState.deathPersistentSaveData.reinforcedKarma, RainWorld.roomNameToIndex["SS_FCAP"], Vector2.zero, self.cameras[0].hud.map.mapData, self.GetStorySession.saveState, self.GetStorySession.characterStats, self.GetStorySession.playerSessionRecords[0], self.GetStorySession.saveState.lastMalnourished, self.GetStorySession.saveState.malnourished);
+                if (ModManager.CoopAvailable)
+                {
+                    for (int i = 1; i < self.GetStorySession.playerSessionRecords.Length; i++)
+                    {
+                        if (self.GetStorySession.playerSessionRecords[i].kills != null && self.GetStorySession.playerSessionRecords[i].kills.Count > 0)
+                        {
+                            data.sessionRecord.kills.AddRange(self.GetStorySession.playerSessionRecords[i].kills);
+                        }
+                    }
+                }
+                (nextProcess as WinScreen).GetDataFromGame(data);
+            }
         }
 
         private static bool MenuObject_Selected_get(Func<MenuObject, bool> orig, MenuObject self)
@@ -173,6 +195,40 @@ namespace FCAP.Hooks
                     (self as InteractiveMenuScene).idleDepths.Add(3.2f);
                     (self as InteractiveMenuScene).idleDepths.Add(1.6f);
                 }
+            }
+            else if (self.sceneID == Constants.NightguardWin)
+            {
+                self.sceneFolder = "scenes/end_nightguard";
+
+                if (self.flatMode)
+                {
+                    self.AddIllustration(new MenuIllustration(self.menu, self, self.sceneFolder, "nightguard end", new Vector2(683f, 384f), false, true));
+                }
+                else
+                {
+                    var controller = new WinSceneController(self as InteractiveMenuScene);
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 13", Vector2.zero, 7.0f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 12", Vector2.zero, 6.5f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 11", Vector2.zero, 4.5f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 10", Vector2.zero, 2.5f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 9", Vector2.zero, 3.8f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 8", Vector2.zero, 3.7f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 7", Vector2.zero, 3.5f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 6", Vector2.zero, 3.4f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(controller.Sign = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 6 alt", Vector2.zero, 3.4f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 5", Vector2.zero, 3f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 4", Vector2.zero, 2.4f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 3", Vector2.zero, 2.2f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 2", Vector2.zero, 2.3f, MenuDepthIllustration.MenuShader.Basic));
+                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard end 1", Vector2.zero, 2.1f, MenuDepthIllustration.MenuShader.Basic));
+                    (self as InteractiveMenuScene).idleDepths.Add(2.6f);
+                    (self as InteractiveMenuScene).idleDepths.Add(2.0f);
+                    (self as InteractiveMenuScene).idleDepths.Add(3.2f);
+                    (self as InteractiveMenuScene).idleDepths.Add(1.6f);
+                }
+
+                // Also play song
+                self.menu.manager.musicPlayer.MenuRequestsSong(Constants.EndingSongs[UnityEngine.Random.Range(0, Constants.EndingSongs.Length)], float.MaxValue, 0f);
             }
         }
     }

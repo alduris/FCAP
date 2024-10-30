@@ -21,14 +21,11 @@ namespace FCAP.Hooks
             }
             else if (ID == Constants.NightOverScreen)
             {
-                self.currentMainLoop = null;
                 self.currentMainLoop = new EndOfNightScreen(self);
             }
             else if (ID == Constants.WeekOverScreen)
             {
-                self.currentMainLoop = null;
-#warning Make this
-                throw new NotImplementedException();
+                self.currentMainLoop = new WinScreen(self);
             }
             orig(self, ID);
         }

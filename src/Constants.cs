@@ -30,6 +30,7 @@ namespace FCAP
 
             NightguardMenu ??= new MenuScene.SceneID("Slugcat_Nightguard", false);
             NightguardDeath ??= new MenuScene.SceneID("Death_Nightguard", false);
+            NightguardWin ??= new MenuScene.SceneID("Win_Nightguard", false);
         }
 
         public static void Unregister()
@@ -56,6 +57,11 @@ namespace FCAP
 
             JumpscareSound?.Unregister();
             JumpscareSound = null;
+
+            NightguardDeath?.Unregister();
+            NightguardDeath = null;
+            NightguardWin?.Unregister();
+            NightguardWin = null;
         }
 
         public static SlugcatStats.Name Nightguard;
@@ -74,5 +80,13 @@ namespace FCAP
 
         public static MenuScene.SceneID NightguardMenu;
         public static MenuScene.SceneID NightguardDeath;
+        public static MenuScene.SceneID NightguardWin;
+
+        public static string[] EndingSongs =
+            [
+            "RW_18 - The Captain",
+            "RW_42 - Kayava",
+            "RW_43 - Bio Engineering",
+            ];
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using UnityEngine;
 
 namespace FCAP.Graphics
@@ -18,6 +19,7 @@ namespace FCAP.Graphics
         public bool flickerEyes = false;
         private int flickerCounter = Random.Range(10, 30);
         public bool flickerOn = true;
+        public bool hasSeen = false;
 
         public DoorAnimatronic(Room room, GameController controller, Enums.Animatronic animatronic, bool left)
         {
@@ -45,6 +47,22 @@ namespace FCAP.Graphics
             base.Update(eu);
             if (player == null) return;
 
+            // Sound
+            if (!hasSeen && !flickerEyes)
+            {
+                if (left && game.LeftDoorLight)
+                {
+                    hasSeen = true;
+                    room.game?.cameras[0]?.virtualMicrophone?.PlaySound(SoundID.Gate_Rails_Collide, -0.5f, 1f, Random.Range(0.5f, 0.65f));
+                }
+                else if (!left && game.RightDoorLight)
+                {
+                    hasSeen = true;
+                    room.game?.cameras[0]?.virtualMicrophone?.PlaySound(SoundID.Gate_Rails_Collide, 0.5f, 1f, Random.Range(0.5f, 0.65f));
+                }
+            }
+
+            // Character
             player.standing = true;
 
             if (flickerEyes)

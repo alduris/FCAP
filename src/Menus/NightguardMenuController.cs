@@ -89,9 +89,9 @@ namespace FCAP.Menus
                 outerToggled = !outerToggled;
 
                 if (outerToggled)
-                    outerToggleCooldown = Random.Range(20, 80);
+                    outerToggleCooldown = Random.Range(60, 180);
                 else
-                    outerToggleCooldown = Random.Range(40, 120);
+                    outerToggleCooldown = Random.Range(80, 300);
             }
 
             if (needToUpdateOuterToggle)
@@ -147,7 +147,7 @@ namespace FCAP.Menus
                 }
             }
 
-            Hologram.alpha = hologramFlickerCounter > 0 ? Random.Range(0.25f, 0.75f) : 1f;
+            Hologram.alpha = hologramFlickerCounter > 0 ? Random.Range(0.25f, 0.75f) : Random.Range(0.8f, 0.95f);
             if (needToUpdateHologramGraphic)
             {
                 UpdateImage(Hologram, "nightguard hologram " + hologramGraphic);
