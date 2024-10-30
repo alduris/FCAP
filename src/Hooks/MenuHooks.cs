@@ -22,28 +22,7 @@ namespace FCAP.Hooks
             On.Menu.SlugcatSelectMenu.SlugcatPageContinue.ctor += SlugcatPageContinue_ctor;
             On.Menu.SlugcatSelectMenu.SlugcatPageContinue.Update += SlugcatPageContinue_Update;
             On.Menu.Menu.SelectCandidate += Menu_SelectCandidate;
-            On.RainWorldGame.CommunicateWithUpcomingProcess += RainWorldGame_CommunicateWithUpcomingProcess;
             _ = new Hook(typeof(MenuObject).GetProperty(nameof(MenuObject.Selected)).GetGetMethod(), MenuObject_Selected_get);
-        }
-
-        private static void RainWorldGame_CommunicateWithUpcomingProcess(On.RainWorldGame.orig_CommunicateWithUpcomingProcess orig, RainWorldGame self, MainLoopProcess nextProcess)
-        {
-            orig(self, nextProcess);
-            if (nextProcess is WinScreen)
-            {
-                var data = new KarmaLadderScreen.SleepDeathScreenDataPackage(self.cameras[0].hud.textPrompt.foodInStomach, new IntVector2(4, 4), self.GetStorySession.saveState.deathPersistentSaveData.reinforcedKarma, RainWorld.roomNameToIndex["SS_FCAP"], Vector2.zero, self.cameras[0].hud.map.mapData, self.GetStorySession.saveState, self.GetStorySession.characterStats, self.GetStorySession.playerSessionRecords[0], self.GetStorySession.saveState.lastMalnourished, self.GetStorySession.saveState.malnourished);
-                if (ModManager.CoopAvailable)
-                {
-                    for (int i = 1; i < self.GetStorySession.playerSessionRecords.Length; i++)
-                    {
-                        if (self.GetStorySession.playerSessionRecords[i].kills != null && self.GetStorySession.playerSessionRecords[i].kills.Count > 0)
-                        {
-                            data.sessionRecord.kills.AddRange(self.GetStorySession.playerSessionRecords[i].kills);
-                        }
-                    }
-                }
-                (nextProcess as WinScreen).GetDataFromGame(data);
-            }
         }
 
         private static bool MenuObject_Selected_get(Func<MenuObject, bool> orig, MenuObject self)
