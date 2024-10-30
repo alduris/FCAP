@@ -14,8 +14,11 @@ namespace FCAP.AI
         public GameController game = game;
         public DoorAnimatronic doorRepresentation = null;
 
+        protected virtual int PowerDrainOnLeave => 5;
+
         public virtual void Update()
         {
+            if (game.OutOfPower) return;
             counter--;
             if (counter <= 0)
             {
@@ -28,14 +31,24 @@ namespace FCAP.AI
                     }
                     else
                     {
+                        var lastLoc = location;
                         location = NextMove();
                         Plugin.Logger.LogInfo(animatronic.ToString() + " moved to " + location.ToString());
                         game.FlickerCams();
+
+                        if (lastLoc != location && location != Location.You && (lastLoc == Location.LeftDoor || lastLoc == Location.RightDoor))
+                        {
+                            game.Power -= PowerDrainOnLeave;
+                        }
+                        else if (lastLoc != location && (location == Location.LeftDoor || location == Location.RightDoor))
+                        {
+                            counter *= 2; // bit of saving grace for the player
+                        }
                     }
 
                     if (location == Location.LeftDoor || location == Location.RightDoor)
                     {
-                        doorRepresentation ??= new DoorAnimatronic(game.room, game, animatronic, location == Location.LeftDoor);
+                        doorRepresentation ??= new DoorAnimatronic(game.room, game, animatronic, location == Location.LeftDoor, false);
                         game.room.AddObject(doorRepresentation);
                     }
                     else
@@ -49,7 +62,8 @@ namespace FCAP.AI
 
         public virtual bool MoveCheck()
         {
-            return Random.Range(0, 20) < difficulty;
+            // Make move chance less likely when at door as sort of a saving grace towards the player to not get jumpscared out of nowhere as often
+            return Random.Range(0, 20) + (location == Location.LeftDoor || location == Location.RightDoor ? difficulty / 3 : 0) < difficulty;
         }
 
         public abstract Location NextMove();
@@ -63,7 +77,6 @@ namespace FCAP.AI
             else
             {
                 return location == Location.You;
-                // return (location == Location.LeftDoor && !game.LeftDoorShut) || (location == Location.RightDoor && !game.RightDoorShut) || location == Location.You;
             }
         }
     }

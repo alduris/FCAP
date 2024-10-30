@@ -70,6 +70,16 @@ namespace FCAP
             // Game complete?
             if (room.world.rainCycle.timer > 40 * 60 * 6)
             {
+                // Stop nightcat music
+                var stopEvent = new StopMusicEvent()
+                {
+                    fadeOutTime = 0,
+                    type = StopMusicEvent.Type.AllSongs,
+                    prio = 1f,
+                };
+                room.game.manager.musicPlayer.GameRequestsSongStop(stopEvent);
+
+                // Switch process
                 if (room.game.manager.upcomingProcess == null)
                 {
                     if (room.game.GetStorySession.saveState.cycleNumber == 4)
@@ -100,7 +110,7 @@ namespace FCAP
                 Power -= PowerUsage;
 
                 // Also spoopy
-                if (UnityEngine.Random.value < 0.0001f)
+                if (UnityEngine.Random.value < 0.0005f)
                 {
                     Spoopy();
                 }
@@ -116,6 +126,12 @@ namespace FCAP
                 OOPTimer++;
 
                 RunOutOfPower();
+
+                // Diminish sounds
+                foreach (var sound in room.roomSettings.ambientSounds)
+                {
+                    sound.volume *= 0.65f;
+                }
             }
             else
             {
@@ -215,6 +231,8 @@ namespace FCAP
             if (attribute)
             {
                 os.SetKillTag(room.game.FirstAnyPlayer);
+                var kills = room.game.GetStorySession.playerSessionRecords[0].kills;
+                kills?.Add(new PlayerSessionRecord.KillRecord(CreatureSymbol.SymbolDataFromCreature(os.abstractCreature), os.abstractCreature.ID, os.Template.IsLizard));
             }
             os.Die();
             os.abstractCreature.Destroy();
@@ -318,7 +336,7 @@ namespace FCAP
             room.game?.cameras[0]?.virtualMicrophone?.PlaySound(
                 SpoopList[UnityEngine.Random.Range(0, SpoopList.Length)],
                 UnityEngine.Random.Range(-0.25f, 0.25f),
-                UnityEngine.Random.Range(0.35f, 0.55f),
+                UnityEngine.Random.Range(0.45f, 0.65f),
                 UnityEngine.Random.Range(0.25f, 0.35f));
         }
     }

@@ -51,6 +51,10 @@ namespace FCAP.Hooks
                     }
                 }
             }
+            else if (GameController.Instance != null && GameController.Instance.InCams)
+            {
+                self.blink = 5;
+            }
         }
     }
 }

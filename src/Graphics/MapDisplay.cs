@@ -52,7 +52,7 @@ namespace FCAP.Graphics
                 var sprite = sLeaser.sprites[i] = new FSprite("pixel");
                 sprite.shader = rCam.game.rainWorld.Shaders["CustomDepth"];
                 sprite.alpha = 1f - (1 / 30f);
-                sprite.scale = 16;
+                sprite.scale = 20;
             }
 
             sLeaser.sprites[0].scale = 16f * 20f;

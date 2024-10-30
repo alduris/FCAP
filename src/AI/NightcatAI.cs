@@ -11,10 +11,13 @@ namespace FCAP.AI
     internal class NightcatAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Nightcat, Location.SecondaryStage, NightDifficulties[night], 368)
     {
         private static readonly int CamAdditionalWait = 700;
-        private static readonly int[] NightDifficulties = [0, 0, 1, 3, 5, 6, -1];
+        private static readonly int[] NightDifficulties = [0, 0, 1, 3, 5, 7, -1];
+        private const float ReturnHomeChance = 0.6f;
 
         private bool WaitingForCamDown = false;
         private bool ForceMove = false;
+
+        protected override int PowerDrainOnLeave => 50;
 
         private enum EvilPhase
         {
@@ -57,7 +60,7 @@ namespace FCAP.AI
                             game.room.game.manager.musicPlayer.GameRequestsSong(musicEvent);
 
                             // Spawn animatronic
-                            doorRepresentation = new DoorAnimatronic(game.room, game, animatronic, location == Location.LeftDoor) { flickerEyes = true };
+                            doorRepresentation = new DoorAnimatronic(game.room, game, animatronic, location == Location.LeftDoor, true) { flickerEyes = true };
                             game.room.AddObject(doorRepresentation);
                         }
                         break;
@@ -118,7 +121,7 @@ namespace FCAP.AI
 
         public override bool MoveCheck()
         {
-            return base.MoveCheck() && (!WaitingForCamDown) || ForceMove;
+            return base.MoveCheck() && (!WaitingForCamDown || ForceMove);
         }
 
         public override bool CanJumpscare()
@@ -127,8 +130,7 @@ namespace FCAP.AI
             {
                 return Random.value < 0.25f;
             }
-            return ((location == Location.LeftDoor && !game.LeftDoorShut) || (location == Location.RightDoor && !game.RightDoorShut)) &&
-                (!game.InCams || game.InCams && game.CamViewing != location);
+            return ((location == Location.LeftDoor && !game.LeftDoorShut) || (location == Location.RightDoor && !game.RightDoorShut));
         }
 
         public override Location NextMove()
@@ -138,10 +140,10 @@ namespace FCAP.AI
                 Location.SecondaryStage => Random.value < 0.5f ? Location.LeftHall : Location.Storage,
 
                 Location.LeftHall => Location.LeftDoor,
-                Location.LeftDoor => Location.SecondaryStage,
+                Location.LeftDoor => Random.value < ReturnHomeChance ? Location.SecondaryStage : Location.LeftDoor,
 
                 Location.Storage => Location.RightDoor,
-                Location.RightDoor => Location.SecondaryStage,
+                Location.RightDoor => Random.value < ReturnHomeChance ? Location.SecondaryStage : Location.RightDoor,
                 _ => location
             };
         }

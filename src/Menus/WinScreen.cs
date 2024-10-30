@@ -13,7 +13,7 @@ namespace FCAP.Menus
         private SimpleButton continueButton;
         private SimpleButton exitButton;
 
-        private readonly List<WinLabelTicker> labelGroups = [];
+        private readonly List<WinLabelThingy> labelGroups = [];
         private int statCountdown = 40;
 
         public WinScreen(ProcessManager manager) : base(manager, Constants.WeekOverScreen)
@@ -121,7 +121,7 @@ namespace FCAP.Menus
             return base.UpdateInfoText();
         }
 
-        private class WinLabelTicker
+        private class WinLabelThingy
         {
             public Menu.Menu menu;
             public int curr;
@@ -131,7 +131,7 @@ namespace FCAP.Menus
             public bool isShowing = false;
             public bool Done => isShowing && curr == end;
 
-            public WinLabelTicker(WinScreen menu, int start, int end, string name, float y)
+            public WinLabelThingy(WinScreen menu, int start, int end, string name, float y)
             {
                 this.menu = menu;
                 curr = start;
@@ -155,7 +155,6 @@ namespace FCAP.Menus
                     else if (curr > end) curr--;
                     PlaySound();
                 }
-                label.text = name + " " + curr;
                 label.label.alpha = 1f;
             }
 
@@ -165,7 +164,21 @@ namespace FCAP.Menus
             }
         }
 
-        private class WinLabelPopper : WinLabelTicker
+        private class WinLabelTicker : WinLabelThingy
+        {
+            public WinLabelTicker(WinScreen menu, int start, int end, string name, float y) : base(menu, start, end + name.Length, name, y)
+            {
+                label.text = "";
+            }
+
+            public override void Update()
+            {
+                base.Update();
+                label.text = curr < name.Length ? name.Substring(curr) : name + " " + curr;
+            }
+        }
+
+        private class WinLabelPopper : WinLabelThingy
         {
             public WinLabelPopper(WinScreen menu, string name, float y) : base(menu, 0, name.Length, name, y)
             {

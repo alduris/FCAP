@@ -7,91 +7,87 @@ namespace FCAP.AI
     /// <summary>
     /// Equivalent of Chica. Sticks to right side of map. Shows up close and personal in cameras.
     /// </summary>
-    internal class MonkAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Monk, Map.Location.ShowStage, NightDifficulties[night], 213)
+    internal class MonkAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Monk, Map.Location.ShowStage, NightDifficulties[night], 247)
     {
-        private static readonly int[] NightDifficulties = [0, 1, 4, 2, 5, 8, -1];
+        private const float LurkChance = 0.4f;
+        private static readonly int[] NightDifficulties = [0, 2, 5, 3, 6, 9, -1];
         private static readonly Dictionary<Location, Location[]> MoveMap = new()
         {
             {
                 Location.ShowStage,
                 [
                     Location.DiningArea,
-                    Location.DiningArea,
-                    Location.PlayArea,
                     Location.PlayArea,
                     Location.PartyRoomC,
                     Location.PartyRoomD,
+                    Location.Kitchen,
                 ]
             },
             {
                 Location.DiningArea,
                 [
+                    Location.PlayArea,
+                    Location.PlayArea,
                     Location.ShowStage,
+                    Location.Kitchen,
                     Location.PartyRoomC,
                     Location.PartyRoomD,
-                    Location.Kitchen,
-                    Location.PlayArea,
-                    Location.PlayArea,
                 ]
             },
             {
                 Location.PlayArea,
                 [
-                    Location.ShowStage,
+                    Location.Storage,
+                    Location.Storage,
+                    Location.Storage,
                     Location.DiningArea,
                     Location.Kitchen,
-                    Location.Storage,
-                    Location.Storage,
-                    Location.Storage
+                    Location.ShowStage,
                 ]
             },
             {
                 Location.PartyRoomC,
                 [
+                    Location.DiningArea,
+                    Location.DiningArea,
                     Location.ShowStage,
-                    Location.DiningArea,
-                    Location.DiningArea,
                     Location.PartyRoomD
                 ]
             },
             {
                 Location.PartyRoomD,
                 [
+                    Location.DiningArea,
+                    Location.DiningArea,
+                    Location.Kitchen,
                     Location.ShowStage,
-                    Location.DiningArea,
-                    Location.DiningArea,
                     Location.PartyRoomC,
-                    Location.Kitchen
                 ]
             },
             {
                 Location.Kitchen,
                 [
-                    Location.DiningArea,
-                    Location.DiningArea,
                     Location.PlayArea,
                     Location.PlayArea,
-                    Location.PlayArea,
-                    Location.ShowStage,
                     Location.Storage,
+                    Location.DiningArea,
+                    Location.DiningArea,
+                    Location.ShowStage,
                 ]
             },
             {
                 Location.Storage,
                 [
+                    Location.RightHall,
+                    Location.RightHall,
                     Location.PlayArea,
                     Location.PlayArea,
                     Location.Kitchen,
-                    Location.RightHall,
-                    Location.RightHall,
-                    Location.RightHall,
                 ]
             },
             {
                 Location.RightHall,
                 [
-                    Location.RightDoor,
-                    Location.RightDoor,
                     Location.RightDoor,
                     Location.RightDoor,
                     Location.RightDoor,
@@ -103,10 +99,10 @@ namespace FCAP.AI
             {
                 Location.RightDoor,
                 [
+                    Location.ShowStage,
+                    Location.ShowStage,
                     Location.RightHall,
                     Location.Storage,
-                    Location.ShowStage,
-                    Location.ShowStage
                 ]
             },
         };
@@ -129,11 +125,19 @@ namespace FCAP.AI
 
         public override Map.Location NextMove()
         {
-            if (location == Location.RightDoor && !game.RightDoorShut)
+            if (location == Location.RightDoor)
             {
-                return Location.You;
+                if (!game.RightDoorShut)
+                {
+                    return Location.You;
+                }
+                else if (Random.value < LurkChance)
+                {
+                    return Location.RightDoor;
+                }
             }
-            return MoveMap.TryGetValue(location, out var next) ? next[Random.Range(0, next.Length)] : location;
+            // Bias towards lower values so earlier in list gets preference
+            return MoveMap.TryGetValue(location, out var next) ? next[(int)(Mathf.Pow(Random.value, 1.8f) * next.Length)] : location;
         }
     }
 }

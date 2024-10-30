@@ -20,11 +20,13 @@ namespace FCAP.Graphics
         private int flickerCounter = Random.Range(10, 30);
         public bool flickerOn = true;
         public bool hasSeen = false;
+        public bool stayOnOOP = false;
 
-        public DoorAnimatronic(Room room, GameController controller, Enums.Animatronic animatronic, bool left)
+        public DoorAnimatronic(Room room, GameController controller, Enums.Animatronic animatronic, bool left, bool stayOnOOP)
         {
             this.room = room;
             this.left = left;
+            this.stayOnOOP = stayOnOOP;
             game = controller;
             anim = animatronic;
 
@@ -47,18 +49,25 @@ namespace FCAP.Graphics
             base.Update(eu);
             if (player == null) return;
 
+            // Destroy
+            if (game.OutOfPower && !stayOnOOP)
+            {
+                Destroy();
+                return;
+            }
+
             // Sound
             if (!hasSeen && !flickerEyes)
             {
                 if (left && game.LeftDoorLight)
                 {
                     hasSeen = true;
-                    room.game?.cameras[0]?.virtualMicrophone?.PlaySound(SoundID.Gate_Rails_Collide, -0.5f, 1f, Random.Range(0.5f, 0.65f));
+                    room.game?.cameras[0]?.virtualMicrophone?.PlaySound(SoundID.Gate_Rails_Collide, -0.5f, 1.5f, Random.Range(0.5f, 0.65f));
                 }
                 else if (!left && game.RightDoorLight)
                 {
                     hasSeen = true;
-                    room.game?.cameras[0]?.virtualMicrophone?.PlaySound(SoundID.Gate_Rails_Collide, 0.5f, 1f, Random.Range(0.5f, 0.65f));
+                    room.game?.cameras[0]?.virtualMicrophone?.PlaySound(SoundID.Gate_Rails_Collide, 0.5f, 1.5f, Random.Range(0.5f, 0.65f));
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using Menu;
+﻿using System.Linq;
+using Menu;
 using UnityEngine;
 
 namespace FCAP.Menus
@@ -40,6 +41,22 @@ namespace FCAP.Menus
 
             // Sound loop
             mySoundLoopID = SoundID.MENU_Death_Screen_LOOP;
+
+            // Custom night
+            Enums.Animatronic[] animatronics =
+            [
+                Enums.Animatronic.Survivor,
+                    Enums.Animatronic.Monk,
+                    Enums.Animatronic.Hunter,
+                    Enums.Animatronic.Nightcat
+            ];
+            var startPosition = new Vector2(683f - 12f * (animatronics.Length * 2 - 1), 372f);
+            for (int i = 0; i < animatronics.Length; i++)
+            {
+                var dragger = new FCAPDragger(this, pages[0], startPosition, Vector2.right * 48f * i, animatronics[i]);
+                pages[0].subObjects.Add(dragger);
+            }
+            MutualHorizontalButtonBind(pages[0].subObjects.Last(), exitButton);
         }
 
         public override void Update()

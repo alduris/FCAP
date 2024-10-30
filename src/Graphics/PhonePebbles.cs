@@ -1,6 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using FCAP.Hooks;
 using HUD;
+using Menu.Remix.MixedUI;
 using RWCustom;
 
 namespace FCAP.Graphics
@@ -25,7 +29,7 @@ namespace FCAP.Graphics
                 var path = AssetManager.ResolveFilePath(Path.Combine("phoneguy", lang, cycle + ".txt"));
                 if (File.Exists(path))
                 {
-                    lines = File.ReadAllLines(path);
+                    lines = File.ReadAllLines(path).Select(AddLineBreaks).ToArray();
                 }
                 else
                 {
@@ -33,13 +37,42 @@ namespace FCAP.Graphics
                     path = AssetManager.ResolveFilePath(Path.Combine("phoneguy", "eng", cycle + ".txt"));
                     if (File.Exists(path))
                     {
-                        lines = File.ReadAllLines(path);
+                        lines = File.ReadAllLines(path).Select(AddLineBreaks).ToArray();
                     }
                 }
             }
             catch (System.Exception e)
             {
                 Plugin.Logger.LogError(e);
+            }
+
+            static string AddLineBreaks(string text)
+            {
+                const float THRESH = 1366f * 3f / 5f;
+                text = text.Trim();
+                if (LabelTest.GetWidth(text) > THRESH)
+                {
+                    var split = new LinkedList<string>(text.Split(' '));
+                    var output = new StringBuilder();
+                    var currLine = "";
+                    while (split.Count > 0)
+                    {
+                        output.Append(split.First());
+                        currLine = string.Concat(currLine, split.First(), " ");
+                        split.RemoveFirst();
+                        if (LabelTest.GetWidth(currLine) > THRESH)
+                        {
+                            output.Append("<LINE>");
+                            currLine = "";
+                        }
+                        else
+                        {
+                            output.Append(' ');
+                        }
+                    }
+                    return output.ToString();
+                }
+                return text;
             }
         }
 
@@ -76,7 +109,7 @@ namespace FCAP.Graphics
         public override void Destroy()
         {
             base.Destroy();
-            if (waitBeforeShowMessages <= 0 && dialogBox != null && dialogBox.messages.Count > 0)
+            if (dialogBox != null && dialogBox.messages.Count > 0)
             {
                 dialogBox.Interrupt("*click*", 5);
             }

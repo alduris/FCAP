@@ -8,10 +8,12 @@ namespace FCAP.AI
     /// Once at a door, it has a much smaller chance to go back to stage, instead opting to stay at the door.
     /// In cameras, stays to the sides/partially hidden. Harder to see, though not as hard as nightcat.
     /// </summary>
-    internal class HunterAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Hunter, Map.Location.ShowStage, NightDifficulties[night], 183)
+    internal class HunterAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Hunter, Map.Location.ShowStage, NightDifficulties[night], 203)
     {
-        private static readonly int[] NightDifficulties = [0, 1, 3, 3, 5, 8, -1];
-        private const float ReturnHomeChance = 1f / 3f;
+        private static readonly int[] NightDifficulties = [0, 1, 3, 4, 7, 7, -1];
+        private const float ReturnHomeChance = 0.65f;
+
+        protected override int PowerDrainOnLeave => 30;
 
         public override Location NextMove()
         {
@@ -25,11 +27,21 @@ namespace FCAP.AI
                 Location.LeftDoor => Random.value < ReturnHomeChance ? Location.ShowStage : location,
 
                 Location.PartyRoomD => Location.Kitchen,
-                Location.Kitchen => Location.Storage,
-                Location.Storage => Location.RightDoor,
+                Location.Kitchen => Location.RightHall,
+                Location.RightHall => Location.RightDoor,
                 Location.RightDoor => Random.value < ReturnHomeChance ? Location.ShowStage : location,
                 _ => location
             };
+        }
+
+        public override bool CanJumpscare()
+        {
+            return (location == Location.LeftDoor && !game.LeftDoorShut) || (location == Location.RightDoor && !game.RightDoorShut) || base.CanJumpscare();
+        }
+
+        public override bool MoveCheck()
+        {
+            return base.MoveCheck() && (!game.InCams || location == Location.LeftDoor || location == Location.RightDoor);
         }
     }
 }

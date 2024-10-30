@@ -54,7 +54,6 @@ namespace FCAP
                 PlacedObjectHooks.Apply();
                 ProcessHooks.Apply();
                 SaveHooks.Apply();
-#warning Update the cameras!!!!
 
                 Logger.LogDebug("yay");
             }

@@ -177,7 +177,7 @@ namespace FCAP
                     Up = Location.DiningArea,
                     Down = Location.Storage,
                     Left = Location.PlayArea,
-                    Right = Location.NOWHERE
+                    Right = Location.DiningArea
                 }
             },
             {

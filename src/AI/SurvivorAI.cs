@@ -7,9 +7,10 @@ namespace FCAP.AI
     /// <summary>
     /// Equivalent of Bonnie. Sticks to left side. Sticks to the middle/back of cameras.
     /// </summary>
-    internal class SurvivorAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Survivor, Location.ShowStage, NightDifficulties[night], 206)
+    internal class SurvivorAI(GameController game, int night) : BaseAI(game, Enums.Animatronic.Survivor, Location.ShowStage, NightDifficulties[night], 226)
     {
-        private static readonly int[] NightDifficulties = [0, 3, 0, 2, 6, 12, -1];
+        private const float LurkChance = 0.4f;
+        private static readonly int[] NightDifficulties = [0, 5, 2, 4, 7, 10, -1];
         private static readonly Dictionary<Location, Location[]> MoveMap = new()
         {
             {
@@ -17,52 +18,51 @@ namespace FCAP.AI
                 [
                     Location.Backstage,
                     Location.DiningArea,
+                    Location.PlayArea,
                     Location.MainEntrance,
-                    Location.PlayArea
                 ]
             },
             {
                 Location.DiningArea,
                 [
-                    Location.ShowStage,
+                    Location.PlayArea,
+                    Location.PlayArea,
                     Location.MainEntrance,
-                    Location.PlayArea,
-                    Location.PlayArea,
+                    Location.ShowStage,
                 ]
             },
             {
                 Location.PlayArea,
                 [
+                    Location.LeftHall,
+                    Location.LeftHall,
+                    Location.LeftHall,
                     Location.ShowStage,
-                    Location.DiningArea,
-                    Location.MainEntrance,
                     Location.PartyRoomA,
                     Location.PartyRoomB,
-                    Location.LeftHall,
-                    Location.LeftHall,
-                    Location.LeftHall,
-                    Location.LeftHall,
+                    Location.DiningArea,
+                    Location.MainEntrance,
                 ]
             },
             {
                 Location.PartyRoomA,
                 [
+                    Location.PlayArea,
+                    Location.PlayArea,
+                    Location.LeftHall,
                     Location.MainEntrance,
-                    Location.PlayArea,
-                    Location.PlayArea,
                     Location.PartyRoomB,
-                    Location.LeftHall
                 ]
             },
             {
                 Location.PartyRoomB,
                 [
-                    Location.MainEntrance,
-                    Location.PlayArea,
-                    Location.PlayArea,
-                    Location.PartyRoomA,
                     Location.LeftHall,
-                    Location.LeftHall
+                    Location.LeftHall,
+                    Location.PlayArea,
+                    Location.PlayArea,
+                    Location.MainEntrance,
+                    Location.PartyRoomA,
                 ]
             },
             {
@@ -79,16 +79,14 @@ namespace FCAP.AI
             {
                 Location.Backstage,
                 [
-                    Location.ShowStage,
                     Location.DiningArea,
-                    Location.PlayArea
+                    Location.ShowStage,
+                    Location.PlayArea,
                 ]
             },
             {
                 Location.LeftHall,
                 [
-                    Location.LeftDoor,
-                    Location.LeftDoor,
                     Location.LeftDoor,
                     Location.LeftDoor,
                     Location.LeftDoor,
@@ -100,8 +98,9 @@ namespace FCAP.AI
             {
                 Location.LeftDoor,
                 [
+                    Location.ShowStage,
+                    Location.ShowStage,
                     Location.LeftHall,
-                    Location.ShowStage
                 ]
             },
         };
@@ -124,11 +123,19 @@ namespace FCAP.AI
 
         public override Location NextMove()
         {
-            if (location == Location.LeftDoor && !game.LeftDoorShut)
+            if (location == Location.LeftDoor)
             {
-                return Location.You;
+                if (!game.LeftDoorShut)
+                {
+                    return Location.You;
+                }
+                else if (Random.value < LurkChance)
+                {
+                    return Location.LeftDoor;
+                }
             }
-            return MoveMap.TryGetValue(location, out var next) ? next[Random.Range(0, next.Length)] : location;
+            // Bias towards lower values so earlier in list gets preference
+            return MoveMap.TryGetValue(location, out var next) ? next[(int)(Mathf.Pow(Random.value, 2f) * next.Length)] : location;
         }
     }
 }

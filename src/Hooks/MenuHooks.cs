@@ -225,6 +225,8 @@ namespace FCAP.Hooks
                     (self as InteractiveMenuScene).idleDepths.Add(2.0f);
                     (self as InteractiveMenuScene).idleDepths.Add(3.2f);
                     (self as InteractiveMenuScene).idleDepths.Add(1.6f);
+                    menuCWT.Remove(self as InteractiveMenuScene);
+                    menuCWT.Add(self as InteractiveMenuScene, controller);
                 }
 
                 // Also play song
