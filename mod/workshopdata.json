@@ -1,0 +1,19 @@
+{
+  "Title": "Five Cycles at Pebbles",
+  "Description": "[b]Can you survive?[/b]\r\n\r\n[hr]\r\n\r\n[h1]FIVE CYCLES AT PEBBLES[/h1]\r\n\r\nA Five Nights At Freddy\u0027s-inspired gamemode! Play as The Nightguard, a purposed soul trapped in an abandoned ancient pizzeria by your manager, Five Pebbles, relentlessly hunted down by evil slugcat animatronics!\r\n\r\nFeatures basic translations for all languages that Rain World supports! [i](via online translator, refined by people. Let me know if you would like to help with proofreading the translations!)[/i]\r\n\r\n[h2]CONTROLS[/h2]\r\n\r\n[h3]In-Camera:[/h3]\r\n[list]\r\n[*]MOVEMENT to navigate between cameras\r\n[*]JUMP to select the camera\r\n[*]GRAB to exit the camera\r\n[/list]\r\n[h3]Out of Camera:[/h3]\r\n[*]If standing near the edges of the room, GRAB to turn on light and THROW to toggle door\r\n[*]If standing in the middle, GRAB to open cameras and THROW to tell Five Pebbles to shut up.\r\n\r\n[h2]CREDITS[/h2]\r\n[list]\r\n[*]Alduris - Programming, concept, assets, writing, nightcat\u0027s ballad\r\n[*]Beep - Artist (thank you so much, you did such an amazing job!)\r\n[*]DeepL.com - Basic translations\r\n[*]Banba fan/verityoffaith - Chinese translation help\r\n[*]Detrax, Mold223, TempleOfArt - Russian translation help\r\n[/list]\r\n\r\n[h2]GITHUB[/h2]\r\nhttps://github.com/alduris/FCAP\r\n",
+  "ID": "alduris.fcap",
+  "Version": "1.0.0",
+  "TargetGameVersion": "v1.9.15b",
+  "Requirements": "slime-cubed.slugbase",
+  "RequirementNames": "SlugBase",
+  "Authors": "Alduris",
+  "Visibility": "Public",
+  "Tags": [
+    "Game Mechanics",
+    "Game Modes",
+    "Custom Slugcat"
+  ],
+  "WorkshopID": 3357397880,
+  "UploadFilesOnly": true,
+  "UploadThumbnail": false
+}
