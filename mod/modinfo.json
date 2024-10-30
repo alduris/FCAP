@@ -1,7 +1,7 @@
 ﻿{
 	"id": "alduris.fcap",
 	"name": "Five Cycles at Pebbles",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"authors": "Alduris",
 	"description": "Can you survive?",
 	"requirements": [ "slime-cubed.slugbase" ],
