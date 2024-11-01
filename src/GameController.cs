@@ -33,6 +33,7 @@ namespace FCAP
 
         public Animatronic CurrentJumpscare = Animatronic.None;
         public int JumpscareTimer = 0;
+        private int GoldenWaitTimer = 200;
         public Jumpscare jumpscareObj = null;
 
         public Overseer camsOverseer = null;
@@ -62,6 +63,14 @@ namespace FCAP
             mapDisplay = new MapDisplay(this, room);
             powerDisplay = new PowerDisplay(this, room);
             phoneGuy = new PhonePebbles(this, room, room.game.GetStorySession.saveState.cycleNumber);
+
+            if (FCAPOptions.GetCustomDifficulty(Animatronic.Survivor) == 1
+                && FCAPOptions.GetCustomDifficulty(Animatronic.Monk) == 9
+                && FCAPOptions.GetCustomDifficulty(Animatronic.Hunter) == 8
+                && FCAPOptions.GetCustomDifficulty(Animatronic.Nightcat) == 7)
+            {
+                CurrentJumpscare = Animatronic.Golden;
+            }
         }
 
         public override void Update(bool eu)
@@ -70,7 +79,7 @@ namespace FCAP
             LastInCams = InCams;
 
             // Game complete?
-            if (room.world.rainCycle.timer > 40 * 60 * 6)
+            if (room.world.rainCycle.timer > Constants.CycleLength)
             {
                 // Stop nightcat music
                 var stopEvent = new StopMusicEvent()
@@ -184,7 +193,7 @@ namespace FCAP
             }
 
             // Update jumpscare timer
-            if (CurrentJumpscare != Animatronic.None)
+            if (CurrentJumpscare != Animatronic.None && (CurrentJumpscare != Animatronic.Golden || GoldenWaitTimer-- <= 0))
             {
                 if (jumpscareObj == null)
                 {
@@ -204,6 +213,12 @@ namespace FCAP
                     LastJumpscare = CurrentJumpscare;
                     room.game.ExitGame(true, true);
                     room.game.GetStorySession.saveState.SessionEnded(room.game, false, false);
+
+                    if (CurrentJumpscare == Animatronic.Golden)
+                    {
+                        Application.Quit();
+                        return;
+                    }
                     room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen, 0f);
                 }
             }

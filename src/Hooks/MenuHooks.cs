@@ -46,6 +46,13 @@ namespace FCAP.Hooks
             if (slugcatNumber == Constants.Nightguard)
             {
                 self.regionLabel.text = string.Concat(menu.Translate("Five Pebbles Pizzeria"), " - ", menu.Translate("Cycle"), " ", (self.saveGameData.cycle + 1).ToString());
+                if (FCAPOptions.Get(0))
+                {
+                    int count = 1;
+                    if (FCAPOptions.Get(1)) count++;
+                    if (FCAPOptions.Get(2)) count++;
+                    self.subObjects.Add(new Stars(menu, self, self.regionLabel.pos + Vector2.up * 40f, count));
+                }
 
                 // Difficulty selection
                 if (self.saveGameData.cycle > 5)
@@ -87,6 +94,11 @@ namespace FCAP.Hooks
                             dragger.pos = new Vector2(self.MidXpos + self.NextScroll(1f) * self.ScrollMagnitude, self.KarmaSymbolPos.y - 18f) + dragger.offset;
                             dragger.alpha = 1 - Mathf.Abs(self.NextScroll(1f));
                             dragger.allowSelect = self.Scroll(1f) < 0.5f;
+                        }
+                        else if (subObj is Stars stars)
+                        {
+                            stars.pos = new Vector2(self.MidXpos + self.NextScroll(1f) * self.ScrollMagnitude, self.regionLabel.pos.y + 50f);
+                            stars.alpha = 1 - Mathf.Abs(self.NextScroll(1f));
                         }
                     }
                 }

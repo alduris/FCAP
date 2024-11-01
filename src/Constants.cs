@@ -5,6 +5,7 @@ namespace FCAP
 {
     internal static class Constants
     {
+        public const int CycleLength = 40 * 60 * 6;
         public const int MaxPower = 29000;
         public const float CamsShaderThresh = 0.95f;
         public const string CamShaderName = "FCAPHoloImage";

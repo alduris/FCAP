@@ -24,7 +24,7 @@ namespace FCAP.Graphics
                     Enums.Animatronic.Monk => "jumpscareMonk",
                     Enums.Animatronic.Hunter => "jumpscareHunter",
                     Enums.Animatronic.Nightcat => "jumpscareNightcat",
-                    Enums.Animatronic.Golden => "jumpscareGolden",
+                    Enums.Animatronic.Golden => "jumpscareInv",
                     _ => throw new System.NotImplementedException()
                 };
                 if (Futile.atlasManager.GetAtlasWithName(name) == null)

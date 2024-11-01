@@ -174,7 +174,7 @@ namespace FCAP.Menus
             public override void Update()
             {
                 base.Update();
-                label.text = curr < name.Length ? name.Substring(curr) : name + " " + (curr - name.Length);
+                label.text = curr < name.Length ? name.Substring(0, curr) : name + " " + (curr - name.Length);
             }
         }
 

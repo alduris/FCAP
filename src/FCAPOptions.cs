@@ -45,6 +45,13 @@ namespace FCAP
             }
             Instance?.config.Save();
         }
+        public static bool Get(int i) => i switch
+        {
+            0 => N5.Value,
+            1 => N6.Value,
+            2 => M20.Value,
+            _ => false
+        };
 
         public FCAPOptions()
         {

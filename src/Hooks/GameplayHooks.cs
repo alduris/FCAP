@@ -19,6 +19,19 @@ namespace FCAP.Hooks
             On.HUD.TextPrompt.Update += HUDNoGameOverPrompt;
             _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.DarkPalette), BindingFlags.NonPublic | BindingFlags.Instance)!.GetGetMethod(true), PowerOutDarkFader);
             _ = new Hook(typeof(RoomCamera).GetProperty(nameof(RoomCamera.roomSafeForPause)).GetGetMethod(false), NoPauseWhenGameOver);
+            On.RainCycle.GetDesiredCycleLength += RainCycle_GetDesiredCycleLength;
+        }
+
+        private static int RainCycle_GetDesiredCycleLength(On.RainCycle.orig_GetDesiredCycleLength orig, RainCycle self)
+        {
+            if (self.world.game.IsStorySession && self.world.game.StoryCharacter == Constants.Nightguard)
+            {
+                return Constants.CycleLength;
+            }
+            else
+            {
+                return orig(self);
+            }
         }
 
         private static bool NoPauseWhenGameOver(Func<RoomCamera, bool> orig, RoomCamera self) => orig(self) || (GameController.Instance != null && GameController.Instance.OutOfPower);
