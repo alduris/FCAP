@@ -32,7 +32,7 @@ namespace FCAP.Hooks
         private static void SkipHalftimeBlink(On.HUD.RainMeter.orig_ctor orig, RainMeter self, HUD.HUD hud, FContainer fContainer)
         {
             orig(self, hud, fContainer);
-            if ((self.hud.owner as Player).SlugCatClass == Constants.Nightguard)
+            if (self.hud.owner is Player p && p.SlugCatClass == Constants.Nightguard)
             {
                 self.halfTimeShown = true;
             }
@@ -40,7 +40,7 @@ namespace FCAP.Hooks
 
         private static void ForceTimerVisible(On.HUD.RainMeter.orig_Update orig, RainMeter self)
         {
-            if ((self.hud.owner as Player).SlugCatClass == Constants.Nightguard)
+            if (self.hud.owner is Player p && p.SlugCatClass == Constants.Nightguard)
             {
                 self.fade = 1f;
                 self.lastFade = 1f;
@@ -61,7 +61,7 @@ namespace FCAP.Hooks
             // the rain timer will still show so the player still can figure out if it's close to the end of their shift. It also means it's always visible.
 
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<RainMeter, bool>>(self => (self.hud.owner as Player).SlugCatClass != Constants.Nightguard);
+            c.EmitDelegate<Func<RainMeter, bool>>(self => self.hud.owner is not Player p || p.SlugCatClass != Constants.Nightguard);
             c.Emit(OpCodes.Ldloc_1);
             c.Emit(OpCodes.And);
             c.Emit(OpCodes.Stloc_1);
