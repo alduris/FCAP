@@ -11,6 +11,7 @@ A fully-fledged Five Nights at Freddy's-inspired gamemode in Rain World!
 * Detrax, Mold223, TempleOfArt - Russian translation help
 * CHEPPR - Korean translation help
 * Portal79 - French translation help
+* Aspari - Spanish translation help
 
 ## Installing
 
