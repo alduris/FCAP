@@ -37,7 +37,8 @@ namespace FCAP.Menus
             for (int i = 0; i < sprites.Count; i++)
             {
                 var sprite = sprites[i];
-                sprite.alpha = alpha;
+                //sprite.alpha = alpha;
+                sprite.isVisible = alpha > 0.9f;
                 sprite.SetPosition(Vector2.Lerp(lastPos, pos, timeStacker) + Vector2.right * 60f * (i - sprites.Count / 2f + 0.5f));
             }
         }
