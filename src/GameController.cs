@@ -64,7 +64,8 @@ namespace FCAP
             powerDisplay = new PowerDisplay(this, room);
             phoneGuy = new PhonePebbles(this, room, room.game.GetStorySession.saveState.cycleNumber);
 
-            if (FCAPOptions.GetCustomDifficulty(Animatronic.Survivor) == 1
+            if (cycle == 6
+                && FCAPOptions.GetCustomDifficulty(Animatronic.Survivor) == 1
                 && FCAPOptions.GetCustomDifficulty(Animatronic.Monk) == 9
                 && FCAPOptions.GetCustomDifficulty(Animatronic.Hunter) == 8
                 && FCAPOptions.GetCustomDifficulty(Animatronic.Nightcat) == 7)

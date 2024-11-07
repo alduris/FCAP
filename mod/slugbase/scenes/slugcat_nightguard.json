@@ -2,7 +2,7 @@
 	"id": "Slugcat_Nightguard",
 	"scene_folder": "scenes/slugcat_nightguard",
 	"images": [],
-	"idle_depths": [ 2.8, 2.1, 1.9 ],
+	"idle_depths": [],
 	"glow_pos": [688, 484],
 	"mark_pos": [-5000, -5000],
 	"select_menu_pos": [0, -80],

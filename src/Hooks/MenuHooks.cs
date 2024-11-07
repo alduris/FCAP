@@ -129,32 +129,63 @@ namespace FCAP.Hooks
 
             if (self.sceneID == Constants.NightguardMenu)
             {
-                self.sceneFolder = "scenes/slugcat_nightguard";
+                bool useExMenu = self.menu is SlugcatSelectMenu ssm
+                    && ssm.saveGameData[Constants.Nightguard]?.cycle == 5;
 
-                if (self.flatMode)
+                self.sceneFolder = useExMenu ? "scenes/therapy_nightguard" : "scenes/slugcat_nightguard";
+
+                if (useExMenu)
                 {
-                    self.AddIllustration(new MenuIllustration(self.menu, self, self.sceneFolder, "nightguard flat", new Vector2(683f, 384f), false, true));
+                    // Easter egg menu that only shows after you've beaten cycle 5 but haven't beaten cycle 6
+                    if (self.flatMode)
+                    {
+                        self.AddIllustration(new MenuIllustration(self.menu, self, self.sceneFolder, "ex nightguard flat", new Vector2(683, 384), false, true));
+                    }
+                    else
+                    {
+                        var offset = new Vector2(-17f, -16f + 160f);
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "ex nightguard 5", offset, 2.9f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "ex nightguard 4", offset, 2.5f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "ex nightguard 3", offset, 2.3f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "ex nightguard 2", offset, 2.1f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "ex nightguard 1", offset, 2.2f, MenuDepthIllustration.MenuShader.Basic));
+                        (self as InteractiveMenuScene).idleDepths.Add(2.9f);
+                        (self as InteractiveMenuScene).idleDepths.Add(2.2f);
+                        (self as InteractiveMenuScene).idleDepths.Add(2.4f);
+                        (self as InteractiveMenuScene).idleDepths.Add(1.9f);
+                    }
                 }
                 else
                 {
-                    var offset = new Vector2(72f, 24f + 80f); // center and then raise 80 pixels
-                    var menuController = new NightguardMenuController(self as InteractiveMenuScene);
-                    self.AddIllustration(menuController.Outside = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 9", offset, 4f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(menuController.AIBody =  new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 8.5", offset, 3.5f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(menuController.AIEyes =  new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 8", offset, 3.45f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 7 alt", offset, 3f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(menuController.Inside =  new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 7", offset, 3f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(menuController.Door =    new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 6", offset, 3.1f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 5", offset, 2.6f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 4 alt", offset, 2.1f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(menuController.Slugcat = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 4", offset, 2.1f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(menuController.Hologram = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard hologram 6", offset, 1.95f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 3", offset, 1.8f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 2", offset, 1.6f, MenuDepthIllustration.MenuShader.Basic));
-                    self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 1", offset, 1.5f, MenuDepthIllustration.MenuShader.Basic));
+                    // Normal menu
+                    if (self.flatMode)
+                    {
+                        self.AddIllustration(new MenuIllustration(self.menu, self, self.sceneFolder, "nightguard flat", new Vector2(683f, 384f), false, true));
+                    }
+                    else
+                    {
+                        var offset = new Vector2(72f, 24f + 80f); // center and then raise 80 pixels
+                        var menuController = new NightguardMenuController(self as InteractiveMenuScene);
+                        self.AddIllustration(menuController.Outside = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 9", offset, 4f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(menuController.AIBody =  new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 8.5", offset, 3.5f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(menuController.AIEyes =  new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 8", offset, 3.45f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 7 alt", offset, 3f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(menuController.Inside =  new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 7", offset, 3f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(menuController.Door =    new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 6", offset, 3.1f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 5", offset, 2.6f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 4 alt", offset, 2.1f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(menuController.Slugcat = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 4", offset, 2.1f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(menuController.Hologram = new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard hologram 6", offset, 1.95f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 3", offset, 1.8f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 2", offset, 1.6f, MenuDepthIllustration.MenuShader.Basic));
+                        self.AddIllustration(new MenuDepthIllustration(self.menu, self, self.sceneFolder, "nightguard 1", offset, 1.5f, MenuDepthIllustration.MenuShader.Basic));
+                        (self as InteractiveMenuScene).idleDepths.Add(2.8f);
+                        (self as InteractiveMenuScene).idleDepths.Add(2.1f);
+                        (self as InteractiveMenuScene).idleDepths.Add(1.9f);
 
-                    menuCWT.Remove(self as InteractiveMenuScene);
-                    menuCWT.Add(self as InteractiveMenuScene, menuController);
+                        menuCWT.Remove(self as InteractiveMenuScene);
+                        menuCWT.Add(self as InteractiveMenuScene, menuController);
+                    }
                 }
             }
             else if (self.sceneID == Constants.NightguardDeath)
