@@ -166,7 +166,7 @@ namespace FCAP.Menus
 
         private class WinLabelTicker : WinLabelThingy
         {
-            public WinLabelTicker(WinScreen menu, int start, int end, string name, float y) : base(menu, start, end + name.Length, name, y)
+            public WinLabelTicker(WinScreen menu, int start, int end, string name, float y) : base(menu, start, end + menu.Translate(name).Length, name, y)
             {
                 label.text = "";
             }
@@ -180,7 +180,7 @@ namespace FCAP.Menus
 
         private class WinLabelPopper : WinLabelThingy
         {
-            public WinLabelPopper(WinScreen menu, string name, float y) : base(menu, 0, name.Length, name, y)
+            public WinLabelPopper(WinScreen menu, string name, float y) : base(menu, 0, menu.Translate(name).Length, name, y)
             {
                 label.text = "<  >";
             }
