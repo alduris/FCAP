@@ -1,4 +1,9 @@
-The Nightguard|El Guardia Nocturno
-HELP WANTED: local group pizzeria looking for security guard to work the night shift. 12 am to 6 am.<LINE>Monitor cameras, ensure safety of equipment and animatronic slugcats. Not responsible for injury/dismemberment.<LINE>$120 a week. To apply call: 1-555-5-PEBBLES|SE BUSCA AYUDA: Pizzeria en grupo local busca guardia de seguridad para trabajar en el turno de noche de 12 am a 6 am.<LINE>Monitoriza cámaras, garantiza la seguridad de los equipos y de los animatrónicos gatobabosa. No responsable de lesiones/desmembramientos.<LINE>120$ a la semana. Para aplicar llame a: 1-555-5-PEBBLES
-Overseers Wasted :|Supervisores Desaprovechados :
-120 Slugcoin Earned|120 Babomonedas Conseguidas
+0alduris.fcap-description|¿Podrás sobrevivir?
+THE NIGHTGUARD|EL GUARDIA NOCTURNO
+The Nightguard|El guardia nocturno
+Nightguard|Guardia nocturno
+HELP WANTED: local group pizzeria looking for security guard to work the night shift. 12 am to 6 am.<LINE>Monitor cameras, ensure safety of equipment and animatronic slugcats. Not responsible for injury/dismemberment.<LINE>$120 a week. To apply call: 1-555-5-PEBBLES|SE NECESITA PERSONAL: Pizzería del grupo local busca guardia de seguridad para trabajar en el turno de noche.<LINE>De 12 a. m. a 6 a. m.. Monitorice cámaras y garantice la seguridad del equipo y de los animatrónicos gatobabosa.<LINE>No nos hacemos responsables de lesiones/desmembramientos. $120 a la semana. Para postularse llame al 1-555-5-GUIJARROS.
+Overseers Wasted :|Supervisores destruidos:
+Helped Five Pebbles|Has ayudado a Cinco Guijarros
+120 Slugcoin Earned|120 babomonedas conseguidas
+Five Pebbles Pizzeria|Pizzería de Cinco Guijarros
