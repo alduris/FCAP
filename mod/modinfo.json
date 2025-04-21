@@ -1,11 +1,11 @@
 ﻿{
 	"id": "alduris.fcap",
 	"name": "Five Cycles at Pebbles",
-	"version": "1.1.1",
-	"authors": "Alduris",
+	"version": "1.1.2",
+	"authors": "Created by Alduris<LINE>Art by Beep<LINE>Translation help by VerityOfFaith, Detrax, Mold223, TempleOfArt, CHEPPR, Portal79, Aspari, zbiotr",
 	"description": "Can you survive?",
 	"requirements": [ "slime-cubed.slugbase" ],
 	"requirements_names": [ "SlugBase" ],
-	"tags": [ "Custom Slugcat", "Game Modes", "Game Mechanics" ],
+	"tags": [ "Custom Slugcat", "Game Modes", "Game Mechanics", "Base", "Downpour", "Watcher" ],
 	"checksum_override_version": false
 }
