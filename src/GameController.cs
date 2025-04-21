@@ -135,7 +135,7 @@ namespace FCAP
                 Power -= PowerUsage;
 
                 // Also spoopy
-                if (UnityEngine.Random.value < 0.00075f * (1f + 0.5f * room.game.GetStorySession.saveState.cycleNumber))
+                if (UnityEngine.Random.value < 0.00075f * (1f + 0.5f * Math.Min(5, room.game.GetStorySession.saveState.cycleNumber)))
                 {
                     Spoopy();
                 }
@@ -353,6 +353,7 @@ namespace FCAP
             SoundID.Lizard_Voice_Pink_D,
             SoundID.Lizard_Voice_Pink_E,
             SoundID.Lizard_Voice_Green_A,
+            SoundID.Lizard_Prepare_Lunge_Attack_Init,
             SoundID.In_Room_Deer_Summoned,
             SoundID.In_Room_Deer_Summoned,
             SoundID.In_Room_Deer_Summoned,
@@ -360,7 +361,22 @@ namespace FCAP
             SoundID.Distant_Deer_Summoned,
             SoundID.Distant_Deer_Summoned,
             SoundID.SL_AI_Talk_1,
+            SoundID.SL_AI_Talk_3,
+            SoundID.SL_AI_Talk_5,
+            SoundID.SL_AI_Protest_5,
             SoundID.Gate_Electric_Screw_Turning_LOOP,
+            SoundID.Lizard_Heavy_Terrain_Impact,
+            SoundID.Lizard_Jaws_Grab_NPC,
+            SoundID.Bat_Emerge_From_Grass,
+            SoundID.Mouse_Squeak,
+            SoundID.Mouse_Light_Flicker,
+            SoundID.Broken_Anti_Gravity_Switch_On,
+            SoundID.Moon_Broken_Anti_Gravity_Switch_Off,
+            SoundID.Moon_Broken_Anti_Gravity_Switch_On,
+            SoundID.Bro_Digestion_Init,
+            SoundID.Daddy_Digestion_Init,
+            SoundID.Cycle_Start_Drips,
+            SoundID.Seed_Cob_Open,
         ];
         public void Spoopy()
         {
