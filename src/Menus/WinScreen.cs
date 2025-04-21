@@ -10,8 +10,8 @@ namespace FCAP.Menus
         private float ContinueAndExitButtonsXPos => manager.rainWorld.options.ScreenSize.x + (1366f - manager.rainWorld.options.ScreenSize.x) / 2f;
         private float LeftHandButtonsPosXAdd => Custom.LerpMap(manager.rainWorld.options.ScreenSize.x, 1024f, 1280f, 222f, 70f);
 
-        private SimpleButton continueButton;
-        private SimpleButton exitButton;
+        // private readonly SimpleButton continueButton;
+        private readonly SimpleButton exitButton;
 
         private readonly List<WinLabelThingy> labelGroups = [];
         private int statCountdown = 40;
@@ -23,15 +23,10 @@ namespace FCAP.Menus
             scene = new InteractiveMenuScene(this, pages[0], Constants.NightguardWin);
             pages[0].subObjects.Add(scene);
 
-            // Continue button
-            continueButton = new SimpleButton(this, pages[0], base.Translate("CONTINUE"), "CONTINUE", new Vector2(ContinueAndExitButtonsXPos - 180f - this.manager.rainWorld.options.SafeScreenOffset.x, Mathf.Max(this.manager.rainWorld.options.SafeScreenOffset.y, 15f)), new Vector2(110f, 30f));
-            pages[0].subObjects.Add(continueButton);
-            pages[0].lastSelectedObject = continueButton;
-
             // Exit button
-            exitButton = new SimpleButton(this, pages[0], Translate("EXIT"), "EXIT", new Vector2(ContinueAndExitButtonsXPos - 320f - manager.rainWorld.options.SafeScreenOffset.x, Mathf.Max(manager.rainWorld.options.SafeScreenOffset.y, 15f)), new Vector2(110f, 30f));
+            exitButton = new SimpleButton(this, pages[0], base.Translate("EXIT"), "EXIT", new Vector2(ContinueAndExitButtonsXPos - 180f - this.manager.rainWorld.options.SafeScreenOffset.x, Mathf.Max(this.manager.rainWorld.options.SafeScreenOffset.y, 15f)), new Vector2(110f, 30f));
             pages[0].subObjects.Add(exitButton);
-            MutualHorizontalButtonBind(exitButton, continueButton);
+            pages[0].lastSelectedObject = exitButton;
 
             selectedObject = exitButton;
         }
