@@ -1,7 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
 using FCAP.Graphics;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using RWCustom;
 using UnityEngine;
 
@@ -11,8 +10,14 @@ namespace FCAP.Hooks
     {
         public static void Apply()
         {
-            On.PlayerGraphics.DrawSprites += NightcatEyesAndCameraBlink;
             On.PlayerGraphics.PlayerObjectLooker.HowInterestingIsThisObject += PlayerEyeInterest;
+            On.RoomCamera.SpriteLeaser.Update += NightcatEyesAndCameraBlink;
+            _ = new Hook(typeof(Player).GetProperty(nameof(Player.isNPC)).GetGetMethod(), Player_get_isNPC);
+        }
+
+        private static bool Player_get_isNPC(Func<Player, bool> orig, Player self)
+        {
+            return orig(self) || DoorAnimatronic.IsAnimatronic(self);
         }
 
         private static float PlayerEyeInterest(On.PlayerGraphics.PlayerObjectLooker.orig_HowInterestingIsThisObject orig, PlayerGraphics.PlayerObjectLooker self, PhysicalObject obj)
@@ -35,45 +40,49 @@ namespace FCAP.Hooks
             return val;
         }
 
-        private static void NightcatEyesAndCameraBlink(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        private static void NightcatEyesAndCameraBlink(On.RoomCamera.SpriteLeaser.orig_Update orig, RoomCamera.SpriteLeaser sLeaser, float timeStacker, RoomCamera rCam, Vector2 camPos)
         {
-            orig(self, sLeaser, rCam, timeStacker, camPos);
-
-            if (DoorAnimatronic.IsAnimatronic(self.player, out var controller))
+            // We do this here to hopefully avoid issues with Jolly Coop and Dress My Slugcat
+            orig(sLeaser, timeStacker, rCam, camPos);
+            if (sLeaser.drawableObject is PlayerGraphics self)
             {
-                self.blink = 0;
-                for (int i = 0; i < sLeaser.sprites.Length; i++)
+                if (DoorAnimatronic.IsAnimatronic(self.player, out var controller))
                 {
-                    var sprite = sLeaser.sprites[i];
-                    sprite.isVisible = controller.left ? controller.game.LeftDoorLight : controller.game.RightDoorLight; // I hope this is compatible with DMS I have no clue how DMS works
+                    self.blink = 0;
+                    for (int i = 0; i < sLeaser.sprites.Length; i++)
+                    {
+                        var sprite = sLeaser.sprites[i];
+                        sprite.isVisible = controller.left ? controller.game.LeftDoorLight : controller.game.RightDoorLight; // I hope this is compatible with DMS I have no clue how DMS works
 
-                    if (i == 9 && controller.anim == Enums.Animatronic.Nightcat)
-                    {
-                        // always show eye sprite for night when power out
-                        sprite.isVisible = !controller.flickerEyes || controller.flickerOn;
-                        sprite.color = Color.white;
-                    }
-                    else if (i == 7 || i == 8)
-                    {
-                        // Hide arms
-                        sprite.isVisible = false;
-                    }
-                    else
-                    {
-                        // Fuck you Jolly Coop, ruining my animatronics' colors!!!
-                        var palette = rCam.currentPalette;
-                        sprite.color = i == 9 ? palette.blackColor : PlayerGraphics.DefaultSlugcatColor(Enums.GetFakeSlug(controller.anim));
-                        if (controller.anim == Enums.Animatronic.Nightcat)
+                        if (i == 9 && controller.anim == Enums.Animatronic.Nightcat)
                         {
-                            sprite.color = Color.Lerp(palette.blackColor, Custom.HSL2RGB(0.63055557f, 0.54f, 0.5f), Mathf.Lerp(0.08f, 0.04f, palette.darkness));
+                            // always show eye sprite for night when power out
+                            sprite.isVisible = !controller.flickerEyes || controller.flickerOn;
+                            sprite.color = Color.white;
+                        }
+                        else if (i == 7 || i == 8)
+                        {
+                            // Hide arms
+                            sprite.isVisible = false;
+                        }
+                        else
+                        {
+                            // Fuck you Jolly Coop, ruining my animatronics' colors!!!
+                            var palette = rCam.currentPalette;
+                            sprite.color = i == 9 ? palette.blackColor : PlayerGraphics.DefaultSlugcatColor(Enums.GetFakeSlug(controller.anim));
+                            if (controller.anim == Enums.Animatronic.Nightcat)
+                            {
+                                sprite.color = Color.Lerp(palette.blackColor, Custom.HSL2RGB(0.63055557f, 0.54f, 0.5f), Mathf.Lerp(0.08f, 0.04f, palette.darkness));
+                            }
                         }
                     }
                 }
-            }
-            else if (GameController.Instance != null && GameController.Instance.InCams)
-            {
-                self.blink = 5;
+                else if (GameController.Instance != null && GameController.Instance.InCams)
+                {
+                    self.blink = 5;
+                }
             }
         }
+
     }
 }

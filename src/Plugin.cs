@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Reflection;
 using System.Security;
 using System.Security.Permissions;
 using BepInEx;
 using BepInEx.Logging;
 using FCAP.Hooks;
-using MonoMod.RuntimeDetour;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 #pragma warning disable CS0618
 [module: UnverifiableCode]
@@ -16,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace FCAP
 {
-    [BepInPlugin("alduris.fcap", "Five Cycles at Pebbles", "0.1.0")]
+    [BepInPlugin("alduris.fcap", "Five Cycles at Pebbles", "1.1.2"), BepInDependency("dressmyslugcat", BepInDependency.DependencyFlags.SoftDependency)]
     class Plugin : BaseUnityPlugin
     {
         public static new ManualLogSource Logger;

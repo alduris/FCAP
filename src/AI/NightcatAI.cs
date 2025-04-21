@@ -57,7 +57,7 @@ namespace FCAP.AI
                                 prio = 1f,
                                 volume = 0.3f
                             };
-                            game.room.game.manager.musicPlayer.GameRequestsSong(musicEvent);
+                            game.room.game.manager.musicPlayer?.GameRequestsSong(musicEvent);
 
                             // Spawn animatronic
                             doorRepresentation = new DoorAnimatronic(game.room, game, animatronic, location == Location.LeftDoor, true) { flickerEyes = true };
@@ -77,7 +77,7 @@ namespace FCAP.AI
                                 type = StopMusicEvent.Type.AllSongs,
                                 prio = 1f,
                             };
-                            game.room.game.manager.musicPlayer.GameRequestsSongStop(stopEvent);
+                            game.room.game.manager.musicPlayer?.GameRequestsSongStop(stopEvent);
 
                             // Despawn animatronic
                             doorRepresentation.Destroy();

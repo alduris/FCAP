@@ -135,7 +135,7 @@ namespace FCAP
                 Power -= PowerUsage;
 
                 // Also spoopy
-                if (UnityEngine.Random.value < 0.0005f)
+                if (UnityEngine.Random.value < 0.00075f * (1f + 0.5f * room.game.GetStorySession.saveState.cycleNumber))
                 {
                     Spoopy();
                 }
@@ -367,7 +367,7 @@ namespace FCAP
             room.game?.cameras[0]?.virtualMicrophone?.PlaySound(
                 SpoopList[UnityEngine.Random.Range(0, SpoopList.Length)],
                 UnityEngine.Random.Range(-0.25f, 0.25f),
-                UnityEngine.Random.Range(0.45f, 0.65f),
+                UnityEngine.Random.Range(0.5f, 0.7f),
                 UnityEngine.Random.Range(0.25f, 0.35f));
         }
     }
