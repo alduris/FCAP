@@ -223,6 +223,7 @@ namespace FCAP
                         return;
                     }
                     room.game.manager.RequestMainProcessSwitch(Constants.GameOverScreen, 0f);
+                    Destroy();
                 }
             }
         }
