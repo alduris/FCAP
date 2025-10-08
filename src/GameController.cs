@@ -78,6 +78,7 @@ namespace FCAP
         {
             base.Update(eu);
             LastInCams = InCams;
+            if (slatedForDeletetion) return;
 
             // Game complete?
             if (room.world.rainCycle.timer > Constants.CycleLength)
@@ -89,7 +90,7 @@ namespace FCAP
                     type = StopMusicEvent.Type.AllSongs,
                     prio = 1f,
                 };
-                room.game.manager.musicPlayer.GameRequestsSongStop(stopEvent);
+                room.game.manager.musicPlayer?.GameRequestsSongStop(stopEvent);
 
                 // Switch process
                 if (room.game.manager.upcomingProcess == null)
@@ -125,6 +126,7 @@ namespace FCAP
                         room.game.manager.RequestMainProcessSwitch(Constants.NightOverScreen, 1f);
                     }
                 }
+                Destroy();
                 return;
             }
 
@@ -401,7 +403,7 @@ namespace FCAP
             room.game?.cameras[0]?.virtualMicrophone?.PlaySound(
                 SpoopList[UnityEngine.Random.Range(0, SpoopList.Length)],
                 UnityEngine.Random.Range(-0.25f, 0.25f),
-                UnityEngine.Random.Range(0.5f, 0.7f),
+                UnityEngine.Random.Range(0.6f, 0.8f),
                 UnityEngine.Random.Range(0.25f, 0.35f));
         }
     }
