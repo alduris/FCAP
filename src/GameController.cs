@@ -111,17 +111,13 @@ namespace FCAP
                     if (room.game.GetStorySession.saveState.cycleNumber == 4)
                     {
                         // Night 5, beating the game, roll credits
-                        room.game.GetStorySession.AppendTimeOnCycleEnd(true);
                         RainWorldGame.BeatGameMode(room.game, true); // for the sake of save file simplicity, we tell the game we ascended
-                        room.game.ExitGame(false, false);
                         room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
                         room.game.manager.RequestMainProcessSwitch(Constants.WeekOverScreen, 1f);
                     }
                     else
                     {
                         // Beating like normal
-                        room.game.GetStorySession.AppendTimeOnCycleEnd(true);
-                        room.game.ExitGame(false, false);
                         room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
                         room.game.manager.RequestMainProcessSwitch(Constants.NightOverScreen, 1f);
                     }
